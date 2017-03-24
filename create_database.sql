@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Mar 24, 2017 at 11:00 AM
+-- Generation Time: Mar 24, 2017 at 03:11 PM
 -- Server version: 5.7.17-0ubuntu0.16.10.1
 -- PHP Version: 7.0.15-0ubuntu0.16.10.4
 
@@ -26,6 +26,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `epoch_animal`
 --
 
+DROP TABLE IF EXISTS `epoch_animal`;
 CREATE TABLE `epoch_animal` (
   `id` varchar(50) NOT NULL,
   `description` varchar(255) NOT NULL,
@@ -49,6 +50,7 @@ INSERT INTO `epoch_animal` (`id`, `description`, `preselect`, `enable`) VALUES
 -- Table structure for table `epoch_biopotential`
 --
 
+DROP TABLE IF EXISTS `epoch_biopotential`;
 CREATE TABLE `epoch_biopotential` (
   `id` varchar(50) NOT NULL,
   `description` varchar(255) NOT NULL,
@@ -62,6 +64,7 @@ CREATE TABLE `epoch_biopotential` (
 
 INSERT INTO `epoch_biopotential` (`id`, `description`, `preselect`, `enable`) VALUES
 ('ecg', 'ECG', 0, 1),
+('ecg-emg', 'ECG/EMG (Differential)', 0, 1),
 ('eeg', 'EEG', 1, 1),
 ('eeg-ecg', 'EEG/ECG (Differential)', 0, 1),
 ('eeg-eeg', 'EEG/EEG (Differential)', 0, 1),
@@ -75,6 +78,7 @@ INSERT INTO `epoch_biopotential` (`id`, `description`, `preselect`, `enable`) VA
 -- Table structure for table `epoch_channels`
 --
 
+DROP TABLE IF EXISTS `epoch_channels`;
 CREATE TABLE `epoch_channels` (
   `id` varchar(50) NOT NULL,
   `description` varchar(255) NOT NULL,
@@ -98,6 +102,7 @@ INSERT INTO `epoch_channels` (`id`, `description`, `preselect`, `enable`) VALUES
 -- Table structure for table `epoch_duration`
 --
 
+DROP TABLE IF EXISTS `epoch_duration`;
 CREATE TABLE `epoch_duration` (
   `id` varchar(50) NOT NULL,
   `description` varchar(255) NOT NULL,
@@ -121,9 +126,10 @@ INSERT INTO `epoch_duration` (`id`, `description`, `preselect`, `enable`) VALUES
 -- Table structure for table `epoch_message`
 --
 
+DROP TABLE IF EXISTS `epoch_message`;
 CREATE TABLE `epoch_message` (
   `id` bigint(20) NOT NULL,
-  `description` varchar(255) NOT NULL,
+  `description` varchar(1000) NOT NULL,
   `preselect` tinyint(1) NOT NULL DEFAULT '0',
   `enable` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -142,6 +148,7 @@ INSERT INTO `epoch_message` (`id`, `description`, `preselect`, `enable`) VALUES
 -- Table structure for table `epoch_receiver`
 --
 
+DROP TABLE IF EXISTS `epoch_receiver`;
 CREATE TABLE `epoch_receiver` (
   `id` varchar(50) NOT NULL,
   `system_id` varchar(255) NOT NULL,
@@ -172,6 +179,7 @@ INSERT INTO `epoch_receiver` (`id`, `system_id`, `hertz`, `enable`) VALUES
 -- Table structure for table `epoch_system`
 --
 
+DROP TABLE IF EXISTS `epoch_system`;
 CREATE TABLE `epoch_system` (
   `id` varchar(255) NOT NULL,
   `description` varchar(55) NOT NULL,
@@ -198,6 +206,7 @@ INSERT INTO `epoch_system` (`id`, `description`, `preselect`, `enable`) VALUES
 -- Table structure for table `epoch_transmitter`
 --
 
+DROP TABLE IF EXISTS `epoch_transmitter`;
 CREATE TABLE `epoch_transmitter` (
   `id` bigint(20) NOT NULL,
   `part_number` varchar(50) NOT NULL,
@@ -282,6 +291,7 @@ INSERT INTO `epoch_transmitter` (`id`, `part_number`, `receiver_id`, `animal_id`
 -- Table structure for table `epoch_transmitter_gain`
 --
 
+DROP TABLE IF EXISTS `epoch_transmitter_gain`;
 CREATE TABLE `epoch_transmitter_gain` (
   `id` varchar(50) NOT NULL,
   `description` varchar(255) NOT NULL,
@@ -379,12 +389,12 @@ ALTER TABLE `epoch_transmitter_gain`
 -- AUTO_INCREMENT for table `epoch_message`
 --
 ALTER TABLE `epoch_message`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `epoch_transmitter`
 --
 ALTER TABLE `epoch_transmitter`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=130;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

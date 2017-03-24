@@ -99,7 +99,7 @@ $dropdowns = array
   (
     array('1', 'Existing System', 'system', 'system', "Existing Epoch 2 system biopotentials CANNOT be changed."),
     array('2', 'Animal', 'animal', 'animal', null),
-    array('3', 'Biopotential', 'biopotential', 'biopotential', null),
+    array('3', 'Biopotential', 'biopotential', 'biopotential', "'Differential' reference electrode layout uses different grounds as opposed to a 'Common' reference electrode layout which uses a common ground."),
     array('4', 'Channels', 'channels', 'channels', null),
     array('5', 'Duration', 'duration', 'duration', "reusable 2-month transmitters use the plastic-1 base and can be moved from animal to animal")
   );
@@ -179,10 +179,11 @@ $dropdowns = array
      echo "<br/>Adult EEG 2mV± <br/>Pup EEG 1mV± <br/>EMG 5mV± <br/>ECG 2mV±";
      echo "</span></div>";
    } else {
-     ?>
-       <p>Currently there are no Epoch Receivers / Transmitters for the options you selected.  <?=$row['note'];?></p>
-     <?php
-     //echo $sql;
+     if (empty($row['note'])){
+       echo "<p>Currently there are no Epoch Receivers / Transmitters for the options you selected.";
+     } else {
+       echo $row['note'];
+     }
      // CHEAT: Avoid multiple not found messages
      break;
    }

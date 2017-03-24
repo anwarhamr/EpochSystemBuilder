@@ -20,6 +20,34 @@ $db = new \PDO(   "mysql:host=".$config['servername'].";dbname=".$config['databa
                         )
                     );
 
+function existingSystemMsg() {
+  // CHEAT: If we do it in the code here, we can reduce the number of database records.
+  switch ($_POST['system']) {
+    case 'epoch2-100-100':
+      echo "<p>'Epoch 2 (100/100)' supports 'Adult' animals with '2-Ch' of 'EEG' or 'EEG/EEG (Differential)' for more than 2 weeks.</p>", PHP_EOL;
+      break;
+    case 'epoch2-100-200':
+      echo "<p>'Epoch 2 (100/200)' supports 'Adult' animals with '2-Ch' of 'EEG/EMG (Differential)' or 'EEG/ECG (Differential)' for more than 2 weeks.</p>", PHP_EOL;
+      break;
+    case 'epoch2-200-200':
+      echo "<p>'Epoch 2 (200/200)' supports 'Adult' animals with '1-Ch' or '2-Ch' of 'ECG', 'EMG', 'ECG/EMG (Differential)' or 'EMG/EMG (Differential)' for more than 2 weeks.</p>", PHP_EOL;
+      break;
+    case 'epoch6':
+      echo "<p>'Epoch 6' supports 'Adult' animals with '2-Ch', '4-Ch' or '6-Ch' of 'EEG'</p>", PHP_EOL;
+      break;
+    case 'pup':
+      echo "<p>'Pup' systems only support 'Pup' animals with '2-Ch' or '4-Ch' of 'EEG'</p>", PHP_EOL;
+      break;
+    case 'classic':
+      echo "<p>'Classic' systems were sold before 2017 and support 'Adult' animals with '2-Ch' of 'EEG'.</p>", PHP_EOL;
+      break;
+    case 'none':
+    default:
+      echo "<p>Currently there are no Epoch Receivers / Transmitters for the options you selected.</p>", PHP_EOL;
+      break;
+    }
+}
+
 function createDropDown($db, $label, $select, $table, $hint) {
   $query = $db->query("SELECT id, description, preselect FROM epoch_$table WHERE enable=1 ORDER BY description ASC"); // Run your query
   if (!is_null($label)) {
@@ -43,7 +71,7 @@ function createDropDown($db, $label, $select, $table, $hint) {
 
 createDropDown($db, 'Existing System', 'system', 'system', "Existing Epoch 2 system biopotentials CANNOT be changed.");
 createDropDown($db, 'Animal', 'animal', 'animal', null);
-createDropDown($db, 'Biopotential', 'biopotential', 'biopotential', null);
+createDropDown($db, 'Biopotential', 'biopotential', 'biopotential', "'Differential' reference electrode layout uses different grounds as opposed to a 'Common' reference electrode layout which uses a common ground.");
 createDropDown($db, 'Channels', 'channels', 'channels', null);
 createDropDown($db, 'Duration', 'duration', 'duration', "reusable 2-month transmitters use the plastic-1 base and can be moved from animal to animal");
 ?>
@@ -96,20 +124,17 @@ createDropDown($db, 'Duration', 'duration', 'duration', "reusable 2-month transm
      echo "Gain (peak-to-peak) per channel recommendations:";
      echo "<br/>Adult EEG 2mV± <br/>Pup EEG 1mV± <br/>EMG 5mV± <br/>ECG 2mV±";
      echo "</span></div>";
-   } else {
-     ?>
-       <p>Currently there are no Epoch Receivers / Transmitters for the options you selected.  <?=$row['note'];?></p>
-     <?php
-     //echo $sql;
+   } elseif (empty($row['note'])){
+     existingSystemMsg();
+
+     }
      // CHEAT: Avoid multiple not found messages
      break;
    }
-  }
 } else {
+  existingSystemMsg();
+}
 ?>
-  <p>Currently there are no Epoch Receivers / Transmitters for the options you selected.</p>
-
-<?php } ?>
 <pre>
 <?php //print_r($_POST); ?>
 </pre>
