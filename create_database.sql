@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Mar 24, 2017 at 03:11 PM
+-- Generation Time: Mar 24, 2017 at 04:42 PM
 -- Server version: 5.7.17-0ubuntu0.16.10.1
 -- PHP Version: 7.0.15-0ubuntu0.16.10.4
 
@@ -140,7 +140,8 @@ CREATE TABLE `epoch_message` (
 
 INSERT INTO `epoch_message` (`id`, `description`, `preselect`, `enable`) VALUES
 (1, 'Due to the size of a 2 month transmitter it isn\'t practical to use with mice pups.', 0, 1),
-(2, 'Due to the size of a 6 month transmitter it isn\'t practical to use with mice.', 0, 1);
+(2, 'Due to the size of a 6 month transmitter it isn\'t practical to use with mice. Use \'Adult Rat\' or \'2 months or less\'.', 0, 1),
+(3, 'Select \'1-Ch\' for \'ECG\' and \'EMG\'', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -283,7 +284,18 @@ INSERT INTO `epoch_transmitter` (`id`, `part_number`, `receiver_id`, `animal_id`
 (54, '', '10231', 'adult-mouse', 'eeg-ecg', '', '', '2', '6-month', 2, 0, 1),
 (55, '', '10229', 'adult-mouse', 'emg', '', '', '1', '6-month', 2, 0, 1),
 (56, '', '10229', 'adult-mouse', 'ecg-emg', '', '', '2', '6-month', 2, 0, 1),
-(57, '', '10072', 'mouse-pup', 'eeg', '', '', '2', '2-month', 1, 0, 1);
+(57, '', '10072', 'mouse-pup', 'eeg', '', '', '2', '2-month', 1, 0, 1),
+(130, '', '10231', 'adult-mouse', 'eeg-emg', '', '', '2', '6-month', 1, 0, 1),
+(131, '', '10231', 'adult-mouse', 'eeg-ecg', '', '', '2', '6-month', 1, 0, 1),
+(132, '', '10230', 'adult-rat', 'ecg', '', '', '2', '6-month', 3, 0, 1),
+(133, '', '10230', 'adult-rat', 'emg', '', '', '2', '6-month', 3, 0, 1),
+(134, '', '10230', 'adult-rat', 'ecg', '', '', '2', '2-month', 3, 0, 1),
+(135, '', '10230', 'adult-rat', 'emg', '', '', '2', '2-month', 3, 0, 1),
+(136, '', '10229', 'adult-mouse', 'ecg', '', '', '2', '6-month', 3, 0, 1),
+(137, '', '10229', 'adult-mouse', 'emg', '', '', '2', '6-month', 3, 0, 1),
+(138, '', '10229', 'adult-mouse', 'ecg', '', '', '2', '2-month', 3, 0, 1),
+(139, '', '10229', 'adult-mouse', 'emg', '', '', '2', '2-month', 3, 0, 1),
+(143, '', '10021', 'adult-mouse', 'eeg', '', '', '2', '6-month', 2, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -389,12 +401,12 @@ ALTER TABLE `epoch_transmitter_gain`
 -- AUTO_INCREMENT for table `epoch_message`
 --
 ALTER TABLE `epoch_message`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `epoch_transmitter`
 --
 ALTER TABLE `epoch_transmitter`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=130;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=144;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
