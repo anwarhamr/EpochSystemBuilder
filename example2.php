@@ -5,11 +5,10 @@
 </head>
 <body>
   <div>
-
-
-
 <form action="<?=$_SERVER['PHP_SELF'];?>" method="post" name="createSystem">
 <?php
+// For security place, config.ini outsite of browseable files and change the path
+// ex: $config = parse_ini_file('../../config.ini');
 $config = parse_ini_file('./config.ini');
 
 $db = new \PDO(   "mysql:host=".$config['servername'].";dbname=".$config['database'].";charset=utf8mb4",
