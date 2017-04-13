@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.4deb1
+-- version 4.6.6
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Apr 12, 2017 at 06:29 PM
--- Server version: 5.7.17-0ubuntu0.16.10.1
--- PHP Version: 7.0.15-0ubuntu0.16.10.4
+-- Generation Time: Apr 13, 2017 at 04:36 PM
+-- Server version: 5.5.54-0ubuntu0.14.04.1
+-- PHP Version: 5.6.27
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `epoch`
+-- Database: `epochsystem`
 --
 
 -- --------------------------------------------------------
@@ -271,21 +271,17 @@ INSERT INTO `epoch_transmitter` (`id`, `part_number`, `receiver_id`, `animal_id`
 (17, '10213', '10207', 'adult-rat', 'eeg', '2', '', '2', '6-month', 0, 0, 1),
 (18, '10214', '10207', 'adult-rat', 'eeg', '2', '', '2', 'reusable', 0, 0, 1),
 (19, '10214', '10206', 'adult-mouse', 'eeg', '2', '', '2', 'reusable', 0, 0, 1),
-(20, '10216', '10207', 'adult-rat', 'eeg-eeg', '2', '2', '2', '2-month', 0, 0, 1),
+(20, '10216', '10207', 'adult-rat', 'eeg-eeg', '2', '2', '2', '6-month', 0, 0, 1),
 (21, '10215', '10206', 'adult-mouse', 'eeg-eeg', '2', '2', '2', '2-month', 0, 0, 1),
-(22, '10216', '10207', 'adult-rat', 'eeg-eeg', '2', '2', '2', '6-month', 0, 0, 1),
 (23, '10215', '10232', 'adult-rat', 'eeg-emg', '2', '5', '2', '2-month', 0, 0, 1),
 (24, '10215', '10231', 'adult-mouse', 'eeg-emg', '2', '5', '2', '2-month', 0, 0, 1),
 (25, '10216', '10232', 'adult-rat', 'eeg-emg', '2', '5', '2', '6-month', 0, 0, 1),
-(26, '10216', '10232', 'adult-rat', 'eeg-ecg', '2', '2', '2', '2-month', 0, 0, 1),
+(26, '10216', '10232', 'adult-rat', 'eeg-ecg', '2', '2', '2', '6-month', 0, 0, 1),
 (27, '10215', '10231', 'adult-mouse', 'eeg-ecg', '2', '2', '2', '2-month', 0, 0, 1),
-(28, '10216', '10232', 'adult-rat', 'eeg-ecg', '2', '2', '2', '6-month', 0, 0, 1),
-(29, '10216', '10230', 'adult-rat', 'ecg-emg', '2', '5', '2', '2-month', 0, 0, 1),
+(29, '10216', '10230', 'adult-rat', 'ecg-emg', '2', '5', '2', '6-month', 0, 0, 1),
 (30, '10215', '10229', 'adult-mouse', 'ecg-emg', '2', '5', '2', '2-month', 0, 0, 1),
-(31, '10216', '10230', 'adult-rat', 'ecg-emg', '2', '5', '2', '6-month', 0, 0, 1),
-(32, '10216', '10230', 'adult-rat', 'emg-emg', '5', '5', '2', '2-month', 0, 0, 1),
+(32, '10216', '10230', 'adult-rat', 'emg-emg', '5', '5', '2', '6-month', 0, 0, 1),
 (33, '10215', '10229', 'adult-mouse', 'emg-emg', '5', '5', '2', '2-month', 0, 0, 1),
-(34, '10216', '10230', 'adult-rat', 'emg-emg', '5', '5', '2', '6-month', 0, 0, 1),
 (35, '10161', '10230', 'adult-rat', 'ecg', '2', '', '1', '2-month', 0, 0, 1),
 (36, '10161', '10229', 'adult-mouse', 'ecg', '2', '', '1', '2-month', 0, 0, 1),
 (37, '10162', '10230', 'adult-rat', 'ecg', '2', '', '1', '6-month', 0, 0, 1),
@@ -319,7 +315,11 @@ INSERT INTO `epoch_transmitter` (`id`, `part_number`, `receiver_id`, `animal_id`
 (137, '', '10229', 'adult-mouse', 'emg', '', '', '2', '6-month', 3, 0, 1),
 (138, '', '10229', 'adult-mouse', 'ecg', '', '', '2', '2-month', 3, 0, 1),
 (139, '', '10229', 'adult-mouse', 'emg', '', '', '2', '2-month', 3, 0, 1),
-(143, '', '10021', 'adult-mouse', 'eeg', '', '', '2', '6-month', 2, 0, 0);
+(143, '', '10021', 'adult-mouse', 'eeg', '', '', '2', '6-month', 2, 0, 0),
+(144, '10215', '10207', 'adult-rat', 'eeg-eeg', '2', '2', '2', '2-month', 0, 0, 1),
+(145, '10215', '10232', 'adult-rat', 'eeg-ecg', '2', '2', '2', '2-month', 0, 0, 1),
+(146, '10215', '10230', 'adult-rat', 'eeg-emg', '2', '5', '2', '2-month', 0, 0, 1),
+(147, '10215', '10230', 'adult-rat', 'emg-emg', '5', '5', '2', '2-month', 0, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -436,7 +436,7 @@ ALTER TABLE `epoch_message`
 -- AUTO_INCREMENT for table `epoch_transmitter`
 --
 ALTER TABLE `epoch_transmitter`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=144;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=148;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
