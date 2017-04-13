@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Mar 24, 2017 at 04:42 PM
+-- Generation Time: Apr 12, 2017 at 06:29 PM
 -- Server version: 5.7.17-0ubuntu0.16.10.1
 -- PHP Version: 7.0.15-0ubuntu0.16.10.4
 
@@ -95,6 +95,30 @@ INSERT INTO `epoch_channels` (`id`, `description`, `preselect`, `enable`) VALUES
 ('2', '2-Ch', 1, 1),
 ('4', '4-Ch', 0, 1),
 ('6', '6-Ch', 0, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `epoch_dac`
+--
+
+DROP TABLE IF EXISTS `epoch_dac`;
+CREATE TABLE `epoch_dac` (
+  `id` varchar(50) CHARACTER SET latin1 NOT NULL,
+  `description` varchar(255) CHARACTER SET latin1 NOT NULL,
+  `preselect` tinyint(1) NOT NULL DEFAULT '0',
+  `enable` tinyint(1) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `epoch_dac`
+--
+
+INSERT INTO `epoch_dac` (`id`, `description`, `preselect`, `enable`) VALUES
+('mp100', 'MP100', 0, 1),
+('mp150', 'MP150', 0, 1),
+('mp160', 'MP160', 0, 1),
+('none', 'None', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -347,6 +371,12 @@ ALTER TABLE `epoch_channels`
   ADD UNIQUE KEY `id` (`id`);
 
 --
+-- Indexes for table `epoch_dac`
+--
+ALTER TABLE `epoch_dac`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `epoch_duration`
 --
 ALTER TABLE `epoch_duration`
@@ -401,7 +431,7 @@ ALTER TABLE `epoch_transmitter_gain`
 -- AUTO_INCREMENT for table `epoch_message`
 --
 ALTER TABLE `epoch_message`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `epoch_transmitter`
 --

@@ -77,7 +77,8 @@ function createDropDown($db, $label, $select, $table, $hint) {
   if (!is_null($hint)) { echo "<div class='tooltip'>[?] <span class='tooltiptext'>$hint</span></div>"; }
 }
 
-createDropDown($db, 'Existing System', 'system', 'system', "Existing Epoch 2 system biopotentials CANNOT be changed.");
+createDropDown($db, 'Existing Data Acquisition System', 'dac', 'dac', null);
+createDropDown($db, 'Existing Epoch Receiver Tray', 'system', 'system', "Existing Epoch 2 system biopotentials CANNOT be changed.");
 createDropDown($db, 'Animal', 'animal', 'animal', null);
 createDropDown($db, 'Biopotential', 'biopotential', 'biopotential', "'Differential' reference electrode layout uses different grounds as opposed to a 'Common' reference electrode layout which uses a common ground.");
 createDropDown($db, 'Channels', 'channels', 'channels', null);
@@ -142,6 +143,13 @@ createDropDown($db, 'Duration', 'duration', 'duration', "reusable 2-month transm
      }
      // CHEAT: Avoid multiple not found messages
      break;
+  }
+
+  // Activator
+  if ($_POST['system']!="classic" ) {
+    echo PHP_EOL,"<br/>You also need Activator 10029.";
+  } elseif ($_POST['system']=="classic" && $_POST['duration']=="reusable" ) {
+    echo PHP_EOL,"<br/>Old activators do not work with reusable transmitters.  You also need Activator 10029.";
   }
 } else {
   echo "<p>".existingSystemMsg()."</p>", PHP_EOL;

@@ -96,19 +96,20 @@ function createDropDown($db, $label, $select, $table, $active, $hint) {
 // Multidimensional array to create dropdowns.
 $dropdowns = array
   (
-    array('1', 'Existing System', 'system', 'system', "Existing Epoch 2 system biopotentials CANNOT be changed."),
-    array('2', 'Animal', 'animal', 'animal', null),
-    array('3', 'Biopotential', 'biopotential', 'biopotential', "'Differential' reference electrode layout uses different grounds as opposed to a 'Common' reference electrode layout which uses a common ground."),
-    array('4', 'Channels', 'channels', 'channels', null),
-    array('5', 'Duration', 'duration', 'duration', "reusable 2-month transmitters use the plastic-1 base and can be moved from animal to animal")
+    array('1', 'Existing Data Acquisition System', 'dac', 'dac', null),
+    array('2', 'Existing Epoch Receiver Tray', 'system', 'system', "Existing Epoch 2 system biopotentials CANNOT be changed."),
+    array('3', 'Animal', 'animal', 'animal', null),
+    array('4', 'Biopotential', 'biopotential', 'biopotential', "'Differential' reference electrode layout uses different grounds as opposed to a 'Common' reference electrode layout which uses a common ground."),
+    array('5', 'Channels', 'channels', 'channels', null),
+    array('6', 'Duration', 'duration', 'duration', "reusable 2-month transmitters use the plastic-1 base and can be moved from animal to animal")
   );
 
   // Default Dropdown
-  if (!$_POST['currentDropDown']) { $_POST['currentDropDown'] = 'system'; }
+  if (!$_POST['currentDropDown']) { $_POST['currentDropDown'] = 'dac'; }
 
   // Enable the next dropdown in the $dropdowns array, unless it is the last one.
   for ($row = 0; $row < sizeof($dropdowns); $row++) {
-    if ($dropdowns[$row][2] == $_POST['currentDropDown'] && $_POST['currentDropDown'] != 'duration' && $_POST['system']) {
+    if ($dropdowns[$row][2] == $_POST['currentDropDown'] && $_POST['currentDropDown'] != 'duration' && $_POST['dac']) {
       $_POST['currentDropDown'] = $dropdowns[$row+1][2];
       break;
     }
@@ -127,7 +128,7 @@ $dropdowns = array
   }
 
 ?>
-<br /><input type="reset" name="reset" value="Reset" onclick="document.getElementById('currentDropDown').value='system';location.reload();">
+<br /><input type="reset" name="reset" value="Reset" onclick="document.getElementById('currentDropDown').value='dac';location.reload();">
 <input type="submit" name="Submit" value="Next">
 </form>
 </div>
@@ -162,7 +163,7 @@ $dropdowns = array
        $_POST["transmitter_gain_1"] = $row['default_gain1_id'];
        $_POST["transmitter_gain_2"] = $row['default_gain2_id'];
      }
-     echo PHP_EOL,"<br/>Option #$option: Receiver ".$row['receiver_pn']." and Transmitter ".$row['transmitter_pn'];
+     echo PHP_EOL,"<br/>Option #$option: Epoch Receiver Tray ".$row['receiver_pn']." and Epoch Transmitter ".$row['transmitter_pn'];
      // Create a Transmitter Gain Dropdown for each channel
      for ($i = 1; $i <= $row['channels']; $i++) {
        // Set Gain Dropdown Defaults
@@ -179,7 +180,7 @@ $dropdowns = array
      echo "</span></div>";
    } else {
      if (empty($row['note'])){
-       echo "<p>Currently there are no Epoch Receivers / Transmitters for the options you selected.";
+       echo "<p>Currently there are no Epoch Receiver Trays / Transmitters for the options you selected.";
      } else {
        echo $row['note'];
      }
@@ -187,9 +188,15 @@ $dropdowns = array
      break;
    }
   }
+  // Activator
+  if ($_POST['system']!="classic" ) {
+    echo PHP_EOL,"<br/>You also need Activator 10029.";
+  } elseif ($_POST['system']=="classic" && $_POST['duration']=="reusable" ) {
+    echo PHP_EOL,"<br/>Old activators do not work with reusable transmitters.  You also need Activator 10029.";
+  }
 } else {
 ?>
-  <p>Currently there are no Epoch Receivers / Transmitters for the options you selected.</p>
+  <p>Currently there are no Epoch Receiver Trays / Transmitters for the options you selected.</p>
 
 <?php
   }
