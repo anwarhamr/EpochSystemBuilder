@@ -14,5 +14,6 @@ Both proof of concepts use the exact same database.
 <a href="https://github.com/jonfen/EpochSystemBuilder">https://github.com/jonfen/EpochSystemBuilder</a>
 <br />For security, place <i>config.ini</i> outsite of browseable files and change the path references in each example accordingly.
 <pre>$config = parse_ini_file('../../config.ini');</pre>
+<br /><a href="gains.php">Generate Gains SQL</a> was used to populate <a href="create_database.sql">create_database.sql</a>.
 </body>
 </html>
