@@ -93,6 +93,99 @@ function createDropDown($db, $label, $select, $table, $active, $hint) {
   if (!is_null($hint)) { echo "<div class='tooltip'>[?] <span class='tooltiptext'>$hint</span></div>"; }
 }
 
+function getDefaultGain($biopotential, $animal) {
+  // Adult EEG 2mV±
+  // Pup EEG 1mV±
+  // EMG 5mV±
+  // ECG 2mV±
+  $default_gain = 0;
+
+  if (strpos($animal, 'pup') == false) {
+    // adult
+    switch ($biopotential) {
+      case 'emg':
+        $default_gain = 5;
+        break;
+      case 'ecg':
+      case 'eeg':
+      default:
+        $default_gain = 2;
+        break;
+    }
+  } else {
+    // pup
+    $default_gain = 1;
+  }
+
+  return $default_gain;
+}
+
+function createGainDropdowns($db, $active) {
+  // Set Default Differential Gains
+  $biopotentials = explode(" ", $_POST['biopotential']);
+  for ($i = 1; $i <= sizeof($biopotentials); $i++) {
+    if (!$_POST["transmitter_gain_$i"]) {
+      $_POST["transmitter_gain_$i"] = getDefaultGain($biopotentials[$i-1], $_POST['animal']);
+    }
+  }
+
+  // Gain Tooltip
+  $tooltip = "Gain (peak-to-peak) per channel recommendations:";
+  $tooltip .= "<br/>Adult EEG 2mV± <br/>Pup EEG 1mV± <br/>EMG 5mV± <br/>ECG 2mV±";
+
+  // Create a Transmitter Gain Dropdown for each channel
+  for ($i = 1; $i <= $_POST['channels']; $i++) {
+    // Set Default Common Gains
+    if (strlen($_POST['biopotential'])==3) {
+      if (!$_POST["transmitter_gain_$i"]) {
+        $_POST["transmitter_gain_$i"] = getDefaultGain($_POST['biopotential'], $_POST['animal']);
+      }
+    }
+
+    createDropDown($db, "Channel $i Gain", "transmitter_gain_$i", 'transmitter_gain', $active, $tooltip);
+  }
+
+}
+
+function generateGainCombinationKey($db) {
+  $gain_desc = "";
+  for ($i = 1; $i <= $_POST['channels']; $i++) {
+    $gain_desc .= "-".sprintf("%02d", $_POST["transmitter_gain_$i"]);
+  }
+  $sql = "SELECT id from epoch_gains WHERE description='$gain_desc'";
+  $query = $db->query($sql);
+
+  if ($query->rowCount()>0) {
+    while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+      return $row['id'];
+    }
+  }
+  return "ERROR";
+}
+
+function generateGainCombinationValue($db, $id) {
+  $sql = "SELECT description from epoch_gains WHERE id='$id'";
+  $query = $db->query($sql);
+
+  if ($query->rowCount()>0) {
+    while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+      return $row['description'];
+    }
+  }
+  return "ERROR";
+}
+
+function getActivator() {
+  // Activator
+  $msg = "";
+  if ($_POST['system']!="classic" ) {
+    $msg = "<br/>You also need Activator EPOCH-ACTI (10029).";
+  } elseif ($_POST['system']=="classic" && $_POST['duration']=="reusable" ) {
+    $msg = "<br/>Old activators do not work with reusable transmitters.  You also need Activator EPOCH-ACTI (10029).";
+  }
+  return $msg;
+}
+
 // Multidimensional array to create dropdowns.
 $dropdowns = array
   (
@@ -106,6 +199,8 @@ $dropdowns = array
 
   // Default Dropdown
   if (!$_POST['currentDropDown']) { $_POST['currentDropDown'] = 'dac'; }
+  // CHEAT: gain dropdowns are created differently, so they are included with channels.
+  if (strpos($_POST['currentDropDown'], 'transmitter_gain_') == false) { $_POST['currentDropDown'] = "channels"; }
 
   // Enable the next dropdown in the $dropdowns array, unless it is the last one.
   for ($row = 0; $row < sizeof($dropdowns); $row++) {
@@ -121,6 +216,8 @@ $dropdowns = array
   $active = true;
   for ($row = 0; $row < sizeof($dropdowns); $row++) {
     createDropDown($db, $dropdowns[$row][1], $dropdowns[$row][2], $dropdowns[$row][3], $active, $dropdowns[$row][4]);
+    // Once channels have been selected, show the Gain Options
+    if ($dropdowns[$row][2] == "channels") { createGainDropdowns($db, $active); }
     // Disable all the select statements after the currentDropDown
     if ($dropdowns[$row][2] == $_POST['currentDropDown']) { $active = false; }
     // Hide inactive dropdowns
@@ -137,7 +234,7 @@ $dropdowns = array
   if ($_POST['currentDropDown'] == 'duration' && $_POST['duration']) {
  // calculate the form result
 
- $sql = "SELECT tx.part_number as transmitter_pn, tx.receiver_id as receiver_pn, tx.biopotential_id as biopotential, tx.channels_id as channels, tx.default_gain1_id, tx.default_gain2_id, msg.id as msg_id, msg.description as note";
+ $sql = "SELECT tx.part_number as transmitter_pn, rec.biopac_id as biopac_receiver_pn, tx.receiver_id as receiver_pn, tx.biopotential_id as biopotential, tx.channels_id as channels, tx.default_gain1_id, tx.default_gain2_id, msg.id as msg_id, msg.description as note";
  $sql .= " FROM epoch_transmitter as tx INNER JOIN epoch_receiver as rec ON tx.receiver_id = rec.id";
  $sql .= " LEFT JOIN epoch_message as msg ON tx.message_id = msg.id";
  $sql .= " WHERE tx.animal_id='".$_POST['animal']."'";
@@ -158,43 +255,22 @@ $dropdowns = array
    $option = 1;
    while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
      if (!empty($row['transmitter_pn'])) {
-     // CHEAT: Set Gain Dropdown Defaults for Differential
-     if (strlen($row['biopotential'])==7) {
-       $_POST["transmitter_gain_1"] = $row['default_gain1_id'];
-       $_POST["transmitter_gain_2"] = $row['default_gain2_id'];
-     }
-     echo PHP_EOL,"<br/>Option #$option: Epoch Receiver Tray ".$row['receiver_pn']." and Epoch Transmitter ".$row['transmitter_pn'];
-     // Create a Transmitter Gain Dropdown for each channel
-     for ($i = 1; $i <= $row['channels']; $i++) {
-       // Set Gain Dropdown Defaults
-       if (strlen($row['biopotential'])==3) {
-         $_POST["transmitter_gain_$i"] = $row['default_gain1_id'];
-       }
-       echo "-";
-       createDropDown($db, null, "transmitter_gain_$i",'transmitter_gain', true, null);
-     }
-     $option++;
-     echo "<div class='tooltip'>[?] <span class='tooltiptext'>";
-     echo "Gain (peak-to-peak) per channel recommendations:";
-     echo "<br/>Adult EEG 2mV± <br/>Pup EEG 1mV± <br/>EMG 5mV± <br/>ECG 2mV±";
-     echo "</span></div>";
-   } else {
-     if (empty($row['note'])){
-       echo "<p>Currently there are no Epoch Receiver Trays / Transmitters for the options you selected.";
+       $key = generateGainCombinationKey($db);
+       echo PHP_EOL,"<br/>Option #$option: Epoch Receiver Tray ".$row['biopac_receiver_pn']." (".$row['receiver_pn'].") and Epoch Transmitter EPTX".$row['transmitter_pn']."-$key (".$row['transmitter_pn'].generateGainCombinationValue($db, $key).")";
+       //createGainDropdowns($db);
+       $option++;
      } else {
-       echo $row['note'];
+       if (empty($row['note'])) {
+         echo "<p>Currently there are no Epoch Receiver Trays / Transmitters for the options you selected.";
+       } else {
+         echo $row['note'];
+       }
+       // CHEAT: Avoid multiple not found messages
+       break;
      }
-     // CHEAT: Avoid multiple not found messages
-     break;
    }
-  }
-  // Activator
-  if ($_POST['system']!="classic" ) {
-    echo PHP_EOL,"<br/>You also need Activator 10029.";
-  } elseif ($_POST['system']=="classic" && $_POST['duration']=="reusable" ) {
-    echo PHP_EOL,"<br/>Old activators do not work with reusable transmitters.  You also need Activator 10029.";
-  }
-} else {
+   echo getActivator();
+  } else {
 ?>
   <p>Currently there are no Epoch Receiver Trays / Transmitters for the options you selected.</p>
 
