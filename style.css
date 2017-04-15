@@ -46,3 +46,13 @@ a:active {
 .tooltip:hover .tooltiptext {
     visibility: visible;
 }
+
+input, select, textarea{
+    width:400px;
+    border:10px solid #ccc;
+
+    -ms-box-sizing:content-box;
+    -moz-box-sizing:content-box;
+    box-sizing:content-box;
+    -webkit-box-sizing:content-box;
+}

@@ -46,23 +46,17 @@ function generateDropDownSQL($table) {
 }
 
 function createDropDown($db, $label, $select, $table, $active, $tooltip) {
-  // Create a label or not
-  if (!is_null($label)) {
-    echo "<br />$label: ";
-  }
   // Open Select Tag
-  echo "<select name=\"$select\" onchange=\"document.getElementById('currentDropDown').value='$select';\"";
+  echo "<br /><select name=\"$select\" onchange=\"document.getElementById('currentDropDown').value='$select';document.getElementById('createSystem').submit();\"";
   if (!$active) { echo " disabled"; }
   echo ">", PHP_EOL;
 
   // Generate Select Tag Options
   $sql = generateDropDownSQL($table);
   $query = $db->query($sql);
+  echo "<option value=''>$label</option>";
   while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
      echo '<option value="'.$row['id'].'"';
-     if (!$_POST[$select]) {
-       ($row['preselect'] == 1) ? $_POST[$select] = $row['id'] : '';
-     }
      echo ($row['id'] == $_POST[$select]) ? ' selected' : '';
      echo '>'.$row['description'].'</option>', PHP_EOL;
   }
@@ -198,8 +192,8 @@ function getPartNumbersMsg($db) {
    while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
      if (!empty($row['transmitter_pn'])) {
        $key = getGainCombinationKey($db);
-       $msg .= "<br/>Option #$option: Epoch Receiver Tray ".$row['biopac_receiver_pn']." (".$row['receiver_pn'].") and Epoch Transmitter EPTX".$row['transmitter_pn']."-".sprintf("%05d", $key)." (".$row['transmitter_pn'].getGainCombinationValue($db, $key).")";
-       //createGainDropdowns($db);
+       $msg .= "<br/>Option #$option: Epoch Receiver Tray ".$row['biopac_receiver_pn']." (".$row['receiver_pn'].")";
+       $msg .= " and Epoch Transmitter EPTX".$row['transmitter_pn']."-".sprintf("%05d", $key)." (".$row['transmitter_pn'].getGainCombinationValue($db, $key).")";
        $option++;
      } else {
        if (empty($row['note'])) {
@@ -278,7 +272,7 @@ function showPOST() {
 $config = parse_ini_file('../config.ini');
 
 // Database Connection
-$db = new \PDO(   "mysql:host=".$config['servername'].";dbname=".$config['database'].";charset=utf8mb4",
+$db = new \PDO(   "mysql:host=".$config['servername'].";dbname=".$config['database'].";charset=utf8",
                         $config['username'],
                         $config['password'],
                         array(
@@ -290,12 +284,12 @@ $db = new \PDO(   "mysql:host=".$config['servername'].";dbname=".$config['databa
 // Multidimensional array to create dropdowns.
 $dropdowns = array
   (
-    array('1', 'Existing Data Acquisition System', 'dac', 'dac', null),
-    array('2', 'Existing Epoch Receiver Tray', 'system', 'system', "Existing Epoch 2 system biopotentials CANNOT be changed."),
-    array('3', 'Animal', 'animal', 'animal', null),
-    array('4', 'Biopotential', 'biopotential', 'biopotential', "'Differential' reference electrode layout uses different grounds as opposed to a 'Common' reference electrode layout which uses a common ground."),
-    array('5', 'Channels', 'channels', 'channels', null),
-    array('6', 'Duration', 'duration', 'duration', "reusable 2-month transmitters use the plastic-1 base and can be moved from animal to animal")
+    array('1', 'Select Existing Data Acquisition System', 'dac', 'dac', null),
+    array('2', 'Select Existing Epoch Receiver Tray', 'system', 'system', "Existing Epoch 2 system biopotentials CANNOT be changed."),
+    array('3', 'Select Animal', 'animal', 'animal', null),
+    array('4', 'Select Biopotential', 'biopotential', 'biopotential', "'Differential' reference electrode layout uses different grounds as opposed to a 'Common' reference electrode layout which uses a common ground."),
+    array('5', 'Select Channels', 'channels', 'channels', null),
+    array('6', 'Select Duration', 'duration', 'duration', "reusable 2-month transmitters use the plastic-1 base and can be moved from animal to animal")
   );
 
 echo advanceDefaultDropdown($dropdowns); // write hidden tag
@@ -319,7 +313,6 @@ function reloadForm() {
 }
 </script>
 <br /><input type="reset" name="reset" value="Reset" onclick="document.getElementById('currentDropDown').value='';document.getElementById('createSystem').submit();">
-<input type="submit" name="Submit" value="Next">
 </form>
 </div>
 
