@@ -160,10 +160,26 @@ function getActivatorMsg() {
   // Activator
   $msg = "";
   if ($_POST['system']!="classic" ) {
-    $msg = "<br/>You also need Activator EPOCH-ACTI (10029).";
+    $msg = "<br />You also need Activator EPOCH-ACTI (10029).";
   } elseif ($_POST['system']=="classic" && $_POST['duration']=="reusable" ) {
-    $msg = "<br/>Old activators do not work with reusable transmitters.  You also need Activator EPOCH-ACTI (10029).";
+    $msg = "<br />Old activators do not work with reusable transmitters.  You also need Activator EPOCH-ACTI (10029).";
   }
+  return $msg;
+}
+
+function getCableMsg() {
+  // BIOPAC cables
+  $msg = "";
+
+  switch ($_POST['dac']) {
+    case 'mp150':
+      $msg = "<br />You need ".$_POST['channels']."x of <a href='https://www.biopac.com/product/interface-cables/?attribute_pa_size=unisolated-rj11-to-bnc-male'>CBL123</a> to connect to the MP150.";
+      break;
+    case 'mp160':
+      $msg = "<br />You need ".$_POST['channels']."x of <a href='https://www.biopac.com/product/interface-cables/?attribute_pa_size=cbl-3-5mm-to-bnc-m-2-m'>CBL102</a> to connect to the <a href='https://www.biopac.com/product/mp150-data-acquisition-systems/'>MP160</a>.";
+      break;
+  }
+
   return $msg;
 }
 
@@ -205,6 +221,7 @@ function getPartNumbersMsg($db) {
        break;
      }
    }
+   $msg .= getCableMsg();
    $msg .= getActivatorMsg();
   } else {
     $msg .= "<p>Currently there are no Epoch Receiver Trays / Transmitters for the options you selected.</p>";
