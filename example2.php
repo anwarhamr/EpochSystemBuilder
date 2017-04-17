@@ -162,7 +162,7 @@ function getActivatorMsg() {
   if ($_POST['system']!="classic" ) {
     $msg = "<br />You also need Activator EPOCH-ACTI (10029).";
   } elseif ($_POST['system']=="classic" && $_POST['duration']=="reusable" ) {
-    $msg = "<br />Old activators do not work with reusable transmitters.  You also need Activator EPOCH-ACTI (10029).";
+    $msg = "<br />Old activators do not work with reusable transmitters.  You also need Activator <a href='https://www.biopac.com/product/epoch-sensor-activation-utility/'>EPOCH-ACTI</a> (10029).";
   }
   return $msg;
 }
@@ -303,11 +303,11 @@ $db = new \PDO(   "mysql:host=".$config['servername'].";dbname=".$config['databa
 $dropdowns = array
   (
     array('1', 'Select Existing Data Acquisition System', 'dac', 'dac', null),
-    array('2', 'Select Existing Epoch Receiver Tray', 'system', 'system', "Existing Epoch 2 system biopotentials CANNOT be changed."),
+    array('2', 'Select Existing Epoch Receiver Tray', 'system', 'system', "Selected Epoch 2 system biopotentials CANNOT be changed."),
     array('3', 'Select Animal', 'animal', 'animal', null),
     array('4', 'Select Biopotential', 'biopotential', 'biopotential', "'Differential' reference electrode layout uses different grounds as opposed to a 'Common' reference electrode layout which uses a common ground."),
     array('5', 'Select Channels', 'channels', 'channels', null),
-    array('6', 'Select Duration', 'duration', 'duration', "reusable 2-month transmitters use the plastic-1 base and can be moved from animal to animal")
+    array('6', 'Select Duration', 'duration', 'duration', "reusable 2-month transmitters use the <a href='http://www.plastics1.com/Gallery-PRC.php?FILTER_CLEAR&FILTER_FCATEGORY=Electrophysiology%20&FILTER_F1=Electrode%20&FILTER_F3=3%20channel'>Plastics1 MSS33</a> base and can be moved from animal to animal")
   );
 
 echo advanceDefaultDropdown($dropdowns); // write hidden tag
