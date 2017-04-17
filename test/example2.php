@@ -160,7 +160,7 @@ function getActivatorMsg() {
   // Activator
   $msg = "";
   if ($_POST['system']!="classic" ) {
-    $msg = "<br />You also need Activator EPOCH-ACTI (10029).";
+    $msg = "<br />You also need Activator <a href='https://www.biopac.com/product/epoch-sensor-activation-utility/'>EPOCH-ACTI</a> (10029).";
   } elseif ($_POST['system']=="classic" && $_POST['duration']=="reusable" ) {
     $msg = "<br />Old activators do not work with reusable transmitters.  You also need Activator <a href='https://www.biopac.com/product/epoch-sensor-activation-utility/'>EPOCH-ACTI</a> (10029).";
   }
@@ -279,7 +279,7 @@ function showPOST() {
 <html>
 <head>
   <title>Epoch System Builder</title>
-  <link href="style.css" rel="stylesheet" type="text/css">
+  <link href="../css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
   <div>
@@ -287,7 +287,7 @@ function showPOST() {
 
 <?php
 // For security place, config.ini outsite of browseable files and change the path
-$config = parse_ini_file('../config.ini');
+$config = parse_ini_file('../../config.ini');
 
 // Database Connection
 $db = new \PDO(   "mysql:host=".$config['servername'].";dbname=".$config['database'].";charset=utf8",
@@ -336,6 +336,6 @@ function reloadForm() {
 
 <?php if ($_POST['currentDropDown'] == 'duration' && $_POST['duration']) { echo getPartNumbersMsg($db); } ?>
 
-<p><img src="flowchart.png"></p>
+<p><img src="https://www.biopac.com/wp-content/uploads/EPOCH-BIOPAC-System-1024x551.jpg"></p>
 </body>
 </html>

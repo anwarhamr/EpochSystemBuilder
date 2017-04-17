@@ -1,14 +1,14 @@
 <html>
 <head>
   <title>Epoch System</title>
-  <link href="style.css" rel="stylesheet" type="text/css">
+  <link href="../css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
   <div>
 <form action="<?=$_SERVER['PHP_SELF'];?>" method="post" name="createSystem">
 <?php
 // For security, place config.ini outsite of browseable files and change the path
-$config = parse_ini_file('../config.ini');
+$config = parse_ini_file('../../config.ini');
 
 $db = new \PDO(   "mysql:host=".$config['servername'].";dbname=".$config['database'].";charset=utf8mb4",
                         $config['username'],
@@ -158,6 +158,6 @@ createDropDown($db, 'Duration', 'duration', 'duration', "reusable 2-month transm
 <pre>
 <?php //print_r($_POST); ?>
 </pre>
-<p><img src="flowchart.png"></p>
+<p><img src="../images/flowchart.png"></p>
 </body>
 </html>
