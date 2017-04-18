@@ -297,7 +297,7 @@ function showPOST() {
 <html>
 <head>
   <title>Epoch System Builder</title>
-  <link href="../css/style.css" rel="stylesheet" type="text/css">
+  <link href="css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
   <div>
@@ -305,7 +305,7 @@ function showPOST() {
 
 <?php
 // For security place, config.ini outsite of browseable files and change the path
-$config = parse_ini_file('../../config.ini');
+$config = parse_ini_file('../config.ini');
 
 // Database Connection
 $db = new \PDO(   "mysql:host=".$config['servername'].";dbname=".$config['database'].";charset=utf8",
