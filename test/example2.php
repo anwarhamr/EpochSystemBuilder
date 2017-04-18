@@ -36,6 +36,9 @@ function generateDropDownSQL($table) {
       $sql .= " AND tx.channels_id='".$_POST['channels']."'";
       $sql .= " AND x.enable=1 ORDER BY x.description ASC";
       break;
+    case 'dac':
+    $sql="SELECT id, description, preselect FROM epoch_$table WHERE enable=1 ORDER BY description DESC";
+      break;
     case 'system':
     default:
       $sql="SELECT id, description, preselect FROM epoch_$table WHERE enable=1 ORDER BY description ASC";
@@ -45,7 +48,7 @@ function generateDropDownSQL($table) {
   return $sql;
 }
 
-function createDropDown($db, $label, $select, $table, $active, $tooltip) {
+function createDropDown($db, $label, $select, $table, $active, $tooltip, $none) {
   // Open Select Tag
   echo "<br /><select name=\"$select\" onchange=\"document.getElementById('currentDropDown').value='$select';document.getElementById('createSystem').submit();\"";
   if (!$active) { echo " disabled"; }
@@ -60,6 +63,7 @@ function createDropDown($db, $label, $select, $table, $active, $tooltip) {
      echo ($row['id'] == $_POST[$select]) ? ' selected' : '';
      echo '>'.$row['description'].'</option>', PHP_EOL;
   }
+  if ($none) { echo "<option value='none'>None</option>"; }
 
   // Close Select Tag
   echo '</select>', PHP_EOL;
@@ -117,7 +121,7 @@ function createGainDropdowns($db, $active) {
       }
     }
 
-    createDropDown($db, "Channel $i Gain", "transmitter_gain_$i", 'transmitter_gain', $active, $tooltip);
+    createDropDown($db, "Channel $i Gain", "transmitter_gain_$i", 'transmitter_gain', $active, $tooltip, false);
   }
 
 }
@@ -329,8 +333,9 @@ echo advanceDefaultDropdown($dropdowns); // write hidden tag
 // Create dropdowns
 $active = true;
 for ($row = 0; $row < sizeof($dropdowns); $row++) {
+  if ($dropdowns[$row][2] == "dac" || $dropdowns[$row][2] == "system") { $none = true; } else { $none = false; }
   if (!$active) { unset($_POST[$dropdowns[$row][2]]); }
-  createDropDown($db, $dropdowns[$row][1], $dropdowns[$row][2], $dropdowns[$row][3], $active, $dropdowns[$row][4]);
+  createDropDown($db, $dropdowns[$row][1], $dropdowns[$row][2], $dropdowns[$row][3], $active, $dropdowns[$row][4], $none);
   if ($dropdowns[$row][2] == "channels") { createGainDropdowns($db, $active); } // Once channels have been selected, show the Gain Options
   if ($dropdowns[$row][2] == $_POST['currentDropDown']) {
     $active = false; // Disable all the select statements after the currentDropDown
