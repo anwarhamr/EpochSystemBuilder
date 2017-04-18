@@ -167,21 +167,34 @@ function getActivatorMsg() {
   return $msg;
 }
 
-function getCableMsg() {
+function getCableMsg($db) {
   // BIOPAC cables
   $msg = "";
 
   switch ($_POST['dac']) {
     case 'mp160':
-      $msg = "<br />You need ".$_POST['channels']."x of <a href='https://www.biopac.com/product/interface-cables/?attribute_pa_size=unisolated-rj11-to-bnc-male'>CBL123</a> to connect to the ".$_POST['dac'].".";
+      $msg = "<br />You need ".$_POST['channels']."x of <a href='https://www.biopac.com/product/interface-cables/?attribute_pa_size=unisolated-rj11-to-bnc-male'>CBL123</a> to connect to the ".getDescription($db, $_POST['dac'], 'dac').".";
       break;
     case 'mp100':
     case 'mp150':
-      $msg = "<br />You need ".$_POST['channels']."x of <a href='https://www.biopac.com/product/interface-cables/?attribute_pa_size=cbl-3-5mm-to-bnc-m-2-m'>CBL102</a> to connect to the <a href='https://www.biopac.com/product/mp150-data-acquisition-systems/'>".$_POST['dac']."</a>.";
+      $msg = "<br />You need ".$_POST['channels']."x of <a href='https://www.biopac.com/product/interface-cables/?attribute_pa_size=cbl-3-5mm-to-bnc-m-2-m'>CBL102</a> to connect to the <a href='https://www.biopac.com/product/mp150-data-acquisition-systems/'>".getDescription($db, $_POST['dac'], 'dac')."</a>.";
       break;
   }
 
   return $msg;
+}
+
+function getDescription($db, $id, $table) {
+  $description = null;
+  $sql = "SELECT description from epoch_$table where id='$id'";
+  $query = $db->query($sql);
+  if ($query->rowCount()>0) {
+    while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+      $description = $row['description'];
+      break;
+    }
+  }
+  return $description;
 }
 
 function getPartNumbersMsg($db) {
@@ -222,7 +235,7 @@ function getPartNumbersMsg($db) {
        break;
      }
    }
-   $msg .= getCableMsg();
+   $msg .= getCableMsg($db);
    $msg .= getActivatorMsg();
   } else {
     $msg .= "<p>Currently there are no Epoch Receiver Trays / Transmitters for the options you selected.</p>";
@@ -263,6 +276,7 @@ function advanceDefaultDropdown($dropdowns) {
   } else {
     for ($row = 0; $row < sizeof($dropdowns); $row++) {
       if ($dropdowns[$row][2] == $_POST['currentDropDown'] && $_POST['currentDropDown'] != 'duration' && $_POST['dac']) {
+        unset($_POST[$dropdowns[$row+1][2]]);
         $_POST['currentDropDown'] = $dropdowns[$row+1][2];
         break;
       }
@@ -315,6 +329,7 @@ echo advanceDefaultDropdown($dropdowns); // write hidden tag
 // Create dropdowns
 $active = true;
 for ($row = 0; $row < sizeof($dropdowns); $row++) {
+  if (!$active) { unset($_POST[$dropdowns[$row][2]]); }
   createDropDown($db, $dropdowns[$row][1], $dropdowns[$row][2], $dropdowns[$row][3], $active, $dropdowns[$row][4]);
   if ($dropdowns[$row][2] == "channels") { createGainDropdowns($db, $active); } // Once channels have been selected, show the Gain Options
   if ($dropdowns[$row][2] == $_POST['currentDropDown']) {
