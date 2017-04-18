@@ -36,6 +36,9 @@ function generateDropDownSQL($table) {
       $sql .= " AND tx.channels_id='".$_POST['channels']."'";
       $sql .= " AND x.enable=1 ORDER BY x.description ASC";
       break;
+    case 'dac':
+    $sql="SELECT id, description, preselect FROM epoch_$table WHERE enable=1 ORDER BY description DESC";
+      break;
     case 'system':
     default:
       $sql="SELECT id, description, preselect FROM epoch_$table WHERE enable=1 ORDER BY description ASC";
@@ -45,7 +48,7 @@ function generateDropDownSQL($table) {
   return $sql;
 }
 
-function createDropDown($db, $label, $select, $table, $active, $tooltip) {
+function createDropDown($db, $label, $select, $table, $active, $tooltip, $none) {
   // Open Select Tag
   echo "<br /><select name=\"$select\" onchange=\"document.getElementById('currentDropDown').value='$select';document.getElementById('createSystem').submit();\"";
   if (!$active) { echo " disabled"; }
@@ -60,6 +63,7 @@ function createDropDown($db, $label, $select, $table, $active, $tooltip) {
      echo ($row['id'] == $_POST[$select]) ? ' selected' : '';
      echo '>'.$row['description'].'</option>', PHP_EOL;
   }
+  if ($none) { echo "<option value='none'>None</option>"; }
 
   // Close Select Tag
   echo '</select>', PHP_EOL;
@@ -117,7 +121,7 @@ function createGainDropdowns($db, $active) {
       }
     }
 
-    createDropDown($db, "Channel $i Gain", "transmitter_gain_$i", 'transmitter_gain', $active, $tooltip);
+    createDropDown($db, "Channel $i Gain", "transmitter_gain_$i", 'transmitter_gain', $active, $tooltip, false);
   }
 
 }
@@ -167,21 +171,34 @@ function getActivatorMsg() {
   return $msg;
 }
 
-function getCableMsg() {
+function getCableMsg($db) {
   // BIOPAC cables
   $msg = "";
 
   switch ($_POST['dac']) {
     case 'mp160':
-      $msg = "<br />You need ".$_POST['channels']."x of <a href='https://www.biopac.com/product/interface-cables/?attribute_pa_size=unisolated-rj11-to-bnc-male'>CBL123</a> to connect to the ".$_POST['dac'].".";
+      $msg = "<br />You need ".$_POST['channels']."x of <a href='https://www.biopac.com/product/interface-cables/?attribute_pa_size=unisolated-rj11-to-bnc-male'>CBL123</a> to connect to the ".getDescription($db, $_POST['dac'], 'dac').".";
       break;
     case 'mp100':
     case 'mp150':
-      $msg = "<br />You need ".$_POST['channels']."x of <a href='https://www.biopac.com/product/interface-cables/?attribute_pa_size=cbl-3-5mm-to-bnc-m-2-m'>CBL102</a> to connect to the <a href='https://www.biopac.com/product/mp150-data-acquisition-systems/'>".$_POST['dac']."</a>.";
+      $msg = "<br />You need ".$_POST['channels']."x of <a href='https://www.biopac.com/product/interface-cables/?attribute_pa_size=cbl-3-5mm-to-bnc-m-2-m'>CBL102</a> to connect to the <a href='https://www.biopac.com/product/mp150-data-acquisition-systems/'>".getDescription($db, $_POST['dac'], 'dac')."</a>.";
       break;
   }
 
   return $msg;
+}
+
+function getDescription($db, $id, $table) {
+  $description = null;
+  $sql = "SELECT description from epoch_$table where id='$id'";
+  $query = $db->query($sql);
+  if ($query->rowCount()>0) {
+    while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+      $description = $row['description'];
+      break;
+    }
+  }
+  return $description;
 }
 
 function getPartNumbersMsg($db) {
@@ -222,7 +239,7 @@ function getPartNumbersMsg($db) {
        break;
      }
    }
-   $msg .= getCableMsg();
+   $msg .= getCableMsg($db);
    $msg .= getActivatorMsg();
   } else {
     $msg .= "<p>Currently there are no Epoch Receiver Trays / Transmitters for the options you selected.</p>";
@@ -263,6 +280,7 @@ function advanceDefaultDropdown($dropdowns) {
   } else {
     for ($row = 0; $row < sizeof($dropdowns); $row++) {
       if ($dropdowns[$row][2] == $_POST['currentDropDown'] && $_POST['currentDropDown'] != 'duration' && $_POST['dac']) {
+        unset($_POST[$dropdowns[$row+1][2]]);
         $_POST['currentDropDown'] = $dropdowns[$row+1][2];
         break;
       }
@@ -279,7 +297,7 @@ function showPOST() {
 <html>
 <head>
   <title>Epoch System Builder</title>
-  <link href="css/style.css" rel="stylesheet" type="text/css">
+  <link href="../css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
   <div>
@@ -287,7 +305,7 @@ function showPOST() {
 
 <?php
 // For security place, config.ini outsite of browseable files and change the path
-$config = parse_ini_file('../config.ini');
+$config = parse_ini_file('../../config.ini');
 
 // Database Connection
 $db = new \PDO(   "mysql:host=".$config['servername'].";dbname=".$config['database'].";charset=utf8",
@@ -315,7 +333,9 @@ echo advanceDefaultDropdown($dropdowns); // write hidden tag
 // Create dropdowns
 $active = true;
 for ($row = 0; $row < sizeof($dropdowns); $row++) {
-  createDropDown($db, $dropdowns[$row][1], $dropdowns[$row][2], $dropdowns[$row][3], $active, $dropdowns[$row][4]);
+  if ($dropdowns[$row][2] == "dac" || $dropdowns[$row][2] == "system") { $none = true; } else { $none = false; }
+  if (!$active) { unset($_POST[$dropdowns[$row][2]]); }
+  createDropDown($db, $dropdowns[$row][1], $dropdowns[$row][2], $dropdowns[$row][3], $active, $dropdowns[$row][4], $none);
   if ($dropdowns[$row][2] == "channels") { createGainDropdowns($db, $active); } // Once channels have been selected, show the Gain Options
   if ($dropdowns[$row][2] == $_POST['currentDropDown']) {
     $active = false; // Disable all the select statements after the currentDropDown
