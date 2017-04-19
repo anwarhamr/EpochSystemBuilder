@@ -297,12 +297,14 @@ function showPOST() {
   echo "<pre>"; print_r($_POST); echo "</pre>";
 }
 ?>
-
-<html>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <title>Epoch System Builder</title>
   <link href="../css/style.css" rel="stylesheet" type="text/css">
   <meta charset="UTF-8">
+  <meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=2.0, width=device-width" />
 </head>
 <body>
   <div>
@@ -360,7 +362,8 @@ function reloadForm() {
 </div>
 
 <?php if ($_POST['currentDropDown'] == 'duration' && $_POST['duration']) { echo getPartNumbersMsg($db); } ?>
-
-<p><img src="https://www.biopac.com/wp-content/uploads/EPOCH-BIOPAC-System-1024x551.jpg"></p>
+<section  class="section-images">
+<img src="https://www.biopac.com/wp-content/uploads/EPOCH-BIOPAC-System-1024x551.jpg">
+</section>
 </body>
 </html>
