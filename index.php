@@ -297,7 +297,7 @@ function showPOST() {
 <html>
 <head>
   <title>Epoch System Builder</title>
-  <link href="css/style.css" rel="stylesheet" type="text/css">
+  <link href="../css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
   <div>
@@ -305,7 +305,7 @@ function showPOST() {
 
 <?php
 // For security place, config.ini outsite of browseable files and change the path
-$config = parse_ini_file('../config.ini');
+$config = parse_ini_file('../../config.ini');
 
 // Database Connection
 $db = new \PDO(   "mysql:host=".$config['servername'].";dbname=".$config['database'].";charset=utf8",
@@ -325,7 +325,7 @@ $dropdowns = array
     array('3', 'Select Animal', 'animal', 'animal', null),
     array('4', 'Select Biopotential', 'biopotential', 'biopotential', "'Differential' reference electrode layout uses different grounds as opposed to a 'Common' reference electrode layout which uses a common ground."),
     array('5', 'Select Channels', 'channels', 'channels', null),
-    array('6', 'Select Duration', 'duration', 'duration', "reusable 2-month transmitters use the <a href='http://www.plastics1.com/Gallery-PRC.php?FILTER_CLEAR&FILTER_FCATEGORY=Electrophysiology%20&FILTER_F1=Electrode%20&FILTER_F3=3%20channel'>Plastics1 MSS33</a> base and can be moved from animal to animal")
+    array('6', 'Select Duration', 'duration', 'duration', "reusable 2-month transmitters use the <a href='http://www.plastics1.com/Gallery-PRC.php?FILTER_CLEAR&FILTER_FCATEGORY=Electrophysiology%20&FILTER_F1=Electrode%20&FILTER_F3=3%20channel' target='_new'>Plastics1 MSS33</a> base and can be moved from animal to animal")
   );
 
 echo advanceDefaultDropdown($dropdowns); // write hidden tag
