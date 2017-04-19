@@ -298,6 +298,7 @@ function showPOST() {
 <head>
   <title>Epoch System Builder</title>
   <link href="../css/style.css" rel="stylesheet" type="text/css">
+  <meta charset="UTF-8">
 </head>
 <body>
   <div>
