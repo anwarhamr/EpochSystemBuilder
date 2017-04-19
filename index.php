@@ -164,32 +164,45 @@ function getGainCombinationValue($db, $id) {
   return "ERROR";
 }
 
-function getActivatorMsg() {
-  // Activator
-  $msg = "";
-  if ($_POST['system']!="classic" ) {
-    $msg = "<br />You also need Activator <a href='https://www.biopac.com/product/epoch-sensor-activation-utility/'>EPOCH-ACTI</a> (10029).";
-  } elseif ($_POST['system']=="classic" && $_POST['duration']=="reusable" ) {
-    $msg = "<br />Old activators do not work with reusable transmitters.  You also need Activator <a href='https://www.biopac.com/product/epoch-sensor-activation-utility/'>EPOCH-ACTI</a> (10029).";
+function getDAQ($db) {
+  // BIOPAC DAQ
+  $daq = new QuoteItem(null, null, null, null, null, null);
+
+  switch ($_POST['dac']) {
+    case 'none':
+      $daq = new QuoteItem('DAQ', 1, 'MP160', null, null, 'https://www.biopac.com/product/mp150-data-acquisition-systems/');
+      break;
   }
-  return $msg;
+
+  return $daq;
 }
 
-function getCableMsg($db) {
+function getActivator() {
+  // Activator
+  $activator = new QuoteItem(null, null, null, null, null, null);
+  if ($_POST['system']!="classic" ) {
+    $activator = new QuoteItem('Epoch Transmitter Activator', 1, 'EPOCH-ACTI', '10029', null, 'https://www.biopac.com/product/epoch-sensor-activation-utility/');
+  } elseif ($_POST['system']=="classic" && $_POST['duration']=="reusable" ) {
+    $activator = new QuoteItem('Epoch Transmitter Activator', 1, 'EPOCH-ACTI', '10029', 'Old activators do not work with reusable transmitters.', 'https://www.biopac.com/product/epoch-sensor-activation-utility/');
+  }
+  return $activator;
+}
+
+function getCable() {
   // BIOPAC cables
-  $msg = "";
+  $cable = new QuoteItem(null, null, null, null, null, null);
 
   switch ($_POST['dac']) {
     case 'mp160':
-      $msg = "<br />You need ".$_POST['channels']."x of <a href='https://www.biopac.com/product/interface-cables/?attribute_pa_size=unisolated-rj11-to-bnc-male'>CBL123</a> to connect to the ".getDescription($db, $_POST['dac'], 'dac').".";
+      $cable = new QuoteItem('BIOPAC Cable', $_POST['channels'], 'CBL123', null, 'One per channel.', 'https://www.biopac.com/product/interface-cables/?attribute_pa_size=unisolated-rj11-to-bnc-male');
       break;
     case 'mp100':
     case 'mp150':
-      $msg = "<br />You need ".$_POST['channels']."x of <a href='https://www.biopac.com/product/interface-cables/?attribute_pa_size=cbl-3-5mm-to-bnc-m-2-m'>CBL102</a> to connect to the <a href='https://www.biopac.com/product/mp150-data-acquisition-systems/'>".getDescription($db, $_POST['dac'], 'dac')."</a>.";
+      $cable = new QuoteItem('BIOPAC Cable', $_POST['channels'], 'CBL102', null, 'One per channel.', 'https://www.biopac.com/product/interface-cables/?attribute_pa_size=cbl-3-5mm-to-bnc-m-2-m');
       break;
   }
 
-  return $msg;
+  return $cable;
 }
 
 function getDescription($db, $id, $table) {
@@ -205,8 +218,8 @@ function getDescription($db, $id, $table) {
   return $description;
 }
 
-function getPartNumbersMsg($db) {
-  $msg = "";
+function getQuote($db) {
+  $quote = "";
 
   $sql = "SELECT tx.part_number as transmitter_pn, rec.biopac_id as biopac_receiver_pn, tx.receiver_id as receiver_pn, tx.biopotential_id as biopotential, tx.channels_id as channels, tx.default_gain1_id, tx.default_gain2_id, msg.id as msg_id, msg.description as note";
   $sql .= " FROM epoch_transmitter as tx INNER JOIN epoch_receiver as rec ON tx.receiver_id = rec.id";
@@ -230,26 +243,22 @@ function getPartNumbersMsg($db) {
    while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
      if (!empty($row['transmitter_pn'])) {
        $key = getGainCombinationKey($db);
-       $msg .= "<br/>Option #$option: Epoch Receiver Tray ".$row['biopac_receiver_pn']." (".$row['receiver_pn'].")";
-       $msg .= " and Epoch Transmitter EPTX".$row['transmitter_pn']."-".sprintf("%05d", $key)." (".$row['transmitter_pn'].getGainCombinationValue($db, $key).")";
-       $option++;
-     } else {
-       if (empty($row['note'])) {
-         $msg .= "<p>Currently there are no Epoch Receiver Trays / Transmitters for the options you selected.";
+       $daq = getDAQ($db);
+       $receiver = new QuoteItem('Epoch Receiver Tray', 1, $row['biopac_receiver_pn'], $row['receiver_pn'], null, null);
+       if ($_POST['duration'] == "reusable" ) {
+         $transmitter = new QuoteItem('Epoch Transmitter Sensor', 1, "EPTX".$row['transmitter_pn']."-".sprintf("%05d", $key), $row['transmitter_pn'].getGainCombinationValue($db, $key), "1 complimentary reusable transmitter is included with this receiver.", null);
        } else {
-         $msg .= $row['note'];
+         $transmitter = new QuoteItem('Epoch Transmitter Sensor', 2, "EPTX".$row['transmitter_pn']."-".sprintf("%05d", $key), $row['transmitter_pn'].getGainCombinationValue($db, $key), "2 complimentary transmitters are included with this receiver.", null);
        }
-       // CHEAT: Avoid multiple not found messages
-       break;
+       $cable = getCable();
+       $activator = getActivator();
+       $quote = new Quote($daq, $receiver, $transmitter, $cable, $activator);
+       $option++;
      }
    }
-   $msg .= getCableMsg($db);
-   $msg .= getActivatorMsg();
-  } else {
-    $msg .= "<p>Currently there are no Epoch Receiver Trays / Transmitters for the options you selected.</p>";
   }
 
-  return $msg;
+  return $quote;
 }
 
 function checkDefaultDropdown() {
@@ -296,13 +305,86 @@ function advanceDefaultDropdown($dropdowns) {
 function showPOST() {
   echo "<pre>"; print_r($_POST); echo "</pre>";
 }
-?>
 
-<html>
+class QuoteItem {
+  public $name;
+  public $qty;
+  public $biopac_pn;
+  public $epitel_pn;
+  public $notes;
+  public $url;
+
+  function __construct($name, $qty, $biopac_pn, $epitel_pn, $notes, $url) {
+    $this->name = $name;
+    $this->qty = $qty;
+    $this->biopac_pn = $biopac_pn;
+    $this->epitel_pn = $epitel_pn;
+    $this->notes = $notes;
+    $this->url = $url;
+  }
+
+  function getHTML() {
+    $html = null;
+
+    $html .= '<div class="divTableRow">';
+    $html .= '  <div class="divTableCell">'.$this->qty.'</div>';
+    $html .= '  <div class="divTableCell">'.$this->name.'</div>';
+    if (!empty($this->url)) {
+      $html .= '  <div class="divTableCell"><a href="'.$this->url.'">'.$this->biopac_pn.'</a></div>';
+    } else {
+      $html .= '  <div class="divTableCell">'.$this->biopac_pn.'</div>';
+    }
+    $html .= '  <div class="divTableCell">'.$this->epitel_pn.'</div>';
+    $html .= '  <div class="divTableCell">'.$this->notes.'</div>';
+    $html .= '</div>';
+
+    return $html;
+  }
+
+}
+
+class Quote {
+  public $daq;
+  public $receiver;
+  public $transmitter;
+  public $cable;
+  public $activator;
+
+  function __construct($daq, $receiver, $transmitter, $cable, $activator) {
+    $this->daq = $daq;
+    $this->receiver = $receiver;
+    $this->transmitter = $transmitter;
+    $this->cable = $cable;
+    $this->activator = $activator;
+  }
+
+  function getHTML() {
+    $html = null;
+
+    $html .= '<div class="divTable" style="width: 100%;" >';
+    $html .= '  <div class="divTableBody">';
+    if ($this->daq->name!=null) {$html .= '    '.$this->daq->getHTML();}
+    $html .= '    '.$this->receiver->getHTML();
+    $html .= '    '.$this->transmitter->getHTML();
+    if ($this->cable->name!=null) {$html .= '    '.$this->cable->getHTML();}
+    if ($this->activator->name!=null) {$html .= '    '.$this->activator->getHTML();}
+    $html .= '  </div>';
+    $html .= '</div>';
+
+    return $html;
+  }
+
+}
+
+echo  '<?xml version="1.0" encoding="utf-8"?>';
+?>
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <title>Epoch System Builder</title>
   <link href="css/style.css" rel="stylesheet" type="text/css">
   <meta charset="UTF-8">
+  <meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=2.0, width=device-width" />
 </head>
 <body>
   <div>
@@ -358,9 +440,10 @@ function reloadForm() {
 <br /><input type="reset" name="reset" value="Reset" onclick="document.getElementById('currentDropDown').value='';document.getElementById('createSystem').submit();">
 </form>
 </div>
-
-<?php if ($_POST['currentDropDown'] == 'duration' && $_POST['duration']) { echo getPartNumbersMsg($db); } ?>
-
-<p><img src="https://www.biopac.com/wp-content/uploads/EPOCH-BIOPAC-System-1024x551.jpg"></p>
+<br /><br />
+<?php if ($_POST['currentDropDown'] == 'duration' && $_POST['duration']) { $quote = getQuote($db); echo $quote->getHTML(); } ?>
+<section  class="section-images">
+<img src="https://www.biopac.com/wp-content/uploads/EPOCH-BIOPAC-System-1024x551.jpg">
+</section>
 </body>
 </html>
