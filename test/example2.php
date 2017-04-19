@@ -193,6 +193,7 @@ function getCable() {
   $cable = new QuoteItem(null, null, null, null, null, null);
 
   switch ($_POST['dac']) {
+    case 'none':
     case 'mp160':
       $cable = new QuoteItem('BIOPAC Cable', $_POST['channels'], 'CBL123', null, 'One per channel.', 'https://www.biopac.com/product/interface-cables/?attribute_pa_size=unisolated-rj11-to-bnc-male');
       break;
@@ -218,8 +219,8 @@ function getDescription($db, $id, $table) {
   return $description;
 }
 
-function getQuote($db) {
-  $quote = "";
+function getQuotes($db) {
+  $quote = [];
 
   $sql = "SELECT tx.part_number as transmitter_pn, rec.biopac_id as biopac_receiver_pn, tx.receiver_id as receiver_pn, tx.biopotential_id as biopotential, tx.channels_id as channels, tx.default_gain1_id, tx.default_gain2_id, msg.id as msg_id, msg.description as note";
   $sql .= " FROM epoch_transmitter as tx INNER JOIN epoch_receiver as rec ON tx.receiver_id = rec.id";
@@ -252,7 +253,7 @@ function getQuote($db) {
        }
        $cable = getCable();
        $activator = getActivator();
-       $quote = new Quote($daq, $receiver, $transmitter, $cable, $activator);
+       $quote[] = new Quote($daq, $receiver, $transmitter, $cable, $activator);
        $option++;
      }
    }
@@ -440,8 +441,17 @@ function reloadForm() {
 <br /><input type="reset" name="reset" value="Reset" onclick="document.getElementById('currentDropDown').value='';document.getElementById('createSystem').submit();">
 </form>
 </div>
-<br /><br />
-<?php if ($_POST['currentDropDown'] == 'duration' && $_POST['duration']) { $quote = getQuote($db); echo $quote->getHTML(); } ?>
+
+<?php
+if ($_POST['currentDropDown'] == 'duration' && $_POST['duration']) {
+  $quotes = getQuotes($db);
+  foreach ($quotes as $quote) {
+    echo '<br /><br />';
+    echo $quote->getHTML();
+  }
+}
+?>
+
 <section  class="section-images">
 <img src="https://www.biopac.com/wp-content/uploads/EPOCH-BIOPAC-System-1024x551.jpg">
 </section>
