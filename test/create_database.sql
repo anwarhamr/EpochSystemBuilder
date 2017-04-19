@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Apr 14, 2017 at 08:38 PM
+-- Generation Time: Apr 19, 2017 at 03:16 PM
 -- Server version: 5.5.54-0ubuntu0.14.04.1
 -- PHP Version: 5.6.27
 
@@ -118,7 +118,8 @@ INSERT INTO `epoch_dac` (`id`, `description`, `preselect`, `enable`) VALUES
 ('mp100', 'MP100', 0, 1),
 ('mp150', 'MP150', 0, 1),
 ('mp160', 'MP160', 0, 1),
-('none', 'None', 1, 1);
+('other', 'Generic DAQ with 3.5mm', 0, 1),
+('other-pin', 'Generic DAQ with RJ11', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -5702,13 +5703,12 @@ CREATE TABLE `epoch_system` (
 --
 
 INSERT INTO `epoch_system` (`id`, `description`, `preselect`, `enable`) VALUES
-('classic', 'Classic - Blue', 0, 1),
-('epoch2-100-100', 'Epoch 2 (100/100) - Red', 0, 1),
-('epoch2-100-200', 'Epoch 2 (100/200) - Red', 0, 1),
-('epoch2-200-200', 'Epoch 2 (200/200) - Red', 0, 1),
-('epoch6', 'Epoch 6 - Turquoise', 0, 1),
-('none', 'None', 1, 1),
-('pup', 'Pup - TBD', 0, 1);
+('classic', 'Classic (100 EEG) - Blue', 0, 1),
+('epoch2-100-100', 'Epoch 2 (100/100 EEG/EEG) - Red', 0, 1),
+('epoch2-100-200', 'Epoch 2 (100/200 EEG/EXG) - Red', 0, 1),
+('epoch2-200-200', 'Epoch 2 (200/200 EXG/EXG) - Red', 0, 1),
+('epoch6', 'Epoch 6 (60/60/60/60/60/60 EEG) - Turquoise', 0, 1),
+('pup', 'Pup (100 EEG) - TBD', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -5814,8 +5814,8 @@ INSERT INTO `epoch_transmitter` (`id`, `part_number`, `receiver_id`, `animal_id`
 
 DROP TABLE IF EXISTS `epoch_transmitter_gain`;
 CREATE TABLE `epoch_transmitter_gain` (
-  `id` varchar(50) NOT NULL,
-  `description` varchar(255) NOT NULL,
+  `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `preselect` tinyint(1) NOT NULL DEFAULT '0',
   `enable` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
