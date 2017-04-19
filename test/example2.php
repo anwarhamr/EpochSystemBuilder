@@ -63,7 +63,11 @@ function createDropDown($db, $label, $select, $table, $active, $tooltip, $none) 
      echo ($row['id'] == $_POST[$select]) ? ' selected' : '';
      echo '>'.$row['description'].'</option>', PHP_EOL;
   }
-  if ($none) { echo "<option value='none'>None</option>"; }
+  if ($none) {
+    echo "<option value='none'";
+    echo ($_POST[$select] == 'none') ? ' selected' : '';
+    echo ">None</option>";
+  }
 
   // Close Select Tag
   echo '</select>', PHP_EOL;
