@@ -256,7 +256,7 @@ function getQuotes($db) {
          $receiver = new QuoteItem('Epoch Receiver Tray', 0, $row['biopac_receiver_pn'], $row['receiver_pn'], null, null);
          $transmitter = new QuoteItem('Epoch Transmitter Sensor', 1, "EPTX".$row['transmitter_pn']."-".sprintf("%05d", $key), $row['transmitter_pn'].getGainCombinationValue($db, $key), null, null);
        }
-       
+
        $cable = getCable();
        $activator = getActivator();
        $quote[] = new Quote($daq, $receiver, $transmitter, $cable, $activator);
@@ -460,6 +460,7 @@ if ($_POST['currentDropDown'] == 'duration' && $_POST['duration']) {
 
 <section  class="section-images">
 <img src="https://www.biopac.com/wp-content/uploads/EPOCH-BIOPAC-System-1024x551.jpg">
+<a href="http://www.epitelinc.com/downloads/Epoch_Brochure_7Feb2017.pdf"><img src="http://www.epitelinc.com/images/icon200px.png"></a>
 </section>
 </body>
 </html>
