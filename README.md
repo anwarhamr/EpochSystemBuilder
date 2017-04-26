@@ -13,11 +13,11 @@ $config = parse_ini_file('../config.ini');
 
 ## Files ##
 
-*index.php* contains the html, db connection, dropdown values and quote results
-*utils.php* contains the php functions
-*quote.php* contains the Quote class
-*quoteitem.php* contains the QuoteItem class
-*gains.php* generates the gains SQL that was used to populate the database using *create_database.sql*
+* *index.php* contains the html, db connection, dropdown values and quote results
+* *utils.php* contains the php functions
+* *quote.php* contains the Quote class
+* *quoteitem.php* contains the QuoteItem class
+* *gains.php* generates the gains SQL that was used to populate the database using *create_database.sql*
 
 ## Data ##
 
