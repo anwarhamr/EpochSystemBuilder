@@ -3,27 +3,27 @@
 /**
  * generateDropDownSQL($table)
  */
-function generateDropDownSQL($table) {
+function generateDropDownSQL($table, $prefix) {
   switch ($table) {
     case 'animal':
       $sql = "SELECT DISTINCT x.id, x.description, x.preselect";
-      $sql .= " FROM epoch_transmitter as tx INNER JOIN epoch_receiver as rec ON tx.receiver_id = rec.id";
-      $sql .= " INNER JOIN epoch_$table as x ON tx.".$table."_id=x.id WHERE tx.part_number!=''";
+      $sql .= " FROM $prefix.$transmitter as tx INNER JOIN $prefix.receiver as rec ON tx.receiver_id = rec.id";
+      $sql .= " INNER JOIN $prefix.$table as x ON tx.".$table."_id=x.id WHERE tx.part_number!=''";
       if ($_POST['system']!='none') {$sql .= " AND rec.system_id='".$_POST['system']."'"; }
       $sql .= " AND x.enable=1 ORDER BY x.description ASC";
       break;
     case 'biopotential':
       $sql = "SELECT DISTINCT x.id, x.description, x.preselect";
-      $sql .= " FROM epoch_transmitter as tx INNER JOIN epoch_receiver as rec ON tx.receiver_id = rec.id";
-      $sql .= " INNER JOIN epoch_$table as x ON tx.".$table."_id=x.id WHERE tx.part_number!=''";
+      $sql .= " FROM $prefix.transmitter as tx INNER JOIN $prefix.receiver as rec ON tx.receiver_id = rec.id";
+      $sql .= " INNER JOIN $prefix.$table as x ON tx.".$table."_id=x.id WHERE tx.part_number!=''";
       if ($_POST['system']!='none') {$sql .= " AND rec.system_id='".$_POST['system']."'"; }
       $sql .= " AND tx.animal_id='".$_POST['animal']."'";
       $sql .= " AND x.enable=1 ORDER BY x.description ASC";
       break;
     case 'channels':
       $sql = "SELECT DISTINCT x.id, x.description, x.preselect";
-      $sql .= " FROM epoch_transmitter as tx INNER JOIN epoch_receiver as rec ON tx.receiver_id = rec.id";
-      $sql .= " INNER JOIN epoch_$table as x ON tx.".$table."_id=x.id WHERE tx.part_number!=''";
+      $sql .= " FROM $prefix.transmitter as tx INNER JOIN $prefix.receiver as rec ON tx.receiver_id = rec.id";
+      $sql .= " INNER JOIN $prefix.$table as x ON tx.".$table."_id=x.id WHERE tx.part_number!=''";
       if ($_POST['system']!='none') {$sql .= " AND rec.system_id='".$_POST['system']."'"; }
       $sql .= " AND tx.animal_id='".$_POST['animal']."'";
       $sql .= " AND tx.biopotential_id='".$_POST['biopotential']."'";
@@ -31,8 +31,8 @@ function generateDropDownSQL($table) {
       break;
     case 'duration':
       $sql = "SELECT DISTINCT x.id, x.description, x.preselect";
-      $sql .= " FROM epoch_transmitter as tx INNER JOIN epoch_receiver as rec ON tx.receiver_id = rec.id";
-      $sql .= " INNER JOIN epoch_$table as x ON tx.".$table."_id=x.id WHERE tx.part_number!=''";
+      $sql .= " FROM $prefix.transmitter as tx INNER JOIN $prefix.receiver as rec ON tx.receiver_id = rec.id";
+      $sql .= " INNER JOIN $prefix.$table as x ON tx.".$table."_id=x.id WHERE tx.part_number!=''";
       if ($_POST['system']!='none') {$sql .= " AND rec.system_id='".$_POST['system']."'"; }
       $sql .= " AND tx.animal_id='".$_POST['animal']."'";
       $sql .= " AND tx.biopotential_id='".$_POST['biopotential']."'";
@@ -40,11 +40,11 @@ function generateDropDownSQL($table) {
       $sql .= " AND x.enable=1 ORDER BY x.description ASC";
       break;
     case 'dac':
-    $sql="SELECT id, description, preselect FROM epoch_$table WHERE enable=1 ORDER BY description DESC";
+    $sql="SELECT id, description, preselect FROM $prefix.$table WHERE enable=1 ORDER BY description DESC";
       break;
     case 'system':
     default:
-      $sql="SELECT id, description, preselect FROM epoch_$table WHERE enable=1 ORDER BY description ASC";
+      $sql="SELECT id, description, preselect FROM $prefix.$table WHERE enable=1 ORDER BY description ASC";
       break;
   }
   //echo $sql;
@@ -52,16 +52,16 @@ function generateDropDownSQL($table) {
 }
 
 /**
- * createDropDown($db, $label, $select, $table, $active, $tooltip, $none)
+ * createDropDown($db, $label, $select, $table, $prefix, $active, $tooltip, $none)
  */
-function createDropDown($db, $label, $select, $table, $active, $tooltip, $none) {
+function createDropDown($db, $label, $select, $table, $prefix, $active, $tooltip, $none) {
   // Open Select Tag
   echo "<br /><select name=\"$select\" onchange=\"document.getElementById('currentDropDown').value='$select';document.getElementById('createSystem').submit();\"";
   if (!$active) { echo " disabled"; }
   echo ">", PHP_EOL;
 
   // Generate Select Tag Options
-  $sql = generateDropDownSQL($table);
+  $sql = generateDropDownSQL($table, $prefix);
   $query = $db->query($sql);
   echo "<option value=''>$label</option>";
   while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
@@ -113,9 +113,9 @@ function getDefaultGain($biopotential, $animal) {
 }
 
 /**
- * createGainDropdowns($db, $active)
+ * createGainDropdowns($db, $prefix, $active)
  */
-function createGainDropdowns($db, $active) {
+function createGainDropdowns($db, $prefix, $active) {
   // Set Default Differential Gains
   $biopotentials = explode("-", $_POST['biopotential']);
   for ($i = 1; $i <= sizeof($biopotentials); $i++) {
@@ -137,7 +137,7 @@ function createGainDropdowns($db, $active) {
       }
     }
 
-    createDropDown($db, "Channel $i Gain", "transmitter_gain_$i", 'transmitter_gain', $active, $tooltip, false);
+    createDropDown($db, "Channel $i Gain", "transmitter_gain_$i", $prefix.'transmitter_gain', $prefix, $active, $tooltip, false);
   }
 
 }
@@ -464,12 +464,12 @@ $db = new \PDO(   "mysql:host=".$config['servername'].";dbname=".$config['databa
 // Multidimensional array to create dropdowns.
 $dropdowns = array
   (
-    array('1', 'Select Existing Data Acquisition System', 'dac', 'dac', null),
-    array('2', 'Select Existing Epoch Receiver Tray', 'system', 'system', "Selected Epoch 2 system biopotentials CANNOT be changed."),
-    array('3', 'Select Animal', 'animal', 'animal', null),
-    array('4', 'Select Biopotential', 'biopotential', 'biopotential', "'Differential' reference electrode layout uses different grounds as opposed to a 'Common' reference electrode layout which uses a common ground."),
-    array('5', 'Select Channels', 'channels', 'channels', null),
-    array('6', 'Select Duration', 'duration', 'duration', "reusable 2-month transmitters use the <a href='http://www.plastics1.com/Gallery-PRC.php?FILTER_CLEAR&FILTER_FCATEGORY=Electrophysiology%20&FILTER_F1=Electrode%20&FILTER_F3=3%20channel' target='_new'>Plastics1 MSS33</a> base and can be moved from animal to animal")
+    array('1', 'Select Existing Data Acquisition System', 'dac', $config['prefix'].'dac', null),
+    array('2', 'Select Existing Epoch Receiver Tray', 'system', $config['prefix'].'system', "Selected Epoch 2 system biopotentials CANNOT be changed."),
+    array('3', 'Select Animal', 'animal', $config['prefix'].'animal', null),
+    array('4', 'Select Biopotential', 'biopotential', $config['prefix'].'biopotential', "'Differential' reference electrode layout uses different grounds as opposed to a 'Common' reference electrode layout which uses a common ground."),
+    array('5', 'Select Channels', 'channels', $config['prefix'].'channels', null),
+    array('6', 'Select Duration', 'duration', $config['prefix'].'duration', "reusable 2-month transmitters use the <a href='http://www.plastics1.com/Gallery-PRC.php?FILTER_CLEAR&FILTER_FCATEGORY=Electrophysiology%20&FILTER_F1=Electrode%20&FILTER_F3=3%20channel' target='_new'>Plastics1 MSS33</a> base and can be moved from animal to animal")
   );
 
 echo advanceDefaultDropdown($dropdowns); // write hidden tag
@@ -479,7 +479,7 @@ $active = true;
 for ($row = 0; $row < sizeof($dropdowns); $row++) {
   if ($dropdowns[$row][2] == "dac" || $dropdowns[$row][2] == "system") { $none = true; } else { $none = false; }
   if (!$active) { unset($_POST[$dropdowns[$row][2]]); }
-  createDropDown($db, $dropdowns[$row][1], $dropdowns[$row][2], $dropdowns[$row][3], $active, $dropdowns[$row][4], $none);
+  createDropDown($db, $dropdowns[$row][1], $dropdowns[$row][2], $dropdowns[$row][3], $config['prefix'], $active, $dropdowns[$row][4], $none);
   if ($dropdowns[$row][2] == "channels") { createGainDropdowns($db, $active); } // Once channels have been selected, show the Gain Options
   if ($dropdowns[$row][2] == $_POST['currentDropDown']) {
     $active = false; // Disable all the select statements after the currentDropDown
