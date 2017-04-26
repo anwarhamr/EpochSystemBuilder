@@ -1,53 +1,54 @@
 
 <?php
 /**
- * generateDropDownSQL($table)
+ * generateDropDownSQL($table, $prefix)
  */
 function generateDropDownSQL($table, $prefix) {
+  $table_name = str_replace($prefix,"",$table);
   switch ($table) {
-    case 'animal':
+    case $prefix.'animal':
       $sql = "SELECT DISTINCT x.id, x.description, x.preselect";
-      $sql .= " FROM $prefix.$transmitter as tx INNER JOIN $prefix.receiver as rec ON tx.receiver_id = rec.id";
-      $sql .= " INNER JOIN $prefix.$table as x ON tx.".$table."_id=x.id WHERE tx.part_number!=''";
+      $sql .= " FROM ".$prefix."transmitter as tx INNER JOIN ".$prefix."receiver as rec ON tx.receiver_id = rec.id";
+      $sql .= " INNER JOIN $table as x ON tx.".$table_name."_id=x.id WHERE tx.part_number!=''";
       if ($_POST['system']!='none') {$sql .= " AND rec.system_id='".$_POST['system']."'"; }
       $sql .= " AND x.enable=1 ORDER BY x.description ASC";
       break;
-    case 'biopotential':
+    case $prefix.'biopotential':
       $sql = "SELECT DISTINCT x.id, x.description, x.preselect";
-      $sql .= " FROM $prefix.transmitter as tx INNER JOIN $prefix.receiver as rec ON tx.receiver_id = rec.id";
-      $sql .= " INNER JOIN $prefix.$table as x ON tx.".$table."_id=x.id WHERE tx.part_number!=''";
+      $sql .= " FROM ".$prefix."transmitter as tx INNER JOIN ".$prefix."receiver as rec ON tx.receiver_id = rec.id";
+      $sql .= " INNER JOIN $table as x ON tx.".$table_name."_id=x.id WHERE tx.part_number!=''";
       if ($_POST['system']!='none') {$sql .= " AND rec.system_id='".$_POST['system']."'"; }
       $sql .= " AND tx.animal_id='".$_POST['animal']."'";
       $sql .= " AND x.enable=1 ORDER BY x.description ASC";
       break;
-    case 'channels':
+    case $prefix.'channels':
       $sql = "SELECT DISTINCT x.id, x.description, x.preselect";
-      $sql .= " FROM $prefix.transmitter as tx INNER JOIN $prefix.receiver as rec ON tx.receiver_id = rec.id";
-      $sql .= " INNER JOIN $prefix.$table as x ON tx.".$table."_id=x.id WHERE tx.part_number!=''";
+      $sql .= " FROM ".$prefix."transmitter as tx INNER JOIN ".$prefix."receiver as rec ON tx.receiver_id = rec.id";
+      $sql .= " INNER JOIN $table as x ON tx.".$table_name."_id=x.id WHERE tx.part_number!=''";
       if ($_POST['system']!='none') {$sql .= " AND rec.system_id='".$_POST['system']."'"; }
       $sql .= " AND tx.animal_id='".$_POST['animal']."'";
       $sql .= " AND tx.biopotential_id='".$_POST['biopotential']."'";
       $sql .= " AND x.enable=1 ORDER BY x.description ASC";
       break;
-    case 'duration':
+    case $prefix.'duration':
       $sql = "SELECT DISTINCT x.id, x.description, x.preselect";
-      $sql .= " FROM $prefix.transmitter as tx INNER JOIN $prefix.receiver as rec ON tx.receiver_id = rec.id";
-      $sql .= " INNER JOIN $prefix.$table as x ON tx.".$table."_id=x.id WHERE tx.part_number!=''";
+      $sql .= " FROM ".$prefix."transmitter as tx INNER JOIN ".$prefix."receiver as rec ON tx.receiver_id = rec.id";
+      $sql .= " INNER JOIN $table as x ON tx.".$table_name."_id=x.id WHERE tx.part_number!=''";
       if ($_POST['system']!='none') {$sql .= " AND rec.system_id='".$_POST['system']."'"; }
       $sql .= " AND tx.animal_id='".$_POST['animal']."'";
       $sql .= " AND tx.biopotential_id='".$_POST['biopotential']."'";
       $sql .= " AND tx.channels_id='".$_POST['channels']."'";
       $sql .= " AND x.enable=1 ORDER BY x.description ASC";
       break;
-    case 'dac':
-    $sql="SELECT id, description, preselect FROM $prefix.$table WHERE enable=1 ORDER BY description DESC";
+    case $prefix.'dac':
+    $sql="SELECT id, description, preselect FROM $table WHERE enable=1 ORDER BY description DESC";
       break;
-    case 'system':
+    case $prefix.'system':
     default:
-      $sql="SELECT id, description, preselect FROM $prefix.$table WHERE enable=1 ORDER BY description ASC";
+      $sql="SELECT id, description, preselect FROM $table WHERE enable=1 ORDER BY description ASC";
       break;
   }
-  //echo $sql;
+
   return $sql;
 }
 
@@ -143,9 +144,9 @@ function createGainDropdowns($db, $prefix, $active) {
 }
 
 /**
- * getGainCombinationKey($db)
+ * getGainCombinationKey($db, $prefix)
  */
-function getGainCombinationKey($db) {
+function getGainCombinationKey($db, $prefix) {
   $gain_desc = "";
   for ($i = 1; $i <= 6; $i++) {
     if ($_POST["transmitter_gain_$i"]) {
@@ -154,7 +155,7 @@ function getGainCombinationKey($db) {
       $gain_desc .= "-00";
     }
   }
-  $sql = "SELECT id from epoch_gains WHERE description='$gain_desc'";
+  $sql = "SELECT id from ".$prefix."gains WHERE description='$gain_desc'";
 
   $query = $db->query($sql);
 
@@ -167,10 +168,10 @@ function getGainCombinationKey($db) {
 }
 
 /**
- * getGainCombinationValue($db, $id)
+ * getGainCombinationValue($db, $prefix, $id)
  */
-function getGainCombinationValue($db, $id) {
-  $sql = "SELECT description from epoch_gains WHERE id='$id'";
+function getGainCombinationValue($db, $prefix, $id) {
+  $sql = "SELECT description from ".$prefix."gains WHERE id='$id'";
   $query = $db->query($sql);
 
   if ($query->rowCount()>0) {
@@ -178,7 +179,6 @@ function getGainCombinationValue($db, $id) {
       return $row['description'];
     }
   }
-  echo $sql;
   return "ERROR";
 }
 
@@ -234,11 +234,11 @@ function getCable() {
 }
 
 /**
- * getDescription($db, $id, $table)
+ * getDescription($db, $id, $table, $prefix)
  */
-function getDescription($db, $id, $table) {
+function getDescription($db, $id, $table, $prefix) {
   $description = null;
-  $sql = "SELECT description from epoch_$table where id='$id'";
+  $sql = "SELECT description from $prefix.$table where id='$id'";
   $query = $db->query($sql);
   if ($query->rowCount()>0) {
     while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
@@ -250,13 +250,13 @@ function getDescription($db, $id, $table) {
 }
 
 /**
- * getQuotes($db)
+ * getQuotes($db, $prefix)
  */
-function getQuotes($db) {
+function getQuotes($db, $prefix) {
   $quote = [];
 
-  $sql = "SELECT tx.part_number as transmitter_pn, rec.biopac_id as biopac_receiver_pn, tx.receiver_id as receiver_pn, tx.biopotential_id as biopotential, tx.channels_id as channels, tx.default_gain1_id, tx.default_gain2_id";
-  $sql .= " FROM epoch_transmitter as tx INNER JOIN epoch_receiver as rec ON tx.receiver_id = rec.id";
+  $sql = "SELECT tx.part_number as transmitter_pn, rec.biopac_id as biopac_receiver_pn, tx.receiver_id as receiver_pn, tx.biopotential_id as biopotential, tx.channels_id as channels";
+  $sql .= " FROM ".$prefix."transmitter as tx INNER JOIN ".$prefix."receiver as rec ON tx.receiver_id = rec.id";
   $sql .= " WHERE tx.animal_id='".$_POST['animal']."'";
   $sql .= " AND tx.biopotential_id='".$_POST['biopotential']."'";
   $sql .= " AND tx.channels_id='".$_POST['channels']."'";
@@ -275,29 +275,27 @@ function getQuotes($db) {
    $option = 1;
    while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
      if (!empty($row['transmitter_pn'])) {
-       $key = getGainCombinationKey($db);
+       $key = getGainCombinationKey($db, $prefix);
        $daq = getDAQ($db);
        if ($_POST['system']=="none") {
          $receiver = new QuoteItem('Epoch Receiver Tray', 1, $row['biopac_receiver_pn'], $row['receiver_pn'], null, null);
          if ($_POST['duration'] == "reusable" ) {
-           $transmitter = new QuoteItem('Epoch Transmitter Sensor', 1, "EPTX".$row['transmitter_pn']."-".sprintf("%05d", $key), $row['transmitter_pn'].getGainCombinationValue($db, $key), "1 complimentary reusable transmitter is included with this receiver.", null);
+           $transmitter = new QuoteItem('Epoch Transmitter Sensor', 1, "EPTX".$row['transmitter_pn']."-".sprintf("%05d", $key), $row['transmitter_pn'].getGainCombinationValue($db, $prefix, $key), "1 complimentary reusable transmitter is included with this receiver.", null);
          } else {
-           $transmitter = new QuoteItem('Epoch Transmitter Sensor', 2, "EPTX".$row['transmitter_pn']."-".sprintf("%05d", $key), $row['transmitter_pn'].getGainCombinationValue($db, $key), "2 complimentary transmitters are included with this receiver.", null);
+           $transmitter = new QuoteItem('Epoch Transmitter Sensor', 2, "EPTX".$row['transmitter_pn']."-".sprintf("%05d", $key), $row['transmitter_pn'].getGainCombinationValue($db, $prefix, $key), "2 complimentary transmitters are included with this receiver.", null);
          }
        } else {
          $receiver = new QuoteItem('Epoch Receiver Tray', 0, $row['biopac_receiver_pn'], $row['receiver_pn'], null, null);
-         $transmitter = new QuoteItem('Epoch Transmitter Sensor', 1, "EPTX".$row['transmitter_pn']."-".sprintf("%05d", $key), $row['transmitter_pn'].getGainCombinationValue($db, $key), null, null);
+         $transmitter = new QuoteItem('Epoch Transmitter Sensor', 1, "EPTX".$row['transmitter_pn']."-".sprintf("%05d", $key), $row['transmitter_pn'].getGainCombinationValue($db, $prefix, $key), null, null);
        }
-
        $cable = getCable();
        $activator = getActivator();
        $quote[] = new Quote($daq, $receiver, $transmitter, $cable, $activator);
        $option++;
      }
    }
-  }
-
-  return $quote;
+ }
+ return $quote;
 }
 
 /**
@@ -394,7 +392,6 @@ class QuoteItem {
 
     return $html;
   }
-
 }
 
 /**
@@ -450,6 +447,7 @@ echo  '<?xml version="1.0" encoding="utf-8"?>';
 <?php
 // For security place, config.ini outsite of browseable files and change the path
 $config = parse_ini_file('../config.ini');
+$prefix = $config['prefix'];
 
 // Database Connection
 $db = new \PDO(   "mysql:host=".$config['servername'].";dbname=".$config['database'].";charset=utf8",
@@ -464,12 +462,12 @@ $db = new \PDO(   "mysql:host=".$config['servername'].";dbname=".$config['databa
 // Multidimensional array to create dropdowns.
 $dropdowns = array
   (
-    array('1', 'Select Existing Data Acquisition System', 'dac', $config['prefix'].'dac', null),
-    array('2', 'Select Existing Epoch Receiver Tray', 'system', $config['prefix'].'system', "Selected Epoch 2 system biopotentials CANNOT be changed."),
-    array('3', 'Select Animal', 'animal', $config['prefix'].'animal', null),
-    array('4', 'Select Biopotential', 'biopotential', $config['prefix'].'biopotential', "'Differential' reference electrode layout uses different grounds as opposed to a 'Common' reference electrode layout which uses a common ground."),
-    array('5', 'Select Channels', 'channels', $config['prefix'].'channels', null),
-    array('6', 'Select Duration', 'duration', $config['prefix'].'duration', "reusable 2-month transmitters use the <a href='http://www.plastics1.com/Gallery-PRC.php?FILTER_CLEAR&FILTER_FCATEGORY=Electrophysiology%20&FILTER_F1=Electrode%20&FILTER_F3=3%20channel' target='_new'>Plastics1 MSS33</a> base and can be moved from animal to animal")
+    array('1', 'Select Existing Data Acquisition System', 'dac', $prefix.'dac', null),
+    array('2', 'Select Existing Epoch Receiver Tray', 'system', $prefix.'system', "Selected Epoch 2 system biopotentials CANNOT be changed."),
+    array('3', 'Select Animal', 'animal', $prefix.'animal', null),
+    array('4', 'Select Biopotential', 'biopotential', $prefix.'biopotential', "'Differential' reference electrode layout uses different grounds as opposed to a 'Common' reference electrode layout which uses a common ground."),
+    array('5', 'Select Channels', 'channels', $prefix.'channels', null),
+    array('6', 'Select Duration', 'duration', $prefix.'duration', "reusable 2-month transmitters use the <a href='http://www.plastics1.com/Gallery-PRC.php?FILTER_CLEAR&FILTER_FCATEGORY=Electrophysiology%20&FILTER_F1=Electrode%20&FILTER_F3=3%20channel' target='_new'>Plastics1 MSS33</a> base and can be moved from animal to animal")
   );
 
 echo advanceDefaultDropdown($dropdowns); // write hidden tag
@@ -479,8 +477,8 @@ $active = true;
 for ($row = 0; $row < sizeof($dropdowns); $row++) {
   if ($dropdowns[$row][2] == "dac" || $dropdowns[$row][2] == "system") { $none = true; } else { $none = false; }
   if (!$active) { unset($_POST[$dropdowns[$row][2]]); }
-  createDropDown($db, $dropdowns[$row][1], $dropdowns[$row][2], $dropdowns[$row][3], $config['prefix'], $active, $dropdowns[$row][4], $none);
-  if ($dropdowns[$row][2] == "channels") { createGainDropdowns($db, $active); } // Once channels have been selected, show the Gain Options
+  createDropDown($db, $dropdowns[$row][1], $dropdowns[$row][2], $dropdowns[$row][3], $prefix, $active, $dropdowns[$row][4], $none);
+  if ($dropdowns[$row][2] == "channels") { createGainDropdowns($db, $prefix, $active); } // Once channels have been selected, show the Gain Options
   if ($dropdowns[$row][2] == $_POST['currentDropDown']) {
     $active = false; // Disable all the select statements after the currentDropDown
     //break; // Hide inactive dropdowns
@@ -494,7 +492,7 @@ for ($row = 0; $row < sizeof($dropdowns); $row++) {
 
 <?php
 if ($_POST['currentDropDown'] == 'duration' && $_POST['duration']) {
-  $quotes = getQuotes($db);
+  $quotes = getQuotes($db, $prefix);
   foreach ($quotes as $quote) {
     echo '<br /><br />';
     echo $quote->getHTML();
