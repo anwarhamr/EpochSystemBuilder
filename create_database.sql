@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Apr 19, 2017 at 03:16 PM
+-- Generation Time: Apr 26, 2017 at 05:43 PM
 -- Server version: 5.5.54-0ubuntu0.14.04.1
 -- PHP Version: 5.6.27
 
@@ -5632,29 +5632,6 @@ INSERT INTO `epoch_gains` (`id`, `description`, `preselect`, `enable`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `epoch_message`
---
-
-DROP TABLE IF EXISTS `epoch_message`;
-CREATE TABLE `epoch_message` (
-  `id` bigint(20) NOT NULL,
-  `description` varchar(1000) NOT NULL,
-  `preselect` tinyint(1) NOT NULL DEFAULT '0',
-  `enable` tinyint(1) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `epoch_message`
---
-
-INSERT INTO `epoch_message` (`id`, `description`, `preselect`, `enable`) VALUES
-(1, 'Due to the size of a 2 month transmitter it isn\'t practical to use with mice pups.', 0, 1),
-(2, 'Due to the size of a 6 month transmitter it isn\'t practical to use with mice. Use \'Adult Rat\' or \'2 months or less\'.', 0, 1),
-(3, 'Select \'1-Ch\' for \'ECG\' and \'EMG\'', 0, 1);
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `epoch_receiver`
 --
 
@@ -5723,12 +5700,8 @@ CREATE TABLE `epoch_transmitter` (
   `receiver_id` varchar(50) NOT NULL,
   `animal_id` varchar(50) NOT NULL,
   `biopotential_id` varchar(50) NOT NULL,
-  `default_gain1_id` varchar(255) NOT NULL,
-  `default_gain2_id` varchar(255) NOT NULL,
   `channels_id` varchar(50) NOT NULL,
   `duration_id` varchar(50) NOT NULL,
-  `message_id` bigint(20) NOT NULL DEFAULT '0',
-  `preselect` tinyint(1) NOT NULL DEFAULT '0',
   `enable` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -5736,75 +5709,52 @@ CREATE TABLE `epoch_transmitter` (
 -- Dumping data for table `epoch_transmitter`
 --
 
-INSERT INTO `epoch_transmitter` (`id`, `part_number`, `receiver_id`, `animal_id`, `biopotential_id`, `default_gain1_id`, `default_gain2_id`, `channels_id`, `duration_id`, `message_id`, `preselect`, `enable`) VALUES
-(1, '10165', '10072', 'rat-pup', 'eeg', '1', '', '2', '2-week', 0, 0, 1),
-(2, '10165', '10072', 'mouse-pup', 'eeg', '1', '', '2', '2-week', 0, 0, 1),
-(3, '10128', '10072', 'rat-pup', 'eeg', '1', '', '2', '2-month', 0, 0, 1),
-(4, '10208', '10199', 'adult-rat', 'eeg', '2', '', '6', '2-month', 0, 0, 1),
-(5, '10208', '10198', 'adult-mouse', 'eeg', '2', '', '6', '2-month', 0, 0, 1),
-(6, '10209', '10199', 'adult-rat', 'eeg', '2', '', '6', '6-month', 0, 0, 1),
-(7, '10210', '10199', 'adult-rat', 'eeg', '2', '', '4', '2-month', 0, 0, 1),
-(8, '10210', '10198', 'adult-mouse', 'eeg', '2', '', '4', '2-month', 0, 0, 1),
-(9, '10211', '10199', 'adult-rat', 'eeg', '2', '', '4', '6-month', 0, 0, 1),
-(10, '10212', '10199', 'adult-rat', 'eeg', '2', '', '2', '2-month', 0, 0, 1),
-(11, '10212', '10198', 'adult-mouse', 'eeg', '2', '', '2', '2-month', 0, 0, 1),
-(12, '10213', '10199', 'adult-rat', 'eeg', '2', '', '2', '6-month', 0, 0, 1),
-(13, '10214', '10199', 'adult-rat', 'eeg', '2', '', '2', 'reusable', 0, 0, 1),
-(14, '10214', '10198', 'adult-mouse', 'eeg', '2', '', '2', 'reusable', 0, 0, 1),
-(15, '10212', '10207', 'adult-rat', 'eeg', '2', '', '2', '2-month', 0, 0, 1),
-(16, '10212', '10206', 'adult-mouse', 'eeg', '2', '', '2', '2-month', 0, 0, 1),
-(17, '10213', '10207', 'adult-rat', 'eeg', '2', '', '2', '6-month', 0, 0, 1),
-(18, '10214', '10207', 'adult-rat', 'eeg', '2', '', '2', 'reusable', 0, 0, 1),
-(19, '10214', '10206', 'adult-mouse', 'eeg', '2', '', '2', 'reusable', 0, 0, 1),
-(20, '10216', '10207', 'adult-rat', 'eeg-eeg', '2', '2', '2', '6-month', 0, 0, 1),
-(21, '10215', '10206', 'adult-mouse', 'eeg-eeg', '2', '2', '2', '2-month', 0, 0, 1),
-(23, '10215', '10232', 'adult-rat', 'eeg-emg', '2', '5', '2', '2-month', 0, 0, 1),
-(24, '10215', '10231', 'adult-mouse', 'eeg-emg', '2', '5', '2', '2-month', 0, 0, 1),
-(25, '10216', '10232', 'adult-rat', 'eeg-emg', '2', '5', '2', '6-month', 0, 0, 1),
-(26, '10216', '10232', 'adult-rat', 'eeg-ecg', '2', '2', '2', '6-month', 0, 0, 1),
-(27, '10215', '10231', 'adult-mouse', 'eeg-ecg', '2', '2', '2', '2-month', 0, 0, 1),
-(29, '10216', '10230', 'adult-rat', 'ecg-emg', '2', '5', '2', '6-month', 0, 0, 1),
-(30, '10215', '10229', 'adult-mouse', 'ecg-emg', '2', '5', '2', '2-month', 0, 0, 1),
-(32, '10216', '10230', 'adult-rat', 'emg-emg', '5', '5', '2', '6-month', 0, 0, 1),
-(33, '10215', '10229', 'adult-mouse', 'emg-emg', '5', '5', '2', '2-month', 0, 0, 1),
-(35, '10161', '10230', 'adult-rat', 'ecg', '2', '', '1', '2-month', 0, 0, 1),
-(36, '10161', '10229', 'adult-mouse', 'ecg', '2', '', '1', '2-month', 0, 0, 1),
-(37, '10162', '10230', 'adult-rat', 'ecg', '2', '', '1', '6-month', 0, 0, 1),
-(38, '10161', '10230', 'adult-rat', 'emg', '5', '', '1', '2-month', 0, 0, 1),
-(39, '10161', '10229', 'adult-mouse', 'emg', '5', '', '1', '2-month', 0, 0, 1),
-(40, '10162', '10230', 'adult-rat', 'emg', '5', '', '1', '6-month', 0, 0, 1),
-(41, '10128', '10022', 'adult-rat', 'eeg', '2', '', '2', '2-month', 0, 0, 0),
-(42, '10128', '10021', 'adult-mouse', 'eeg', '2', '', '2', '2-month', 0, 0, 0),
-(43, '10129', '10022', 'adult-rat', 'eeg', '2', '', '2', '6-month', 0, 0, 0),
-(44, '10217', '10022', 'adult-rat', 'eeg', '2', '', '2', 'reusable', 0, 0, 0),
-(45, '10217', '10021', 'adult-mouse', 'eeg', '2', '', '2', 'reusable', 0, 0, 0),
-(46, '', '10072', 'mouse-pup', 'eeg', '', '', '2', '2-month', 1, 0, 1),
-(47, '', '10198', 'adult-mouse', 'egg', '', '', '6', '6-month', 2, 0, 1),
-(48, '', '10198', 'adult-mouse', 'eeg', '', '', '4', '6-month', 2, 0, 1),
-(49, '', '10198', 'adult-mouse', 'eeg', '', '', '2', '6-month', 2, 0, 1),
-(50, '', '10206', 'adult-mouse', 'eeg', '', '', '2', '6-month', 2, 0, 1),
-(51, '', '10231', 'adult-mouse', 'eeg-emg', '', '', '2', '6-month', 2, 0, 1),
-(52, '', '10229', 'adult-mouse', 'ecg', '', '', '1', '6-month', 2, 0, 1),
-(53, '', '10206', 'adult-mouse', 'eeg-eeg', '', '', '2', '6-month', 2, 0, 1),
-(54, '', '10231', 'adult-mouse', 'eeg-ecg', '', '', '2', '6-month', 2, 0, 1),
-(55, '', '10229', 'adult-mouse', 'emg', '', '', '1', '6-month', 2, 0, 1),
-(56, '', '10229', 'adult-mouse', 'ecg-emg', '', '', '2', '6-month', 2, 0, 1),
-(57, '', '10072', 'mouse-pup', 'eeg', '', '', '2', '2-month', 1, 0, 1),
-(130, '', '10231', 'adult-mouse', 'eeg-emg', '', '', '2', '6-month', 1, 0, 1),
-(131, '', '10231', 'adult-mouse', 'eeg-ecg', '', '', '2', '6-month', 1, 0, 1),
-(132, '', '10230', 'adult-rat', 'ecg', '', '', '2', '6-month', 3, 0, 1),
-(133, '', '10230', 'adult-rat', 'emg', '', '', '2', '6-month', 3, 0, 1),
-(134, '', '10230', 'adult-rat', 'ecg', '', '', '2', '2-month', 3, 0, 1),
-(135, '', '10230', 'adult-rat', 'emg', '', '', '2', '2-month', 3, 0, 1),
-(136, '', '10229', 'adult-mouse', 'ecg', '', '', '2', '6-month', 3, 0, 1),
-(137, '', '10229', 'adult-mouse', 'emg', '', '', '2', '6-month', 3, 0, 1),
-(138, '', '10229', 'adult-mouse', 'ecg', '', '', '2', '2-month', 3, 0, 1),
-(139, '', '10229', 'adult-mouse', 'emg', '', '', '2', '2-month', 3, 0, 1),
-(143, '', '10021', 'adult-mouse', 'eeg', '', '', '2', '6-month', 2, 0, 0),
-(144, '10215', '10207', 'adult-rat', 'eeg-eeg', '2', '2', '2', '2-month', 0, 0, 1),
-(145, '10215', '10232', 'adult-rat', 'eeg-ecg', '2', '2', '2', '2-month', 0, 0, 1),
-(146, '10215', '10230', 'adult-rat', 'eeg-emg', '2', '5', '2', '2-month', 0, 0, 1),
-(147, '10215', '10230', 'adult-rat', 'emg-emg', '5', '5', '2', '2-month', 0, 0, 1);
+INSERT INTO `epoch_transmitter` (`id`, `part_number`, `receiver_id`, `animal_id`, `biopotential_id`, `channels_id`, `duration_id`, `enable`) VALUES
+(1, '10165', '10072', 'rat-pup', 'eeg', '2', '2-week', 1),
+(2, '10165', '10072', 'mouse-pup', 'eeg', '2', '2-week', 1),
+(3, '10128', '10072', 'rat-pup', 'eeg', '2', '2-month', 1),
+(4, '10208', '10199', 'adult-rat', 'eeg', '6', '2-month', 1),
+(5, '10208', '10198', 'adult-mouse', 'eeg', '6', '2-month', 1),
+(6, '10209', '10199', 'adult-rat', 'eeg', '6', '6-month', 1),
+(7, '10210', '10199', 'adult-rat', 'eeg', '4', '2-month', 1),
+(8, '10210', '10198', 'adult-mouse', 'eeg', '4', '2-month', 1),
+(9, '10211', '10199', 'adult-rat', 'eeg', '4', '6-month', 1),
+(10, '10212', '10199', 'adult-rat', 'eeg', '2', '2-month', 1),
+(11, '10212', '10198', 'adult-mouse', 'eeg', '2', '2-month', 1),
+(12, '10213', '10199', 'adult-rat', 'eeg', '2', '6-month', 1),
+(13, '10214', '10199', 'adult-rat', 'eeg', '2', 'reusable', 1),
+(14, '10214', '10198', 'adult-mouse', 'eeg', '2', 'reusable', 1),
+(15, '10212', '10207', 'adult-rat', 'eeg', '2', '2-month', 1),
+(16, '10212', '10206', 'adult-mouse', 'eeg', '2', '2-month', 1),
+(17, '10213', '10207', 'adult-rat', 'eeg', '2', '6-month', 1),
+(18, '10214', '10207', 'adult-rat', 'eeg', '2', 'reusable', 1),
+(19, '10214', '10206', 'adult-mouse', 'eeg', '2', 'reusable', 1),
+(20, '10216', '10207', 'adult-rat', 'eeg-eeg', '2', '6-month', 1),
+(21, '10215', '10206', 'adult-mouse', 'eeg-eeg', '2', '2-month', 1),
+(23, '10215', '10232', 'adult-rat', 'eeg-emg', '2', '2-month', 1),
+(24, '10215', '10231', 'adult-mouse', 'eeg-emg', '2', '2-month', 1),
+(25, '10216', '10232', 'adult-rat', 'eeg-emg', '2', '6-month', 1),
+(26, '10216', '10232', 'adult-rat', 'eeg-ecg', '2', '6-month', 1),
+(27, '10215', '10231', 'adult-mouse', 'eeg-ecg', '2', '2-month', 1),
+(29, '10216', '10230', 'adult-rat', 'ecg-emg', '2', '6-month', 1),
+(30, '10215', '10229', 'adult-mouse', 'ecg-emg', '2', '2-month', 1),
+(32, '10216', '10230', 'adult-rat', 'emg-emg', '2', '6-month', 1),
+(33, '10215', '10229', 'adult-mouse', 'emg-emg', '2', '2-month', 1),
+(35, '10161', '10230', 'adult-rat', 'ecg', '1', '2-month', 1),
+(36, '10161', '10229', 'adult-mouse', 'ecg', '1', '2-month', 1),
+(37, '10162', '10230', 'adult-rat', 'ecg', '1', '6-month', 1),
+(38, '10161', '10230', 'adult-rat', 'emg', '1', '2-month', 1),
+(39, '10161', '10229', 'adult-mouse', 'emg', '1', '2-month', 1),
+(40, '10162', '10230', 'adult-rat', 'emg', '1', '6-month', 1),
+(41, '10128', '10022', 'adult-rat', 'eeg', '2', '2-month', 0),
+(42, '10128', '10021', 'adult-mouse', 'eeg', '2', '2-month', 0),
+(43, '10129', '10022', 'adult-rat', 'eeg', '2', '6-month', 0),
+(44, '10217', '10022', 'adult-rat', 'eeg', '2', 'reusable', 0),
+(45, '10217', '10021', 'adult-mouse', 'eeg', '2', 'reusable', 0),
+(144, '10215', '10207', 'adult-rat', 'eeg-eeg', '2', '2-month', 1),
+(145, '10215', '10232', 'adult-rat', 'eeg-ecg', '2', '2-month', 1),
+(146, '10215', '10230', 'adult-rat', 'eeg-emg', '2', '2-month', 1),
+(147, '10215', '10230', 'adult-rat', 'emg-emg', '2', '2-month', 1);
 
 -- --------------------------------------------------------
 
@@ -5825,10 +5775,10 @@ CREATE TABLE `epoch_transmitter_gain` (
 --
 
 INSERT INTO `epoch_transmitter_gain` (`id`, `description`, `preselect`, `enable`) VALUES
-('1', '1mV±', 0, 1),
-('10', '10mV±', 0, 1),
-('2', '2mV±', 0, 1),
-('5', '5mV±', 0, 1);
+('1', '±1mV input range', 0, 1),
+('10', '±10mV input range', 0, 1),
+('2', '±2mV input range', 0, 1),
+('5', '±5mV input range', 0, 1);
 
 --
 -- Indexes for dumped tables
@@ -5869,14 +5819,6 @@ ALTER TABLE `epoch_duration`
   ADD UNIQUE KEY `id` (`id`);
 
 --
--- Indexes for table `epoch_message`
---
-ALTER TABLE `epoch_message`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id` (`id`),
-  ADD KEY `id_2` (`id`);
-
---
 -- Indexes for table `epoch_receiver`
 --
 ALTER TABLE `epoch_receiver`
@@ -5912,11 +5854,6 @@ ALTER TABLE `epoch_transmitter_gain`
 -- AUTO_INCREMENT for dumped tables
 --
 
---
--- AUTO_INCREMENT for table `epoch_message`
---
-ALTER TABLE `epoch_message`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `epoch_transmitter`
 --

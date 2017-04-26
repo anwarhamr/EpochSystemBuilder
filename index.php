@@ -1,5 +1,8 @@
 
 <?php
+/**
+ * generateDropDownSQL($table)
+ */
 function generateDropDownSQL($table) {
   switch ($table) {
     case 'animal':
@@ -48,6 +51,9 @@ function generateDropDownSQL($table) {
   return $sql;
 }
 
+/**
+ * createDropDown($db, $label, $select, $table, $active, $tooltip, $none)
+ */
 function createDropDown($db, $label, $select, $table, $active, $tooltip, $none) {
   // Open Select Tag
   echo "<br /><select name=\"$select\" onchange=\"document.getElementById('currentDropDown').value='$select';document.getElementById('createSystem').submit();\"";
@@ -76,6 +82,9 @@ function createDropDown($db, $label, $select, $table, $active, $tooltip, $none) 
   if (!is_null($tooltip)) { echo "<div class='tooltip'>[?] <span class='tooltiptext'>$tooltip</span></div>"; }
 }
 
+/**
+ * getDefaultGain($biopotential, $animal)
+ */
 function getDefaultGain($biopotential, $animal) {
   // Adult EEG 2mV±
   // Pup EEG 1mV±
@@ -103,6 +112,9 @@ function getDefaultGain($biopotential, $animal) {
   return $default_gain;
 }
 
+/**
+ * createGainDropdowns($db, $active)
+ */
 function createGainDropdowns($db, $active) {
   // Set Default Differential Gains
   $biopotentials = explode("-", $_POST['biopotential']);
@@ -130,6 +142,9 @@ function createGainDropdowns($db, $active) {
 
 }
 
+/**
+ * getGainCombinationKey($db)
+ */
 function getGainCombinationKey($db) {
   $gain_desc = "";
   for ($i = 1; $i <= 6; $i++) {
@@ -151,6 +166,9 @@ function getGainCombinationKey($db) {
   return "ERROR";
 }
 
+/**
+ * getGainCombinationValue($db, $id)
+ */
 function getGainCombinationValue($db, $id) {
   $sql = "SELECT description from epoch_gains WHERE id='$id'";
   $query = $db->query($sql);
@@ -164,6 +182,9 @@ function getGainCombinationValue($db, $id) {
   return "ERROR";
 }
 
+/**
+ * getDAQ($db)
+ */
 function getDAQ($db) {
   // BIOPAC DAQ
   $daq = new QuoteItem(null, null, null, null, null, null);
@@ -177,6 +198,9 @@ function getDAQ($db) {
   return $daq;
 }
 
+/**
+ * getActivator()
+ */
 function getActivator() {
   // Activator
   $activator = new QuoteItem(null, null, null, null, null, null);
@@ -188,6 +212,9 @@ function getActivator() {
   return $activator;
 }
 
+/**
+ * getCable()
+ */
 function getCable() {
   // BIOPAC cables
   $cable = new QuoteItem(null, null, null, null, null, null);
@@ -206,6 +233,9 @@ function getCable() {
   return $cable;
 }
 
+/**
+ * getDescription($db, $id, $table)
+ */
 function getDescription($db, $id, $table) {
   $description = null;
   $sql = "SELECT description from epoch_$table where id='$id'";
@@ -219,12 +249,14 @@ function getDescription($db, $id, $table) {
   return $description;
 }
 
+/**
+ * getQuotes($db)
+ */
 function getQuotes($db) {
   $quote = [];
 
-  $sql = "SELECT tx.part_number as transmitter_pn, rec.biopac_id as biopac_receiver_pn, tx.receiver_id as receiver_pn, tx.biopotential_id as biopotential, tx.channels_id as channels, tx.default_gain1_id, tx.default_gain2_id, msg.id as msg_id, msg.description as note";
+  $sql = "SELECT tx.part_number as transmitter_pn, rec.biopac_id as biopac_receiver_pn, tx.receiver_id as receiver_pn, tx.biopotential_id as biopotential, tx.channels_id as channels, tx.default_gain1_id, tx.default_gain2_id";
   $sql .= " FROM epoch_transmitter as tx INNER JOIN epoch_receiver as rec ON tx.receiver_id = rec.id";
-  $sql .= " LEFT JOIN epoch_message as msg ON tx.message_id = msg.id";
   $sql .= " WHERE tx.animal_id='".$_POST['animal']."'";
   $sql .= " AND tx.biopotential_id='".$_POST['biopotential']."'";
   $sql .= " AND tx.channels_id='".$_POST['channels']."'";
@@ -268,6 +300,9 @@ function getQuotes($db) {
   return $quote;
 }
 
+/**
+ * checkDefaultDropdown()
+ */
 function checkDefaultDropdown() {
   // CHEAT: gain dropdowns are not in the $dropdowns array, so consider them channels.
   if (strpos($_POST['currentDropDown'], 'transmitter_gain_') !== false) {
@@ -275,6 +310,9 @@ function checkDefaultDropdown() {
   }
 }
 
+/**
+ * resetForm()
+ */
 function resetForm() {
   unset($_POST['currentDropDown']);
   unset($_POST['dac']);
@@ -291,6 +329,9 @@ function resetForm() {
   unset($_POST['duration']);
 }
 
+/**
+ * advanceDefaultDropdown($dropdowns)
+ */
 function advanceDefaultDropdown($dropdowns) {
   checkDefaultDropdown();
   // Enable the next dropdown in the $dropdowns array, unless it is the last one or blank.
@@ -309,10 +350,16 @@ function advanceDefaultDropdown($dropdowns) {
   return "<input type='hidden' id='currentDropDown' name='currentDropDown' value='".$_POST['currentDropDown']."'>";
 }
 
+/**
+ * showPOST
+ */
 function showPOST() {
   echo "<pre>"; print_r($_POST); echo "</pre>";
 }
 
+/**
+ * QuoteItem
+ */
 class QuoteItem {
   public $name;
   public $qty;
@@ -350,6 +397,9 @@ class QuoteItem {
 
 }
 
+/**
+ * Quote
+ */
 class Quote {
   public $daq;
   public $receiver;
