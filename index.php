@@ -438,12 +438,6 @@ for ($row = 0; $row < sizeof($dropdowns); $row++) {
 }
 
 ?>
-<script>
-function reloadForm() {
-  // location.reload();
-  document.getElementById("createSystem").submit();
-}
-</script>
 <br /><input type="reset" name="reset" value="Reset" onclick="document.getElementById('currentDropDown').value='';document.getElementById('createSystem').submit();">
 </form>
 </div>
