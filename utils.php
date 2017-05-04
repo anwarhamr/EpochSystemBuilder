@@ -80,7 +80,7 @@ function generateDropDownSQL($db, $table, $prefix) {
  */
 function createDropDown($db, $label, $select, $table, $prefix, $active, $tooltip, $none) {
   // Open Select Tag
-  echo "<br /><select name=\"$select\" onchange=\"document.getElementById('currentDropDown').value='$select';document.getElementById('createSystem').submit();\"";
+  echo "<br />$label: <select name=\"$select\" onchange=\"document.getElementById('currentDropDown').value='$select';document.getElementById('createSystem').submit();\"";
   if (!$active) { echo " disabled"; }
   echo ">", PHP_EOL;
 
