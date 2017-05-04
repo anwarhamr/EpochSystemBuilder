@@ -41,8 +41,8 @@ $dropdowns = array
     array('6', 'Select Duration', 'duration', $prefix.'duration', "reusable 2-month transmitters use the <a href='http://www.plastics1.com/Gallery-PRC.php?FILTER_CLEAR&FILTER_FCATEGORY=Electrophysiology%20&FILTER_F1=Electrode%20&FILTER_F3=3%20channel' target='_new'>Plastics1 MSS33</a> base and can be moved from animal to animal")
   );
 
-echo getHiddenCurrentDropDown($dropdowns); // write hidden tag
 showDropDowns($db, $prefix, $dropdowns);
+echo getHiddenCurrentDropDown($dropdowns); // write hidden tag
 
 ?>
 <br /><input type="reset" name="reset" value="Reset" onclick="document.getElementById('currentDropDown').value='';document.getElementById('createSystem').submit();">

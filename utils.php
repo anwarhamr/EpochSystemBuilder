@@ -92,8 +92,12 @@ function createDropDown($db, $label, $select, $table, $prefix, $active, $tooltip
   echo "<option value=''>$label</option>";
   while ($row = $prepared_sql->fetch(PDO::FETCH_ASSOC)) {
      echo '<option value="'.$row['id'].'"';
-     if (isset($_POST[$select])) {
-       echo ($row['id'] == $_POST[$select]) ? ' selected' : '';
+     if (isset($_POST[$select]) && $row['id'] == $_POST[$select]) {
+       echo ' selected';
+     } elseif ($prepared_sql->rowCount() == 1) {
+       // If there is only one option in the dropdown, select it
+       echo ' selected';
+       $_POST[$select] = $row['id'];
      }
      echo '>'.$row['description'].'</option>', PHP_EOL;
   }
@@ -120,12 +124,15 @@ function createDropDown($db, $label, $select, $table, $prefix, $active, $tooltip
 
   // Tooltip
   if (!is_null($tooltip)) { echo "<div class='tooltip'>[?] <span class='tooltiptext'>$tooltip</span></div>"; }
+
+  return $prepared_sql->rowCount();
 }
 
 /**
  * showDropDowns($db, $prefix, $dropdowns)
  */
 function showDropDowns($db, $prefix, $dropdowns) {
+  advanceCurrentDropDown($dropdowns);
   // Create dropdowns
   $active = true;
   for ($row = 0; $row < sizeof($dropdowns); $row++) {
@@ -133,7 +140,8 @@ function showDropDowns($db, $prefix, $dropdowns) {
     if ($dropdowns[$row][2] == "dac" || $dropdowns[$row][2] == "system") { $none = true; } else { $none = false; }
 
     if (!$active) { unset($_POST[$dropdowns[$row][2]]); }
-    createDropDown($db, $dropdowns[$row][1], $dropdowns[$row][2], $dropdowns[$row][3], $prefix, $active, $dropdowns[$row][4], $none);
+    $count = createDropDown($db, $dropdowns[$row][1], $dropdowns[$row][2], $dropdowns[$row][3], $prefix, $active, $dropdowns[$row][4], $none);
+    if ($count == 1 ) { advanceCurrentDropDown($dropdowns); }
     if ($dropdowns[$row][2] == "channels") { createGainDropdowns($db, $prefix, $active); } // Once channels have been selected, show the Gain Options
     if ($dropdowns[$row][2] == $_POST['currentDropDown']) {
       $active = false; // Disable all the select statements after the currentDropDown
@@ -417,9 +425,9 @@ function resetForm() {
 }
 
 /**
- * getHiddenCurrentDropDown($dropdowns)
+ * advanceCurrentDropDown($dropdowns)
  */
-function getHiddenCurrentDropDown($dropdowns) {
+function advanceCurrentDropDown($dropdowns) {
   checkDefaultDropdown();
   // Enable the next dropdown in the $dropdowns array, unless it is the last one or blank.
   if (!isset($_POST['currentDropDown']) || $_POST['currentDropDown']=="") {
@@ -434,6 +442,12 @@ function getHiddenCurrentDropDown($dropdowns) {
       }
     }
   }
+}
+
+/**
+ * getHiddenCurrentDropDown()
+ */
+function getHiddenCurrentDropDown() {
   return "<input type='hidden' id='currentDropDown' name='currentDropDown' value='".$_POST['currentDropDown']."'>";
 }
 
