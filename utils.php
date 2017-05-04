@@ -80,7 +80,7 @@ function generateDropDownSQL($db, $table, $prefix) {
  */
 function createDropDown($db, $label, $select, $table, $prefix, $active, $tooltip, $none) {
   // Open Select Tag
-  echo "<br />$label: <select name=\"$select\" onchange=\"document.getElementById('currentDropDown').value='$select';document.getElementById('createSystem').submit();\"";
+  echo "<br />$label: <select name=\"$select\" id=\"$select\"";
   if (!$active) { echo " disabled"; }
   echo ">", PHP_EOL;
 
@@ -107,6 +107,16 @@ function createDropDown($db, $label, $select, $table, $prefix, $active, $tooltip
 
   // Close Select Tag
   echo '</select>', PHP_EOL;
+
+  // Create JS OnChange Event
+  echo "<script>", PHP_EOL;
+  echo "document.getElementById(\"$select\").onchange = function() {", PHP_EOL;
+  echo "  if (document.getElementById(\"$select\").value !== \"\") {", PHP_EOL;
+  echo "    document.getElementById(\"currentDropDown\").value = \"$select\";", PHP_EOL;
+  echo "    document.getElementById(\"createSystem\").submit();", PHP_EOL;
+  echo "  }", PHP_EOL;
+  echo "}", PHP_EOL;
+  echo "</script>", PHP_EOL;
 
   // Tooltip
   if (!is_null($tooltip)) { echo "<div class='tooltip'>[?] <span class='tooltiptext'>$tooltip</span></div>"; }
@@ -382,7 +392,7 @@ function getQuotes($db, $prefix) {
  */
 function checkDefaultDropdown() {
   // CHEAT: gain dropdowns are not in the $dropdowns array, so consider them channels.
-  if (strpos($_POST['currentDropDown'], 'transmitter_gain_') !== false) {
+  if (isset($_POST['currentDropDown']) && strpos($_POST['currentDropDown'], 'transmitter_gain_') !== false) {
     $_POST['currentDropDown'] = "channels";
   }
 }
@@ -412,7 +422,7 @@ function resetForm() {
 function getHiddenCurrentDropDown($dropdowns) {
   checkDefaultDropdown();
   // Enable the next dropdown in the $dropdowns array, unless it is the last one or blank.
-  if (!$_POST['currentDropDown'] || $_POST['currentDropDown']=="") {
+  if (!isset($_POST['currentDropDown']) || $_POST['currentDropDown']=="") {
     resetForm();
     $_POST['currentDropDown'] = 'dac';
   } else {
