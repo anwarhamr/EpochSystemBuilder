@@ -2,55 +2,77 @@
 require_once('quoteitem.php');
 require_once('quote.php');
 /**
- * generateDropDownSQL($table, $prefix)
+ * generateDropDownSQL($db, $table, $prefix)
  */
-function generateDropDownSQL($table, $prefix) {
+function generateDropDownSQL($db, $table, $prefix) {
   $table_name = str_replace($prefix,"",$table);
   switch ($table) {
     case $prefix.'animal':
-      $sql = "SELECT DISTINCT x.id, x.description, x.preselect";
-      $sql .= " FROM ".$prefix."transmitter as tx INNER JOIN ".$prefix."receiver as rec ON tx.receiver_id = rec.id";
-      $sql .= " INNER JOIN $table as x ON tx.".$table_name."_id=x.id WHERE tx.part_number!=''";
-      if ($_POST['system']!='none') {$sql .= " AND rec.system_id='".$_POST['system']."'"; }
-      $sql .= " AND x.enable=1 ORDER BY x.description ASC";
+      $unsecure_sql = "SELECT DISTINCT x.id, x.description, x.preselect";
+      $unsecure_sql .= " FROM ".$prefix."transmitter as tx INNER JOIN ".$prefix."receiver as rec ON tx.receiver_id = rec.id";
+      $unsecure_sql .= " INNER JOIN $table as x ON tx.".$table_name."_id=x.id WHERE tx.part_number!=''";
+      if ($_POST['system']!='none') {$unsecure_sql .= " AND rec.system_id=:system"; }
+      $unsecure_sql .= " AND x.enable=1 ORDER BY x.description ASC";
+
+      $prepared_sql = $db->prepare($unsecure_sql);
+      if ($_POST['system']!='none') { $prepared_sql->bindParam(':system', $_POST['system']); }
       break;
     case $prefix.'biopotential':
-      $sql = "SELECT DISTINCT x.id, x.description, x.preselect";
-      $sql .= " FROM ".$prefix."transmitter as tx INNER JOIN ".$prefix."receiver as rec ON tx.receiver_id = rec.id";
-      $sql .= " INNER JOIN $table as x ON tx.".$table_name."_id=x.id WHERE tx.part_number!=''";
-      if ($_POST['system']!='none') {$sql .= " AND rec.system_id='".$_POST['system']."'"; }
-      $sql .= " AND tx.animal_id='".$_POST['animal']."'";
-      $sql .= " AND x.enable=1 ORDER BY x.description ASC";
+      $unsecure_sql = "SELECT DISTINCT x.id, x.description, x.preselect";
+      $unsecure_sql .= " FROM ".$prefix."transmitter as tx INNER JOIN ".$prefix."receiver as rec ON tx.receiver_id = rec.id";
+      $unsecure_sql .= " INNER JOIN $table as x ON tx.".$table_name."_id=x.id WHERE tx.part_number!=''";
+      if ($_POST['system']!='none') {$unsecure_sql .= " AND rec.system_id=:system"; }
+      $unsecure_sql .= " AND tx.animal_id=:animal";
+      $unsecure_sql .= " AND x.enable=1 ORDER BY x.description ASC";
+
+      $prepared_sql = $db->prepare($unsecure_sql);
+      if ($_POST['system']!='none') { $prepared_sql->bindParam(':system', $_POST['system']); }
+      $prepared_sql->bindParam(':animal', $_POST['animal']);
       break;
     case $prefix.'channels':
-      $sql = "SELECT DISTINCT x.id, x.description, x.preselect";
-      $sql .= " FROM ".$prefix."transmitter as tx INNER JOIN ".$prefix."receiver as rec ON tx.receiver_id = rec.id";
-      $sql .= " INNER JOIN $table as x ON tx.".$table_name."_id=x.id WHERE tx.part_number!=''";
-      if ($_POST['system']!='none') {$sql .= " AND rec.system_id='".$_POST['system']."'"; }
-      $sql .= " AND tx.animal_id='".$_POST['animal']."'";
-      $sql .= " AND tx.biopotential_id='".$_POST['biopotential']."'";
-      $sql .= " AND x.enable=1 ORDER BY x.description ASC";
+      $unsecure_sql = "SELECT DISTINCT x.id, x.description, x.preselect";
+      $unsecure_sql .= " FROM ".$prefix."transmitter as tx INNER JOIN ".$prefix."receiver as rec ON tx.receiver_id = rec.id";
+      $unsecure_sql .= " INNER JOIN $table as x ON tx.".$table_name."_id=x.id WHERE tx.part_number!=''";
+      if ($_POST['system']!='none') {$unsecure_sql .= " AND rec.system_id=:system"; }
+      $unsecure_sql .= " AND tx.animal_id=:animal";
+      $unsecure_sql .= " AND tx.biopotential_id=:biopotential";
+      $unsecure_sql .= " AND x.enable=1 ORDER BY x.description ASC";
+
+      $prepared_sql = $db->prepare($unsecure_sql);
+      if ($_POST['system']!='none') { $prepared_sql->bindParam(':system', $_POST['system']); }
+      $prepared_sql->bindParam(':animal', $_POST['animal']);
+      $prepared_sql->bindParam(':biopotential', $_POST['biopotential']);
       break;
     case $prefix.'duration':
-      $sql = "SELECT DISTINCT x.id, x.description, x.preselect";
-      $sql .= " FROM ".$prefix."transmitter as tx INNER JOIN ".$prefix."receiver as rec ON tx.receiver_id = rec.id";
-      $sql .= " INNER JOIN $table as x ON tx.".$table_name."_id=x.id WHERE tx.part_number!=''";
-      if ($_POST['system']!='none') {$sql .= " AND rec.system_id='".$_POST['system']."'"; }
-      $sql .= " AND tx.animal_id='".$_POST['animal']."'";
-      $sql .= " AND tx.biopotential_id='".$_POST['biopotential']."'";
-      $sql .= " AND tx.channels_id='".$_POST['channels']."'";
-      $sql .= " AND x.enable=1 ORDER BY x.description ASC";
+      $unsecure_sql = "SELECT DISTINCT x.id, x.description, x.preselect";
+      $unsecure_sql .= " FROM ".$prefix."transmitter as tx INNER JOIN ".$prefix."receiver as rec ON tx.receiver_id = rec.id";
+      $unsecure_sql .= " INNER JOIN $table as x ON tx.".$table_name."_id=x.id WHERE tx.part_number!=''";
+      if ($_POST['system']!='none') {$unsecure_sql .= " AND rec.system_id=:system"; }
+      $unsecure_sql .= " AND tx.animal_id=:animal";
+      $unsecure_sql .= " AND tx.biopotential_id=:biopotential";
+      $unsecure_sql .= " AND tx.channels_id=:channels";
+      $unsecure_sql .= " AND x.enable=1 ORDER BY x.description ASC";
+
+      $prepared_sql = $db->prepare($unsecure_sql);
+      if ($_POST['system']!='none') { $prepared_sql->bindParam(':system', $_POST['system']); }
+      $prepared_sql->bindParam(':animal', $_POST['animal']);
+      $prepared_sql->bindParam(':biopotential', $_POST['biopotential']);
+      $prepared_sql->bindParam(':channels', $_POST['channels']);
       break;
     case $prefix.'dac':
-    $sql="SELECT id, description, preselect FROM $table WHERE enable=1 ORDER BY description DESC";
+      $unsecure_sql="SELECT id, description, preselect FROM $table WHERE enable=1 ORDER BY description DESC";
+
+      $prepared_sql = $db->prepare($unsecure_sql);
       break;
     case $prefix.'system':
     default:
-      $sql="SELECT id, description, preselect FROM $table WHERE enable=1 ORDER BY description ASC";
+      $unsecure_sql="SELECT id, description, preselect FROM $table WHERE enable=1 ORDER BY description ASC";
+
+      $prepared_sql = $db->prepare($unsecure_sql);
       break;
   }
 
-  return $sql;
+  return $prepared_sql;
 }
 
 /**
@@ -63,17 +85,23 @@ function createDropDown($db, $label, $select, $table, $prefix, $active, $tooltip
   echo ">", PHP_EOL;
 
   // Generate Select Tag Options
-  $sql = generateDropDownSQL($table, $prefix);
-  $query = $db->query($sql);
+  $prepared_sql = generateDropDownSQL($db, $table, $prefix);
+
+  $prepared_sql->execute();
+
   echo "<option value=''>$label</option>";
-  while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+  while ($row = $prepared_sql->fetch(PDO::FETCH_ASSOC)) {
      echo '<option value="'.$row['id'].'"';
-     echo ($row['id'] == $_POST[$select]) ? ' selected' : '';
+     if (isset($_POST[$select])) {
+       echo ($row['id'] == $_POST[$select]) ? ' selected' : '';
+     }
      echo '>'.$row['description'].'</option>', PHP_EOL;
   }
   if ($none) {
     echo "<option value='none'";
-    echo ($_POST[$select] == 'none') ? ' selected' : '';
+    if (isset($_POST[$select])) {
+      echo ($_POST[$select] == 'none') ? ' selected' : '';
+    }
     echo ">None</option>";
   }
 
@@ -108,7 +136,7 @@ function showDropDowns($db, $prefix, $dropdowns) {
  * showQuotes($db, $prefix)
  */
 function showQuotes($db, $prefix) {
-  if ($_POST['currentDropDown'] == 'duration' && $_POST['duration']) {
+  if (isset($_POST['currentDropDown']) && $_POST['currentDropDown'] == 'duration' && isset($_POST['duration'])) {
     $quotes = getQuotes($db, $prefix);
     foreach ($quotes as $quote) {
       echo '<br /><br />';
@@ -155,7 +183,7 @@ function createGainDropdowns($db, $prefix, $active) {
   // Set Default Differential Gains
   $biopotentials = explode("-", $_POST['biopotential']);
   for ($i = 1; $i <= sizeof($biopotentials); $i++) {
-    if (!$_POST["transmitter_gain_$i"]) {
+    if (!isset($_POST["transmitter_gain_$i"])) {
       $_POST["transmitter_gain_$i"] = getDefaultGain($biopotentials[$i-1], $_POST['animal']);
     }
   }
@@ -165,15 +193,17 @@ function createGainDropdowns($db, $prefix, $active) {
   $tooltip .= "<br/>Adult EEG 2mV± <br/>Pup EEG 1mV± <br/>EMG 5mV± <br/>ECG 2mV±";
 
   // Create a Transmitter Gain Dropdown for each channel
-  for ($i = 1; $i <= $_POST['channels']; $i++) {
-    // Set Default Common Gains
-    if (strlen($_POST['biopotential'])==3) {
-      if (!$_POST["transmitter_gain_$i"]) {
-        $_POST["transmitter_gain_$i"] = getDefaultGain($_POST['biopotential'], $_POST['animal']);
+  if (isset($_POST['channels'])) {
+    for ($i = 1; $i <= $_POST['channels']; $i++) {
+      // Set Default Common Gains
+      if (strlen($_POST['biopotential'])==3) {
+        if (!isset($_POST["transmitter_gain_$i"])) {
+          $_POST["transmitter_gain_$i"] = getDefaultGain($_POST['biopotential'], $_POST['animal']);
+        }
       }
-    }
 
-    createDropDown($db, "Channel $i Gain", "transmitter_gain_$i", $prefix.'transmitter_gain', $prefix, $active, $tooltip, false);
+      createDropDown($db, "Channel $i Gain", "transmitter_gain_$i", $prefix.'transmitter_gain', $prefix, $active, $tooltip, false);
+    }
   }
 
 }
@@ -184,18 +214,20 @@ function createGainDropdowns($db, $prefix, $active) {
 function getGainCombinationKey($db, $prefix) {
   $gain_desc = "";
   for ($i = 1; $i <= 6; $i++) {
-    if ($_POST["transmitter_gain_$i"]) {
+    if (isset($_POST["transmitter_gain_$i"])) {
       $gain_desc .= "-".sprintf("%02d", $_POST["transmitter_gain_$i"]);
     } else {
       $gain_desc .= "-00";
     }
   }
-  $sql = "SELECT id from ".$prefix."gains WHERE description='$gain_desc'";
+  $unsecure_sql = "SELECT id from ".$prefix."gains WHERE description=:gain_desc";
 
-  $query = $db->query($sql);
+  $prepared_sql = $db->prepare($unsecure_sql);
+  $prepared_sql->bindParam(':gain_desc', $gain_desc);
+  $prepared_sql->execute();
 
-  if ($query->rowCount()>0) {
-    while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+  if ($prepared_sql->rowCount()>0) {
+    while ($row = $prepared_sql->fetch(PDO::FETCH_ASSOC)) {
       return $row['id'];
     }
   }
@@ -206,11 +238,14 @@ function getGainCombinationKey($db, $prefix) {
  * getGainCombinationValue($db, $prefix, $id)
  */
 function getGainCombinationValue($db, $prefix, $id) {
-  $sql = "SELECT description from ".$prefix."gains WHERE id='$id'";
-  $query = $db->query($sql);
+  $unsecure_sql = "SELECT description from ".$prefix."gains WHERE id=:id";
 
-  if ($query->rowCount()>0) {
-    while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+  $prepared_sql = $db->prepare($unsecure_sql);
+  $prepared_sql->bindParam(':id', $id);
+  $prepared_sql->execute();
+
+  if ($prepared_sql->rowCount()>0) {
+    while ($row = $prepared_sql->fetch(PDO::FETCH_ASSOC)) {
       return $row['description'];
     }
   }
@@ -273,10 +308,13 @@ function getCable() {
  */
 function getDescription($db, $id, $table, $prefix) {
   $description = null;
-  $sql = "SELECT description from $prefix.$table where id='$id'";
-  $query = $db->query($sql);
-  if ($query->rowCount()>0) {
-    while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+  $unsecure_sql = "SELECT description from $prefix.$table where id='$id'";
+  //TODO
+  $prepared_sql = $db->prepare($unsecure_sql);
+  $prepared_sql->execute();
+
+  if ($prepared_sql->rowCount()>0) {
+    while ($row = $prepared_sql->fetch(PDO::FETCH_ASSOC)) {
       $description = $row['description'];
       break;
     }
@@ -290,25 +328,31 @@ function getDescription($db, $id, $table, $prefix) {
 function getQuotes($db, $prefix) {
   $quote = [];
 
-  $sql = "SELECT tx.part_number as transmitter_pn, rec.biopac_id as biopac_receiver_pn, tx.receiver_id as receiver_pn, tx.biopotential_id as biopotential, tx.channels_id as channels";
-  $sql .= " FROM ".$prefix."transmitter as tx INNER JOIN ".$prefix."receiver as rec ON tx.receiver_id = rec.id";
-  $sql .= " WHERE tx.animal_id='".$_POST['animal']."'";
-  $sql .= " AND tx.biopotential_id='".$_POST['biopotential']."'";
-  $sql .= " AND tx.channels_id='".$_POST['channels']."'";
-  $sql .= " AND tx.duration_id='".$_POST['duration']."'";
+  $unsecure_sql = "SELECT tx.part_number as transmitter_pn, rec.biopac_id as biopac_receiver_pn, tx.receiver_id as receiver_pn, tx.biopotential_id as biopotential, tx.channels_id as channels";
+  $unsecure_sql .= " FROM ".$prefix."transmitter as tx INNER JOIN ".$prefix."receiver as rec ON tx.receiver_id = rec.id";
+  $unsecure_sql .= " WHERE tx.animal_id=:animal";
+  $unsecure_sql .= " AND tx.biopotential_id=:biopotential";
+  $unsecure_sql .= " AND tx.channels_id=:channels";
+  $unsecure_sql .= " AND tx.duration_id=:duration";
   if ($_POST['system']!="none") {
-    $sql .= " AND rec.system_id='".$_POST['system']."'";
+    $unsecure_sql .= " AND rec.system_id=:system";
   } else {
    // Allow everything EXCEPT Classic
-   $sql .= " AND rec.enable=1";
+   $unsecure_sql .= " AND rec.enable=1";
   }
 
-  $query = $db->query($sql);
+  $prepared_sql = $db->prepare($unsecure_sql);
+  $prepared_sql->bindParam(':animal', $_POST['animal']);
+  $prepared_sql->bindParam(':biopotential', $_POST['biopotential']);
+  $prepared_sql->bindParam(':channels', $_POST['channels']);
+  $prepared_sql->bindParam(':duration', $_POST['duration']);
+  if ($_POST['system']!='none') { $prepared_sql->bindParam(':system', $_POST['system']); }
+  $prepared_sql->execute();
 
-  if ($query->rowCount()>0) {
+  if ($prepared_sql->rowCount()>0) {
    // Loop through the query results, outputing the options one by one
    $option = 1;
-   while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+   while ($row = $prepared_sql->fetch(PDO::FETCH_ASSOC)) {
      if (!empty($row['transmitter_pn'])) {
        $key = getGainCombinationKey($db, $prefix);
        $daq = getDAQ($db);
