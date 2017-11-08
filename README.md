@@ -6,9 +6,9 @@
 
 ## Setup ##
 
-For security, place *config.ini* outsite of browseable files and change the path references in each example accordingly.
+For security, place *config.ini* outsite of browseable files and change the path references in *index.php* accordingly.
 ```
-$config = parse_ini_file('../config.ini');
+$config_file = '../config.ini';
 ```
 
 ## Files ##
