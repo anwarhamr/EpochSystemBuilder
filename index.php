@@ -2,11 +2,15 @@
 <?php
 require_once('utils.php');
 // For security place, config.ini outsite of browseable files and change the path
-$config = parse_ini_file('../config.ini');
+$config_file = '../../config.ini';
+$open_config_file = @file($config_file) or
+        die ("Failed opening config file: $php_errormsg");
+$config = parse_ini_file($config_file);
 $prefix = $config['prefix'];
 
 // Database Connection
-$db = new \PDO(   "mysql:host=".$config['servername'].";dbname=".$config['database'].";charset=utf8",
+try {
+  $db = new \PDO(   "mysql:host=".$config['servername'].";port=".$config['port'].";dbname=".$config['database'].";charset=utf8",
                         $config['username'],
                         $config['password'],
                         array(
@@ -14,8 +18,11 @@ $db = new \PDO(   "mysql:host=".$config['servername'].";dbname=".$config['databa
                             \PDO::ATTR_PERSISTENT => false
                         )
                     );
-
- echo  '<?xml version="1.0" encoding="utf-8"?>';
+} catch (PDOException $e) {
+  echo 'Connection failed: ' . $e->getMessage();
+  exit;
+}
+echo  '<?xml version="1.0" encoding="utf-8"?>';
 ?>
 <!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
