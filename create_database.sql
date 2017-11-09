@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Apr 26, 2017 at 05:43 PM
--- Server version: 5.5.54-0ubuntu0.14.04.1
--- PHP Version: 5.6.27
+-- Generation Time: Nov 09, 2017 at 09:17 PM
+-- Server version: 5.5.58-0ubuntu0.14.04.1
+-- PHP Version: 5.6.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `epochsystem`
+-- Database: `epitel_epoch`
 --
 
 -- --------------------------------------------------------
@@ -5651,7 +5651,8 @@ CREATE TABLE `epoch_receiver` (
 INSERT INTO `epoch_receiver` (`id`, `biopac_id`, `system_id`, `hertz`, `enable`) VALUES
 ('10021', 'EPRCVR-M2-100', 'classic', '', 0),
 ('10022', 'EPRCVR-R2-100', 'classic', '', 0),
-('10072', 'EPRCVR-P2-100', 'pup', '', 1),
+('10072', 'EPRCVR-P2-100', 'classic-pup', '', 0),
+('10073', 'EPRCVR-P4-100', 'pup', '', 1),
 ('10198', 'EP6RCVR-M6-60', 'epoch6', '(60/60/60/60/60/60)', 1),
 ('10199', 'EP6RCVR-R6-60', 'epoch6', '(60/60/60/60/60/60)', 1),
 ('10206', 'EP2RCVR-M2-1/1', 'epoch2-100-100', '(100/100)', 1),
@@ -5680,12 +5681,13 @@ CREATE TABLE `epoch_system` (
 --
 
 INSERT INTO `epoch_system` (`id`, `description`, `preselect`, `enable`) VALUES
-('classic', 'Classic (100 EEG) - Blue', 0, 1),
-('epoch2-100-100', 'Epoch 2 (100/100 EEG/EEG) - Red', 0, 1),
-('epoch2-100-200', 'Epoch 2 (100/200 EEG/EXG) - Red', 0, 1),
-('epoch2-200-200', 'Epoch 2 (200/200 EXG/EXG) - Red', 0, 1),
-('epoch6', 'Epoch 6 (60/60/60/60/60/60 EEG) - Turquoise', 0, 1),
-('pup', 'Pup (100 EEG) - TBD', 0, 1);
+('classic', 'Classic (100 EEG)', 0, 1),
+('classic-pup', 'Classic Pup (100 EEG)', 0, 1),
+('epoch2-100-100', 'Epoch 2 (100/100 EEG/EEG)', 0, 1),
+('epoch2-100-200', 'Epoch 2 (100/200 EEG/EXG)', 0, 1),
+('epoch2-200-200', 'Epoch 2 (200/200 EXG/EXG)', 0, 1),
+('epoch6', 'Epoch 6 (60/60/60/60/60/60 EEG)', 0, 1),
+('pup', 'Pup (100 EEG)', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -5754,7 +5756,14 @@ INSERT INTO `epoch_transmitter` (`id`, `part_number`, `receiver_id`, `animal_id`
 (144, '10215', '10207', 'adult-rat', 'eeg-eeg', '2', '2-month', 1),
 (145, '10215', '10232', 'adult-rat', 'eeg-ecg', '2', '2-month', 1),
 (146, '10215', '10230', 'adult-rat', 'eeg-emg', '2', '2-month', 1),
-(147, '10215', '10230', 'adult-rat', 'emg-emg', '2', '2-month', 1);
+(147, '10215', '10230', 'adult-rat', 'emg-emg', '2', '2-month', 1),
+(148, '10165', '10073', 'rat-pup', 'eeg', '4', '2-week', 1),
+(149, '10165', '10073', 'mouse-pup', 'eeg', '4', '2-week', 1),
+(150, '10128', '10022', 'adult-rat', 'eeg', '2', '2-month', 1),
+(151, '10128', '10021', 'adult-mouse', 'eeg', '2', '2-month', 1),
+(152, '10129', '10022', 'adult-rat', 'eeg', '2', '6-month', 1),
+(153, '10217', '10021', 'adult-mouse', 'eeg', '2', 'reusable', 1),
+(154, '10217', '10022', 'adult-rat', 'eeg', '2', 'reusable', 1);
 
 -- --------------------------------------------------------
 
@@ -5858,7 +5867,8 @@ ALTER TABLE `epoch_transmitter_gain`
 -- AUTO_INCREMENT for table `epoch_transmitter`
 --
 ALTER TABLE `epoch_transmitter`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=148;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=155;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+

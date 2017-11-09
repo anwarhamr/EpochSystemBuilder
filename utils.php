@@ -10,7 +10,7 @@ function generateDropDownSQL($db, $table, $prefix) {
     case $prefix.'animal':
       $unsecure_sql = "SELECT DISTINCT x.id, x.description, x.preselect";
       $unsecure_sql .= " FROM ".$prefix."transmitter as tx INNER JOIN ".$prefix."receiver as rec ON tx.receiver_id = rec.id";
-      $unsecure_sql .= " INNER JOIN $table as x ON tx.".$table_name."_id=x.id WHERE tx.part_number!=''";
+      $unsecure_sql .= " INNER JOIN $table as x ON tx.".$table_name."_id=x.id WHERE tx.part_number!='' AND tx.enable=1";
       if ($_POST['system']!='none') {$unsecure_sql .= " AND rec.system_id=:system"; }
       $unsecure_sql .= " AND x.enable=1 ORDER BY x.description ASC";
 
@@ -20,7 +20,7 @@ function generateDropDownSQL($db, $table, $prefix) {
     case $prefix.'biopotential':
       $unsecure_sql = "SELECT DISTINCT x.id, x.description, x.preselect";
       $unsecure_sql .= " FROM ".$prefix."transmitter as tx INNER JOIN ".$prefix."receiver as rec ON tx.receiver_id = rec.id";
-      $unsecure_sql .= " INNER JOIN $table as x ON tx.".$table_name."_id=x.id WHERE tx.part_number!=''";
+      $unsecure_sql .= " INNER JOIN $table as x ON tx.".$table_name."_id=x.id WHERE tx.part_number!='' AND tx.enable=1";
       if ($_POST['system']!='none') {$unsecure_sql .= " AND rec.system_id=:system"; }
       $unsecure_sql .= " AND tx.animal_id=:animal";
       $unsecure_sql .= " AND x.enable=1 ORDER BY x.description ASC";
@@ -32,12 +32,12 @@ function generateDropDownSQL($db, $table, $prefix) {
     case $prefix.'channels':
       $unsecure_sql = "SELECT DISTINCT x.id, x.description, x.preselect";
       $unsecure_sql .= " FROM ".$prefix."transmitter as tx INNER JOIN ".$prefix."receiver as rec ON tx.receiver_id = rec.id";
-      $unsecure_sql .= " INNER JOIN $table as x ON tx.".$table_name."_id=x.id WHERE tx.part_number!=''";
+      $unsecure_sql .= " INNER JOIN $table as x ON tx.".$table_name."_id=x.id WHERE tx.part_number!='' AND tx.enable=1";
       if ($_POST['system']!='none') {$unsecure_sql .= " AND rec.system_id=:system"; }
       $unsecure_sql .= " AND tx.animal_id=:animal";
       $unsecure_sql .= " AND tx.biopotential_id=:biopotential";
       $unsecure_sql .= " AND x.enable=1 ORDER BY x.description ASC";
-
+      
       $prepared_sql = $db->prepare($unsecure_sql);
       if ($_POST['system']!='none') { $prepared_sql->bindParam(':system', $_POST['system']); }
       $prepared_sql->bindParam(':animal', $_POST['animal']);
@@ -46,13 +46,13 @@ function generateDropDownSQL($db, $table, $prefix) {
     case $prefix.'duration':
       $unsecure_sql = "SELECT DISTINCT x.id, x.description, x.preselect";
       $unsecure_sql .= " FROM ".$prefix."transmitter as tx INNER JOIN ".$prefix."receiver as rec ON tx.receiver_id = rec.id";
-      $unsecure_sql .= " INNER JOIN $table as x ON tx.".$table_name."_id=x.id WHERE tx.part_number!=''";
+      $unsecure_sql .= " INNER JOIN $table as x ON tx.".$table_name."_id=x.id WHERE tx.part_number!='' AND tx.enable=1";
       if ($_POST['system']!='none') {$unsecure_sql .= " AND rec.system_id=:system"; }
       $unsecure_sql .= " AND tx.animal_id=:animal";
       $unsecure_sql .= " AND tx.biopotential_id=:biopotential";
       $unsecure_sql .= " AND tx.channels_id=:channels";
       $unsecure_sql .= " AND x.enable=1 ORDER BY x.description ASC";
-
+      
       $prepared_sql = $db->prepare($unsecure_sql);
       if ($_POST['system']!='none') { $prepared_sql->bindParam(':system', $_POST['system']); }
       $prepared_sql->bindParam(':animal', $_POST['animal']);
@@ -66,7 +66,7 @@ function generateDropDownSQL($db, $table, $prefix) {
       break;
     case $prefix.'system':
     default:
-      $unsecure_sql="SELECT id, description, preselect FROM $table WHERE enable=1 ORDER BY description ASC";
+      $unsecure_sql="SELECT id, description, preselect FROM $table ORDER BY description ASC";
 
       $prepared_sql = $db->prepare($unsecure_sql);
       break;
