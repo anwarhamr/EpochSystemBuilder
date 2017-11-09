@@ -37,12 +37,30 @@ echo  '<?xml version="1.0" encoding="utf-8"?>';
   <div>
 <form action="<?=$_SERVER['PHP_SELF'];?>" method="post" name="createSystem" id="createSystem">
 
-<br /><input type="button" name="system" value="New System" onclick="window.location.href='system.php';">&nbsp;<input type="button" name="transmitter" value="Reorder Transmitters" onclick="window.location.href='reorder_tx.php';">
+<?php
+// Multidimensional array to create dropdowns.
+$dropdowns = array
+  (
+    array('1', 'Select Existing Epoch Receiver Tray', 'system', $prefix.'system', "Selected Epoch 2 system biopotentials CANNOT be changed."),
+    array('2', 'Select Animal', 'animal', $prefix.'animal', null),
+    array('3', 'Select Biopotential', 'biopotential', $prefix.'biopotential', "'Differential' reference electrode layout uses different grounds as opposed to a 'Common' reference electrode layout which uses a common ground."),
+    array('4', 'Select Channels', 'channels', $prefix.'channels', null),
+    array('5', 'Select Duration', 'duration', $prefix.'duration', "reusable 2-month transmitters use the <a href='http://www.plastics1.com/Gallery-PRC.php?FILTER_CLEAR&FILTER_FCATEGORY=Electrophysiology%20&FILTER_F1=Electrode%20&FILTER_F3=3%20channel' target='_new'>Plastics1 MSS33</a> base and can be moved from animal to animal")
+  );
+
+showDropDowns2($db, $prefix, $dropdowns);
+echo getHiddenCurrentDropDown($dropdowns); // write hidden tag
+
+?>
+<br /><input type="reset" name="reset" value="Reset" onclick="document.getElementById('currentDropDown').value='';document.getElementById('createSystem').submit();">
 </form>
 </div>
 
+<?php showQuotes($db, $prefix); ?>
 
 <section  class="section-images">
+<img src="https://www.biopac.com/wp-content/uploads/EPOCH-BIOPAC-System-1024x551.jpg">
+<a href="http://www.epitelinc.com/downloads/Epoch_Brochure_7Feb2017.pdf"><img src="http://www.epitelinc.com/images/icon200px.png"></a>
 <a href="https://github.com/jonfen/EpochSystemBuilder"><img src="images/GitHub-Mark-Light-120px-plus.png"></a>
 </section>
 

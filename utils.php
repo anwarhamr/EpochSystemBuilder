@@ -151,6 +151,27 @@ function showDropDowns($db, $prefix, $dropdowns) {
 }
 
 /**
+ * showDropDowns($db, $prefix, $dropdowns)
+ */
+function showDropDowns2($db, $prefix, $dropdowns) {
+  advanceCurrentDropDown($dropdowns, 'system');
+  // Create dropdowns
+  $active = true;
+  for ($row = 0; $row < sizeof($dropdowns); $row++) {
+    // Do not allow "None" dropdown option
+    $none = false;
+    if (!$active) { unset($_POST[$dropdowns[$row][2]]); }
+    $count = createDropDown($db, $dropdowns[$row][1], $dropdowns[$row][2], $dropdowns[$row][3], $prefix, $active, $dropdowns[$row][4], $none);
+    if ($count == 1 ) { advanceCurrentDropDown($dropdowns, 'system'); }
+    if ($dropdowns[$row][2] == "channels") { createGainDropdowns($db, $prefix, $active); } // Once channels have been selected, show the Gain Options
+    if ($dropdowns[$row][2] == $_POST['currentDropDown']) {
+      $active = false; // Disable all the select statements after the currentDropDown
+      //break; // Hide inactive dropdowns
+    }
+  }
+}
+
+/**
  * showQuotes($db, $prefix)
  */
 function showQuotes($db, $prefix) {
@@ -427,15 +448,15 @@ function resetForm() {
 /**
  * advanceCurrentDropDown($dropdowns)
  */
-function advanceCurrentDropDown($dropdowns) {
+function advanceCurrentDropDown($dropdowns, $reset='dac') {
   checkDefaultDropdown();
   // Enable the next dropdown in the $dropdowns array, unless it is the last one or blank.
   if (!isset($_POST['currentDropDown']) || $_POST['currentDropDown']=="") {
     resetForm();
-    $_POST['currentDropDown'] = 'dac';
+    $_POST['currentDropDown'] = $reset;
   } else {
     for ($row = 0; $row < sizeof($dropdowns); $row++) {
-      if ($dropdowns[$row][2] == $_POST['currentDropDown'] && $_POST['currentDropDown'] != 'duration' && $_POST['dac']) {
+      if ($dropdowns[$row][2] == $_POST['currentDropDown'] && $_POST['currentDropDown'] != 'duration' && $_POST[$reset]) {
         unset($_POST[$dropdowns[$row+1][2]]);
         $_POST['currentDropDown'] = $dropdowns[$row+1][2];
         break;
