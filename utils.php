@@ -153,13 +153,14 @@ function showDropDowns($db, $prefix, $dropdowns) {
 /**
  * showDropDowns($db, $prefix, $dropdowns)
  */
-function showDropDowns2($db, $prefix, $dropdowns) {
+function showReOrderDropDowns($db, $prefix, $dropdowns) {
   advanceCurrentDropDown($dropdowns, 'system');
   // Create dropdowns
   $active = true;
   for ($row = 0; $row < sizeof($dropdowns); $row++) {
     // Do not allow "None" dropdown option
     $none = false;
+
     if (!$active) { unset($_POST[$dropdowns[$row][2]]); }
     $count = createDropDown($db, $dropdowns[$row][1], $dropdowns[$row][2], $dropdowns[$row][3], $prefix, $active, $dropdowns[$row][4], $none);
     if ($count == 1 ) { advanceCurrentDropDown($dropdowns, 'system'); }
@@ -172,11 +173,11 @@ function showDropDowns2($db, $prefix, $dropdowns) {
 }
 
 /**
- * showQuotes($db, $prefix)
+ * showQuotes($db, $prefix, $TxOnly)
  */
-function showQuotes($db, $prefix) {
+function showQuotes($db, $prefix, $TxOnly=false) {
   if (isset($_POST['currentDropDown']) && $_POST['currentDropDown'] == 'duration' && isset($_POST['duration'])) {
-    $quotes = getQuotes($db, $prefix);
+    $quotes = getQuotes($db, $prefix, $TxOnly);
     foreach ($quotes as $quote) {
       echo '<br /><br />';
       echo $quote->getHTML();
@@ -362,9 +363,9 @@ function getDescription($db, $id, $table, $prefix) {
 }
 
 /**
- * getQuotes($db, $prefix)
+ * getQuotes($db, $prefix, $TxOnly)
  */
-function getQuotes($db, $prefix) {
+function getQuotes($db, $prefix, $TxOnly) {
   $quote = [];
 
   $unsecure_sql = "SELECT tx.part_number as transmitter_pn, rec.biopac_id as biopac_receiver_pn, tx.receiver_id as receiver_pn, tx.biopotential_id as biopotential, tx.channels_id as channels";
@@ -394,16 +395,24 @@ function getQuotes($db, $prefix) {
    while ($row = $prepared_sql->fetch(PDO::FETCH_ASSOC)) {
      if (!empty($row['transmitter_pn'])) {
        $key = getGainCombinationKey($db, $prefix);
-       $daq = getDAQ($db);
+       if (!$TxOnly) { $daq = getDAQ($db); } else { $daq = null; }
        if ($_POST['system']=="none") {
-         $receiver = new QuoteItem('Epoch Receiver Tray', 1, $row['biopac_receiver_pn'], $row['receiver_pn'], null, null);
+	 if (!$TxOnly ) {
+	   $receiver = new QuoteItem('Epoch Receiver Tray', 1, $row['biopac_receiver_pn'], $row['receiver_pn'], null, null);
+	 } else {
+	   $receiver = null;
+	 }
          if ($_POST['duration'] == "reusable" ) {
            $transmitter = new QuoteItem('Epoch Transmitter Sensor', 1, "EPTX".$row['transmitter_pn']."-".sprintf("%05d", $key), $row['transmitter_pn'].getGainCombinationValue($db, $prefix, $key), "1 complimentary reusable transmitter is included with this receiver.", null);
          } else {
            $transmitter = new QuoteItem('Epoch Transmitter Sensor', 2, "EPTX".$row['transmitter_pn']."-".sprintf("%05d", $key), $row['transmitter_pn'].getGainCombinationValue($db, $prefix, $key), "2 complimentary transmitters are included with this receiver.", null);
          }
        } else {
-         $receiver = new QuoteItem('Epoch Receiver Tray', 0, $row['biopac_receiver_pn'], $row['receiver_pn'], null, null);
+	 if (!$TxOnly ) {
+           $receiver = new QuoteItem('Epoch Receiver Tray', 0, $row['biopac_receiver_pn'], $row['receiver_pn'], null, null);
+	 } else {
+	   $receiver = null;
+	 }
          $transmitter = new QuoteItem('Epoch Transmitter Sensor', 1, "EPTX".$row['transmitter_pn']."-".sprintf("%05d", $key), $row['transmitter_pn'].getGainCombinationValue($db, $prefix, $key), null, null);
        }
        $cable = getCable();
