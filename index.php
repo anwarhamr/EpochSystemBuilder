@@ -2,7 +2,7 @@
 <?php
 require_once('utils.php');
 // For security place, config.ini outsite of browseable files and change the path
-$config_file = '../../config.ini';
+$config_file = '../config.ini';
 $open_config_file = @file($config_file) or
         die ("Failed opening config file: $php_errormsg");
 $config = parse_ini_file($config_file);
@@ -29,6 +29,7 @@ echo  '<?xml version="1.0" encoding="utf-8"?>';
 <head>
   <title>Epoch System Builder</title>
   <link href="css/style.css" rel="stylesheet" type="text/css">
+  <link href="css/normalize.css" rel="stylesheet" type="text/css">
   <meta charset="UTF-8">
   <meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=2.0, width=device-width" />
 </head>
