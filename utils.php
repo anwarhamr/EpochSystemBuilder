@@ -106,7 +106,7 @@ function createDropDown($db, $label, $select, $table, $prefix, $active, $tooltip
     if (isset($_POST[$select])) {
       echo ($_POST[$select] == 'none') ? ' selected' : '';
     }
-    echo ">None</option>";
+    echo ">I need one!</option>";
   }
 
   // Close Select Tag
@@ -323,24 +323,31 @@ function getActivator() {
 }
 
 /**
- * getCable()
+ * getCables()
  */
-function getCable() {
+function getCables() {
   // BIOPAC cables
-  $cable = new QuoteItem(null, null, null, null, null, null);
+  $cables = array();
+  //$cables = new QuoteItem(null, null, null, null, null, null);
+  //$cable2 = new QuoteItem(null, null, null, null, null, null);
 
   switch ($_POST['dac']) {
     case 'none':
     case 'mp160':
-      $cable = new QuoteItem('BIOPAC Cable', $_POST['channels'], 'CBL123', null, 'One per channel.', 'https://www.biopac.com/product/interface-cables/?attribute_pa_size=unisolated-rj11-to-bnc-male');
+      $cables[] = new QuoteItem('BIOPAC Cable', $_POST['channels'], 'CBL123', null, 'One per channel.', 'https://www.biopac.com/product/interface-cables/?attribute_pa_size=unisolated-rj11-to-bnc-male');
+      break;
+    case 'mp36':
+    case 'mp36r':
+      $cables[] = new QuoteItem('BIOPAC Cable', $_POST['channels'], 'CBL125', null, 'One per channel.', 'https://www.biopac.com/product/interface-cables/?attribute_pa_size=cbl-bnc-male-to-bnc-male-2-m');
+      $cables[] = new QuoteItem('BIOPAC Cable', $_POST['channels'], 'SS9LA', null, 'One per channel.', 'https://www.biopac.com/product/input-adapters-bnc/?attribute_pa_size=input-adapter-unisolated-bnc-mp36-mp35-mp45');
       break;
     case 'mp100':
     case 'mp150':
-      $cable = new QuoteItem('BIOPAC Cable', $_POST['channels'], 'CBL102', null, 'One per channel.', 'https://www.biopac.com/product/interface-cables/?attribute_pa_size=cbl-3-5mm-to-bnc-m-2-m');
+      $cables[] = new QuoteItem('BIOPAC Cable', $_POST['channels'], 'CBL102', null, 'One per channel.', 'https://www.biopac.com/product/interface-cables/?attribute_pa_size=cbl-3-5mm-to-bnc-m-2-m');
       break;
   }
 
-  return $cable;
+  return $cables;
 }
 
 /**
@@ -395,10 +402,16 @@ function getQuotes($db, $prefix, $TxOnly) {
    while ($row = $prepared_sql->fetch(PDO::FETCH_ASSOC)) {
      if (!empty($row['transmitter_pn'])) {
        $key = getGainCombinationKey($db, $prefix);
-       if (!$TxOnly) { $daq = getDAQ($db); } else { $daq = null; }
+       if (!$TxOnly) {
+         $daq = getDAQ($db);
+	 $cables = getCables();
+       } else {
+	 $daq = null;
+       }
        if ($_POST['system']=="none") {
 	 if (!$TxOnly ) {
 	   $receiver = new QuoteItem('Epoch Receiver Tray', 1, $row['biopac_receiver_pn'], $row['receiver_pn'], null, null);
+	   $cables = getCables();
 	 } else {
 	   $receiver = null;
 	 }
@@ -408,16 +421,11 @@ function getQuotes($db, $prefix, $TxOnly) {
            $transmitter = new QuoteItem('Epoch Transmitter Sensor', 2, "EPTX".$row['transmitter_pn']."-".sprintf("%05d", $key), $row['transmitter_pn'].getGainCombinationValue($db, $prefix, $key), "2 complimentary transmitters are included with this receiver.", null);
          }
        } else {
-	 if (!$TxOnly ) {
-           $receiver = new QuoteItem('Epoch Receiver Tray', 0, $row['biopac_receiver_pn'], $row['receiver_pn'], null, null);
-	 } else {
-	   $receiver = null;
-	 }
+	 $receiver = null;
          $transmitter = new QuoteItem('Epoch Transmitter Sensor', 1, "EPTX".$row['transmitter_pn']."-".sprintf("%05d", $key), $row['transmitter_pn'].getGainCombinationValue($db, $prefix, $key), null, null);
        }
-       $cable = getCable();
        $activator = getActivator();
-       $quote[] = new Quote($daq, $receiver, $transmitter, $cable, $activator);
+       $quote[] = new Quote($daq, $receiver, $transmitter, $cables, $activator);
        $option++;
      }
    }

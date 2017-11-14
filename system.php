@@ -41,8 +41,8 @@ echo  '<?xml version="1.0" encoding="utf-8"?>';
 // Multidimensional array to create dropdowns.
 $dropdowns = array
   (
-    array('1', 'Select Existing Data Acquisition System', 'dac', $prefix.'dac', null),
-    array('2', 'Select Existing Epoch Receiver Tray', 'system', $prefix.'system', "Selected Epoch 2 system biopotentials CANNOT be changed."),
+    array('1', 'Select Data Acquisition System', 'dac', $prefix.'dac', null),
+    array('2', 'Select Epoch Receiver Tray', 'system', $prefix.'system', "Selected Epoch 2 system biopotentials CANNOT be changed."),
     array('3', 'Select Animal', 'animal', $prefix.'animal', null),
     array('4', 'Select Biopotential', 'biopotential', $prefix.'biopotential', "'Differential' reference electrode layout uses different grounds as opposed to a 'Common' reference electrode layout which uses a common ground."),
     array('5', 'Select Channels', 'channels', $prefix.'channels', null),
