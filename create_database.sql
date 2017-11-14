@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 09, 2017 at 09:17 PM
+-- Generation Time: Nov 14, 2017 at 02:09 AM
 -- Server version: 5.5.58-0ubuntu0.14.04.1
 -- PHP Version: 5.6.30
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `epitel_epoch`
+-- Database: `epoch`
 --
 
 -- --------------------------------------------------------
@@ -26,12 +26,13 @@ SET time_zone = "+00:00";
 -- Table structure for table `epoch_animal`
 --
 
-DROP TABLE IF EXISTS `epoch_animal`;
-CREATE TABLE `epoch_animal` (
+CREATE TABLE IF NOT EXISTS `epoch_animal` (
   `id` varchar(50) NOT NULL,
   `description` varchar(255) NOT NULL,
   `preselect` tinyint(1) NOT NULL DEFAULT '0',
-  `enable` tinyint(1) NOT NULL DEFAULT '1'
+  `enable` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -50,12 +51,13 @@ INSERT INTO `epoch_animal` (`id`, `description`, `preselect`, `enable`) VALUES
 -- Table structure for table `epoch_biopotential`
 --
 
-DROP TABLE IF EXISTS `epoch_biopotential`;
-CREATE TABLE `epoch_biopotential` (
+CREATE TABLE IF NOT EXISTS `epoch_biopotential` (
   `id` varchar(50) NOT NULL,
   `description` varchar(255) NOT NULL,
   `preselect` tinyint(1) NOT NULL DEFAULT '0',
-  `enable` tinyint(1) NOT NULL DEFAULT '1'
+  `enable` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -78,12 +80,13 @@ INSERT INTO `epoch_biopotential` (`id`, `description`, `preselect`, `enable`) VA
 -- Table structure for table `epoch_channels`
 --
 
-DROP TABLE IF EXISTS `epoch_channels`;
-CREATE TABLE `epoch_channels` (
+CREATE TABLE IF NOT EXISTS `epoch_channels` (
   `id` varchar(50) NOT NULL,
   `description` varchar(255) NOT NULL,
   `preselect` tinyint(1) NOT NULL DEFAULT '0',
-  `enable` tinyint(1) NOT NULL DEFAULT '1'
+  `enable` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -102,12 +105,12 @@ INSERT INTO `epoch_channels` (`id`, `description`, `preselect`, `enable`) VALUES
 -- Table structure for table `epoch_dac`
 --
 
-DROP TABLE IF EXISTS `epoch_dac`;
-CREATE TABLE `epoch_dac` (
+CREATE TABLE IF NOT EXISTS `epoch_dac` (
   `id` varchar(50) CHARACTER SET latin1 NOT NULL,
   `description` varchar(255) CHARACTER SET latin1 NOT NULL,
   `preselect` tinyint(1) NOT NULL DEFAULT '0',
-  `enable` tinyint(1) NOT NULL DEFAULT '1'
+  `enable` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -115,11 +118,13 @@ CREATE TABLE `epoch_dac` (
 --
 
 INSERT INTO `epoch_dac` (`id`, `description`, `preselect`, `enable`) VALUES
-('mp100', 'MP100', 0, 1),
-('mp150', 'MP150', 0, 1),
-('mp160', 'MP160', 0, 1),
-('other', 'Generic DAQ with 3.5mm', 0, 1),
-('other-pin', 'Generic DAQ with RJ11', 0, 1);
+('mp100', 'I have a MP100', 0, 1),
+('mp150', 'I have a MP150', 0, 1),
+('mp160', 'I have a MP160', 0, 1),
+('mp36', 'I have a MP36', 0, 1),
+('mp36r', 'I have a MP36R', 0, 1),
+('other', 'I have a Generic DAQ with 3.5mm', 0, 1),
+('other-pin', 'I have a Generic DAQ with RJ11', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -127,12 +132,13 @@ INSERT INTO `epoch_dac` (`id`, `description`, `preselect`, `enable`) VALUES
 -- Table structure for table `epoch_duration`
 --
 
-DROP TABLE IF EXISTS `epoch_duration`;
-CREATE TABLE `epoch_duration` (
+CREATE TABLE IF NOT EXISTS `epoch_duration` (
   `id` varchar(50) NOT NULL,
   `description` varchar(255) NOT NULL,
   `preselect` tinyint(1) NOT NULL DEFAULT '0',
-  `enable` tinyint(1) NOT NULL DEFAULT '1'
+  `enable` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -151,8 +157,7 @@ INSERT INTO `epoch_duration` (`id`, `description`, `preselect`, `enable`) VALUES
 -- Table structure for table `epoch_gains`
 --
 
-DROP TABLE IF EXISTS `epoch_gains`;
-CREATE TABLE `epoch_gains` (
+CREATE TABLE IF NOT EXISTS `epoch_gains` (
   `id` varchar(50) CHARACTER SET latin1 NOT NULL,
   `description` varchar(255) CHARACTER SET latin1 NOT NULL,
   `preselect` tinyint(1) NOT NULL DEFAULT '0',
@@ -5635,13 +5640,15 @@ INSERT INTO `epoch_gains` (`id`, `description`, `preselect`, `enable`) VALUES
 -- Table structure for table `epoch_receiver`
 --
 
-DROP TABLE IF EXISTS `epoch_receiver`;
-CREATE TABLE `epoch_receiver` (
+CREATE TABLE IF NOT EXISTS `epoch_receiver` (
   `id` varchar(50) NOT NULL,
   `biopac_id` varchar(15) NOT NULL,
   `system_id` varchar(255) NOT NULL,
   `hertz` varchar(255) NOT NULL,
-  `enable` tinyint(1) NOT NULL DEFAULT '1'
+  `enable` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_2` (`id`),
+  KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -5668,12 +5675,15 @@ INSERT INTO `epoch_receiver` (`id`, `biopac_id`, `system_id`, `hertz`, `enable`)
 -- Table structure for table `epoch_system`
 --
 
-DROP TABLE IF EXISTS `epoch_system`;
-CREATE TABLE `epoch_system` (
+CREATE TABLE IF NOT EXISTS `epoch_system` (
   `id` varchar(255) NOT NULL,
   `description` varchar(55) NOT NULL,
   `preselect` tinyint(1) NOT NULL DEFAULT '0',
-  `enable` tinyint(1) NOT NULL DEFAULT '1'
+  `enable` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_2` (`id`),
+  KEY `id` (`id`),
+  KEY `id_3` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -5681,13 +5691,13 @@ CREATE TABLE `epoch_system` (
 --
 
 INSERT INTO `epoch_system` (`id`, `description`, `preselect`, `enable`) VALUES
-('classic', 'Classic (100 EEG)', 0, 1),
-('classic-pup', 'Classic Pup (100 EEG)', 0, 1),
-('epoch2-100-100', 'Epoch 2 (100/100 EEG/EEG)', 0, 1),
-('epoch2-100-200', 'Epoch 2 (100/200 EEG/EXG)', 0, 1),
-('epoch2-200-200', 'Epoch 2 (200/200 EXG/EXG)', 0, 1),
-('epoch6', 'Epoch 6 (60/60/60/60/60/60 EEG)', 0, 1),
-('pup', 'Pup (100 EEG)', 0, 1);
+('classic', 'I have a Classic (100 EEG)', 0, 1),
+('classic-pup', 'I have a Classic Pup (100 EEG)', 0, 1),
+('epoch2-100-100', 'I have an Epoch2 (100/100 EEG/EEG)', 0, 1),
+('epoch2-100-200', 'I have an Epoch2 (100/200 EEG/EXG)', 0, 1),
+('epoch2-200-200', 'I have an Epoch2 (200/200 EXG/EXG)', 0, 1),
+('epoch6', 'I have an Epoch6 (60/60/60/60/60/60 EEG)', 0, 1),
+('pup', 'I have a Pup (100 EEG)', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -5695,17 +5705,19 @@ INSERT INTO `epoch_system` (`id`, `description`, `preselect`, `enable`) VALUES
 -- Table structure for table `epoch_transmitter`
 --
 
-DROP TABLE IF EXISTS `epoch_transmitter`;
-CREATE TABLE `epoch_transmitter` (
-  `id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `epoch_transmitter` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `part_number` varchar(50) NOT NULL,
   `receiver_id` varchar(50) NOT NULL,
   `animal_id` varchar(50) NOT NULL,
   `biopotential_id` varchar(50) NOT NULL,
   `channels_id` varchar(50) NOT NULL,
   `duration_id` varchar(50) NOT NULL,
-  `enable` tinyint(1) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `enable` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_2` (`id`),
+  KEY `id` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=172 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `epoch_transmitter`
@@ -5733,37 +5745,43 @@ INSERT INTO `epoch_transmitter` (`id`, `part_number`, `receiver_id`, `animal_id`
 (19, '10214', '10206', 'adult-mouse', 'eeg', '2', 'reusable', 1),
 (20, '10216', '10207', 'adult-rat', 'eeg-eeg', '2', '6-month', 1),
 (21, '10215', '10206', 'adult-mouse', 'eeg-eeg', '2', '2-month', 1),
-(23, '10215', '10232', 'adult-rat', 'eeg-emg', '2', '2-month', 1),
-(24, '10215', '10231', 'adult-mouse', 'eeg-emg', '2', '2-month', 1),
-(25, '10216', '10232', 'adult-rat', 'eeg-emg', '2', '6-month', 1),
-(26, '10216', '10232', 'adult-rat', 'eeg-ecg', '2', '6-month', 1),
-(27, '10215', '10231', 'adult-mouse', 'eeg-ecg', '2', '2-month', 1),
-(29, '10216', '10230', 'adult-rat', 'ecg-emg', '2', '6-month', 1),
-(30, '10215', '10229', 'adult-mouse', 'ecg-emg', '2', '2-month', 1),
-(32, '10216', '10230', 'adult-rat', 'emg-emg', '2', '6-month', 1),
-(33, '10215', '10229', 'adult-mouse', 'emg-emg', '2', '2-month', 1),
-(35, '10161', '10230', 'adult-rat', 'ecg', '1', '2-month', 1),
-(36, '10161', '10229', 'adult-mouse', 'ecg', '1', '2-month', 1),
-(37, '10162', '10230', 'adult-rat', 'ecg', '1', '6-month', 1),
-(38, '10161', '10230', 'adult-rat', 'emg', '1', '2-month', 1),
-(39, '10161', '10229', 'adult-mouse', 'emg', '1', '2-month', 1),
-(40, '10162', '10230', 'adult-rat', 'emg', '1', '6-month', 1),
-(41, '10128', '10022', 'adult-rat', 'eeg', '2', '2-month', 0),
-(42, '10128', '10021', 'adult-mouse', 'eeg', '2', '2-month', 0),
+(23, '10264', '10232', 'adult-rat', 'eeg-emg', '2', '2-month', 1),
+(24, '10264', '10231', 'adult-mouse', 'eeg-emg', '2', '2-month', 1),
+(25, '10265', '10232', 'adult-rat', 'eeg-emg', '2', '6-month', 1),
+(26, '10265', '10232', 'adult-rat', 'eeg-ecg', '2', '6-month', 1),
+(29, '10267', '10230', 'adult-rat', 'ecg-emg', '2', '6-month', 1),
+(30, '10226', '10229', 'adult-mouse', 'ecg-emg', '2', '2-month', 1),
+(32, '10267', '10230', 'adult-rat', 'emg-emg', '2', '6-month', 1),
+(33, '10226', '10229', 'adult-mouse', 'emg-emg', '2', '2-month', 1),
+(41, '10128', '10022', 'adult-rat', 'eeg', '2', '2-month', 1),
+(42, '10128', '10021', 'adult-mouse', 'eeg', '2', '2-month', 1),
 (43, '10129', '10022', 'adult-rat', 'eeg', '2', '6-month', 0),
 (44, '10217', '10022', 'adult-rat', 'eeg', '2', 'reusable', 0),
 (45, '10217', '10021', 'adult-mouse', 'eeg', '2', 'reusable', 0),
 (144, '10215', '10207', 'adult-rat', 'eeg-eeg', '2', '2-month', 1),
-(145, '10215', '10232', 'adult-rat', 'eeg-ecg', '2', '2-month', 1),
-(146, '10215', '10230', 'adult-rat', 'eeg-emg', '2', '2-month', 1),
-(147, '10215', '10230', 'adult-rat', 'emg-emg', '2', '2-month', 1),
-(148, '10165', '10073', 'rat-pup', 'eeg', '4', '2-week', 1),
-(149, '10165', '10073', 'mouse-pup', 'eeg', '4', '2-week', 1),
-(150, '10128', '10022', 'adult-rat', 'eeg', '2', '2-month', 1),
-(151, '10128', '10021', 'adult-mouse', 'eeg', '2', '2-month', 1),
+(145, '10264', '10232', 'adult-rat', 'eeg-ecg', '2', '2-month', 1),
+(146, '10226', '10230', 'adult-rat', 'eeg-emg', '2', '2-month', 1),
+(147, '10226', '10230', 'adult-rat', 'emg-emg', '2', '2-month', 1),
 (152, '10129', '10022', 'adult-rat', 'eeg', '2', '6-month', 1),
 (153, '10217', '10021', 'adult-mouse', 'eeg', '2', 'reusable', 1),
-(154, '10217', '10022', 'adult-rat', 'eeg', '2', 'reusable', 1);
+(154, '10217', '10022', 'adult-rat', 'eeg', '2', 'reusable', 1),
+(155, '10266', '10230', 'adult-rat', 'ecg-emg', '2', '2-month', 1),
+(156, '10266', '10229', 'adult-mouse', 'ecg-emg', '2', '2-month', 1),
+(157, '10266', '10230', 'adult-rat', 'emg-emg', '2', '2-month', 1),
+(158, '10266', '10229', 'adult-mouse', 'emg-emg', '2', '2-month', 1),
+(159, '10266', '10230', 'adult-rat', 'ecg', '2', '2-month', 1),
+(160, '10266', '10229', 'adult-mouse', 'ecg', '2', '2-month', 1),
+(161, '10266', '10230', 'adult-rat', 'emg', '2', '2-month', 1),
+(162, '10266', '10229', 'adult-mouse', 'emg', '2', '2-month', 1),
+(163, '10267', '10230', 'adult-rat', 'ecg', '2', '6-month', 1),
+(164, '10267', '10230', 'adult-rat', 'emg', '2', '6-month', 1),
+(165, '10264', '10231', 'adult-mouse', 'eeg-ecg', '2', '2-month', 1),
+(166, '10215', '10206', 'adult-mouse', 'eeg', '2', '2-month', 1),
+(167, '10215', '10207', 'adult-rat', 'eeg', '2', '2-month', 1),
+(168, '10212', '10273', 'pup-rat', 'eeg', '2', '2-month', 1),
+(169, '10210', '10273', 'pup-rat', 'eeg', '4', '2-month', 1),
+(170, '10238', '10273', 'pup-rat', 'eeg', '4', '2-week', 1),
+(171, '10238', '10273', 'pup-mouse', 'eeg', '4', '2-week', 1);
 
 -- --------------------------------------------------------
 
@@ -5771,12 +5789,13 @@ INSERT INTO `epoch_transmitter` (`id`, `part_number`, `receiver_id`, `animal_id`
 -- Table structure for table `epoch_transmitter_gain`
 --
 
-DROP TABLE IF EXISTS `epoch_transmitter_gain`;
-CREATE TABLE `epoch_transmitter_gain` (
+CREATE TABLE IF NOT EXISTS `epoch_transmitter_gain` (
   `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `preselect` tinyint(1) NOT NULL DEFAULT '0',
-  `enable` tinyint(1) NOT NULL DEFAULT '1'
+  `enable` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -5789,86 +5808,6 @@ INSERT INTO `epoch_transmitter_gain` (`id`, `description`, `preselect`, `enable`
 ('2', '±2mV input range', 0, 1),
 ('5', '±5mV input range', 0, 1);
 
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `epoch_animal`
---
-ALTER TABLE `epoch_animal`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id` (`id`);
-
---
--- Indexes for table `epoch_biopotential`
---
-ALTER TABLE `epoch_biopotential`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id` (`id`);
-
---
--- Indexes for table `epoch_channels`
---
-ALTER TABLE `epoch_channels`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id` (`id`);
-
---
--- Indexes for table `epoch_dac`
---
-ALTER TABLE `epoch_dac`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `epoch_duration`
---
-ALTER TABLE `epoch_duration`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id` (`id`);
-
---
--- Indexes for table `epoch_receiver`
---
-ALTER TABLE `epoch_receiver`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id_2` (`id`),
-  ADD KEY `id` (`id`);
-
---
--- Indexes for table `epoch_system`
---
-ALTER TABLE `epoch_system`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id_2` (`id`),
-  ADD KEY `id` (`id`),
-  ADD KEY `id_3` (`id`);
-
---
--- Indexes for table `epoch_transmitter`
---
-ALTER TABLE `epoch_transmitter`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id_2` (`id`),
-  ADD KEY `id` (`id`);
-
---
--- Indexes for table `epoch_transmitter_gain`
---
-ALTER TABLE `epoch_transmitter_gain`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id` (`id`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `epoch_transmitter`
---
-ALTER TABLE `epoch_transmitter`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=155;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
