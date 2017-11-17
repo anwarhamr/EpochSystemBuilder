@@ -42,7 +42,7 @@ echo  '<?xml version="1.0" encoding="utf-8"?>';
 $dropdowns = array
   (
     array('1', 'Select Data Acquisition System', 'dac', $prefix.'dac', null),
-    array('2', 'Select Epoch Receiver Tray', 'system', $prefix.'system', "Selected Epoch 2 system biopotentials CANNOT be changed."),
+    array('2', 'Select Epoch Receiver Tray', 'system', $prefix.'system', 'Serial numbers (S/N) are either located on the side next to the power jack or on the bottom of the receiver. Rat receivers are 16.5"x8.5", Mouse receivers are 13"x8", and Pup receivers are 7"x7"'),
     array('3', 'Select Animal', 'animal', $prefix.'animal', null),
     array('4', 'Select Biopotential', 'biopotential', $prefix.'biopotential', "'Differential' reference electrode layout uses different grounds as opposed to a 'Common' reference electrode layout which uses a common ground."),
     array('5', 'Select Channels', 'channels', $prefix.'channels', null),
