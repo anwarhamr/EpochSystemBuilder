@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 17, 2017 at 12:57 AM
+-- Generation Time: Dec 01, 2017 at 02:49 AM
 -- Server version: 5.5.58-0ubuntu0.14.04.1
 -- PHP Version: 5.6.30
 
@@ -5765,10 +5765,10 @@ INSERT INTO `epoch_transmitter` (`id`, `part_number`, `receiver_id`, `animal_id`
 (165, '10264', '10231', 'adult-mouse', 'eeg-ecg', '2', '2-month', 1),
 (166, '10215', '10206', 'adult-mouse', 'eeg', '2', '2-month', 1),
 (167, '10215', '10207', 'adult-rat', 'eeg', '2', '2-month', 1),
-(168, '10212', '10273', 'pup-rat', 'eeg', '2', '2-month', 1),
-(169, '10210', '10273', 'pup-rat', 'eeg', '4', '2-month', 1),
-(170, '10238', '10273', 'pup-rat', 'eeg', '4', '2-week', 1),
-(171, '10238', '10273', 'pup-mouse', 'eeg', '4', '2-week', 1);
+(168, '10212', '10073', 'rat-pup', 'eeg', '2', '2-month', 1),
+(169, '10210', '10073', 'rat-pup', 'eeg', '4', '2-month', 1),
+(170, '10238', '10073', 'rat-pup', 'eeg', '4', '2-week', 1),
+(171, '10238', '10073', 'mouse-pup', 'eeg', '4', '2-week', 1);
 
 -- --------------------------------------------------------
 
