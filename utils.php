@@ -301,7 +301,7 @@ function getDAQ($db) {
 
   switch ($_POST['dac']) {
     case 'none':
-      $daq = new QuoteItem('DAQ', 1, 'MP160', null, null, 'https://www.biopac.com/product/mp150-data-acquisition-systems/');
+      $daq = new QuoteItem('DAQ', 1, 'MP160', 'https://www.biopac.com/product/mp150-data-acquisition-systems/', null, null);
       break;
   }
 
@@ -315,9 +315,9 @@ function getActivator() {
   // Activator
   $activator = new QuoteItem(null, null, null, null, null, null);
   if ($_POST['system']!="classic" ) {
-    $activator = new QuoteItem('Epoch Transmitter Activator', 1, 'EPOCH-ACTI', '10029', null, 'https://www.biopac.com/product/epoch-sensor-activation-utility/');
+    $activator = new QuoteItem('Epoch Transmitter Activator', 1, 'EPOCH-ACTI', 'https://www.biopac.com/product/epoch-sensor-activation-utility/', '10029', null);
   } elseif ($_POST['system']=="classic" && $_POST['duration']=="reusable" ) {
-    $activator = new QuoteItem('Epoch Transmitter Activator', 1, 'EPOCH-ACTI', '10029', 'Old activators do not work with reusable transmitters.', 'https://www.biopac.com/product/epoch-sensor-activation-utility/');
+    $activator = new QuoteItem('Epoch Transmitter Activator', 1, 'EPOCH-ACTI', 'https://www.biopac.com/product/epoch-sensor-activation-utility/', '10029', 'Old activators do not work with reusable transmitters.');
   }
   return $activator;
 }
@@ -334,16 +334,16 @@ function getCables() {
   switch ($_POST['dac']) {
     case 'none':
     case 'mp160':
-      $cables[] = new QuoteItem('BIOPAC Cable', $_POST['channels'], 'CBL123', null, 'One per channel.', 'https://www.biopac.com/product/interface-cables/?attribute_pa_size=unisolated-rj11-to-bnc-male');
+      $cables[] = new QuoteItem('BIOPAC Cable', $_POST['channels'], 'CBL123', 'https://www.biopac.com/product/interface-cables/?attribute_pa_size=unisolated-rj11-to-bnc-male', null, 'One per channel.');
       break;
     case 'mp36':
     case 'mp36r':
-      $cables[] = new QuoteItem('BIOPAC Cable', $_POST['channels'], 'CBL125', null, 'One per channel.', 'https://www.biopac.com/product/interface-cables/?attribute_pa_size=cbl-bnc-male-to-bnc-male-2-m');
-      $cables[] = new QuoteItem('BIOPAC Cable', $_POST['channels'], 'SS9LA', null, 'One per channel.', 'https://www.biopac.com/product/input-adapters-bnc/?attribute_pa_size=input-adapter-unisolated-bnc-mp36-mp35-mp45');
+      $cables[] = new QuoteItem('BIOPAC Cable', $_POST['channels'], 'CBL125', 'https://www.biopac.com/product/interface-cables/?attribute_pa_size=cbl-bnc-male-to-bnc-male-2-m', null, 'One per channel.');
+      $cables[] = new QuoteItem('BIOPAC Cable', $_POST['channels'], 'SS9LA', 'https://www.biopac.com/product/input-adapters-bnc/?attribute_pa_size=input-adapter-unisolated-bnc-mp36-mp35-mp45', null, 'One per channel.');
       break;
     case 'mp100':
     case 'mp150':
-      $cables[] = new QuoteItem('BIOPAC Cable', $_POST['channels'], 'CBL102', null, 'One per channel.', 'https://www.biopac.com/product/interface-cables/?attribute_pa_size=cbl-3-5mm-to-bnc-m-2-m');
+      $cables[] = new QuoteItem('BIOPAC Cable', $_POST['channels'], 'CBL102', 'https://www.biopac.com/product/interface-cables/?attribute_pa_size=cbl-3-5mm-to-bnc-m-2-m', null, 'One per channel.');
       break;
   }
 
@@ -375,7 +375,7 @@ function getDescription($db, $id, $table, $prefix) {
 function getQuotes($db, $prefix, $TxOnly) {
   $quote = [];
 
-  $unsecure_sql = "SELECT tx.part_number as transmitter_pn, rec.biopac_id as biopac_receiver_pn, tx.receiver_id as receiver_pn, tx.biopotential_id as biopotential, tx.channels_id as channels";
+  $unsecure_sql = "SELECT tx.part_number as transmitter_pn, rec.biopac_id as biopac_receiver_pn, rec.biopac_url as biopac_receiver_url, tx.receiver_id as receiver_pn, tx.biopotential_id as biopotential, tx.channels_id as channels";
   $unsecure_sql .= " FROM ".$prefix."transmitter as tx INNER JOIN ".$prefix."receiver as rec ON tx.receiver_id = rec.id";
   $unsecure_sql .= " WHERE tx.animal_id=:animal";
   $unsecure_sql .= " AND tx.biopotential_id=:biopotential";
@@ -410,19 +410,19 @@ function getQuotes($db, $prefix, $TxOnly) {
        }
        if ($_POST['system']=="none") {
 	 if (!$TxOnly ) {
-	   $receiver = new QuoteItem('Epoch Receiver Tray', 1, $row['biopac_receiver_pn'], $row['receiver_pn'], null, null);
+	   $receiver = new QuoteItem('Epoch Receiver Tray', 1, $row['biopac_receiver_pn'], $row['biopac_receiver_url'], $row['receiver_pn'], null);
 	   $cables = getCables();
 	 } else {
 	   $receiver = null;
 	 }
          if ($_POST['duration'] == "reusable" ) {
-           $transmitter = new QuoteItem('Epoch Transmitter Sensor', 1, "EPTX".$row['transmitter_pn']."-".sprintf("%05d", $key), $row['transmitter_pn'].getGainCombinationValue($db, $prefix, $key), "1 complimentary reusable transmitter is included with this receiver.", null);
+           $transmitter = new QuoteItem('Epoch Transmitter Sensor', 1, "EPTX".$row['transmitter_pn']."-".sprintf("%05d", $key), null, $row['transmitter_pn'].getGainCombinationValue($db, $prefix, $key), "1 complimentary reusable transmitter is included with this receiver.");
          } else {
-           $transmitter = new QuoteItem('Epoch Transmitter Sensor', 2, "EPTX".$row['transmitter_pn']."-".sprintf("%05d", $key), $row['transmitter_pn'].getGainCombinationValue($db, $prefix, $key), "2 complimentary transmitters are included with this receiver.", null);
+           $transmitter = new QuoteItem('Epoch Transmitter Sensor', 2, "EPTX".$row['transmitter_pn']."-".sprintf("%05d", $key), null, $row['transmitter_pn'].getGainCombinationValue($db, $prefix, $key), "2 complimentary transmitters are included with this receiver.", null);
          }
        } else {
 	 $receiver = null;
-         $transmitter = new QuoteItem('Epoch Transmitter Sensor', 1, "EPTX".$row['transmitter_pn']."-".sprintf("%05d", $key), $row['transmitter_pn'].getGainCombinationValue($db, $prefix, $key), null, null);
+         $transmitter = new QuoteItem('Epoch Transmitter Sensor', 1, "EPTX".$row['transmitter_pn']."-".sprintf("%05d", $key), null, $row['transmitter_pn'].getGainCombinationValue($db, $prefix, $key), null);
        }
        $activator = getActivator();
        $quote[] = new Quote($daq, $receiver, $transmitter, $cables, $activator);

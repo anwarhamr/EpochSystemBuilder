@@ -1,4 +1,3 @@
-
 <?php
 require_once('utils.php');
 // For security place, config.ini outsite of browseable files and change the path

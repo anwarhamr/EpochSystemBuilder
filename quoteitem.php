@@ -11,13 +11,13 @@ class QuoteItem {
   public $notes;
   public $url;
 
-  function __construct($name, $qty, $biopac_pn, $epitel_pn, $notes, $url) {
+  function __construct($name, $qty, $biopac_pn, $biopac_url, $epitel_pn, $notes) {
     $this->name = $name;
     $this->qty = $qty;
     $this->biopac_pn = $biopac_pn;
+    $this->biopac_url = $biopac_url;
     $this->epitel_pn = $epitel_pn;
     $this->notes = $notes;
-    $this->url = $url;
   }
 
   function getHTML() {
@@ -26,8 +26,8 @@ class QuoteItem {
     $html .= '<div class="divTableRow">';
     $html .= '  <div class="divTableCell">'.$this->qty.'</div>';
     $html .= '  <div class="divTableCell">'.$this->name.'</div>';
-    if (!empty($this->url)) {
-      $html .= '  <div class="divTableCell"><a href="'.$this->url.'">'.$this->biopac_pn.'</a></div>';
+    if (!empty($this->biopac_url)) {
+      $html .= '  <div class="divTableCell"><a href="'.$this->biopac_url.'">'.$this->biopac_pn.'</a></div>';
     } else {
       $html .= '  <div class="divTableCell">'.$this->biopac_pn.'</div>';
     }
