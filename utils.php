@@ -90,6 +90,15 @@ function createDropDown($db, $label, $select, $table, $prefix, $active, $tooltip
   $prepared_sql->execute();
 
   echo "<option value=''>$label</option>";
+  // "I need one!" option
+  if ($none) {
+    echo "<option value='none'";
+    if (isset($_POST[$select])) {
+      echo ($_POST[$select] == 'none') ? ' selected' : '';
+    }
+    echo ">I need one!</option>";
+  }
+  // List options from the database
   while ($row = $prepared_sql->fetch(PDO::FETCH_ASSOC)) {
      echo '<option value="'.$row['id'].'"';
      if (isset($_POST[$select]) && $row['id'] == $_POST[$select]) {
@@ -100,13 +109,6 @@ function createDropDown($db, $label, $select, $table, $prefix, $active, $tooltip
        $_POST[$select] = $row['id'];
      }
      echo '>'.$row['description'].'</option>', PHP_EOL;
-  }
-  if ($none) {
-    echo "<option value='none'";
-    if (isset($_POST[$select])) {
-      echo ($_POST[$select] == 'none') ? ' selected' : '';
-    }
-    echo ">I need one!</option>";
   }
 
   // Close Select Tag
