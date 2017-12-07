@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Dec 01, 2017 at 01:53 PM
+-- Generation Time: Dec 07, 2017 at 12:14 AM
 -- Server version: 5.5.58-0ubuntu0.14.04.1
 -- PHP Version: 5.6.30
 
@@ -19,8 +19,22 @@ SET time_zone = "+00:00";
 --
 -- Database: `epoch`
 --
-CREATE DATABASE IF NOT EXISTS `epitel_epoch` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `epitel_epoch`;
+CREATE DATABASE IF NOT EXISTS `epoch` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `epoch`;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `epoch_activator`
+--
+
+DROP TABLE IF EXISTS `epoch_activator`;
+CREATE TABLE `epoch_activator` (
+  `id` varchar(50) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `preselect` tinyint(1) NOT NULL DEFAULT '0',
+  `enable` tinyint(1) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -77,6 +91,32 @@ INSERT INTO `epoch_biopotential` (`id`, `description`, `preselect`, `enable`) VA
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `epoch_cable`
+--
+
+DROP TABLE IF EXISTS `epoch_cable`;
+CREATE TABLE `epoch_cable` (
+  `id` varchar(50) NOT NULL,
+  `biopac_id` varchar(15) NOT NULL,
+  `biopac_url` varchar(255) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `preselect` tinyint(1) NOT NULL DEFAULT '0',
+  `enable` tinyint(1) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `epoch_cable`
+--
+
+INSERT INTO `epoch_cable` (`id`, `biopac_id`, `biopac_url`, `description`, `preselect`, `enable`) VALUES
+('', 'CBL123', 'https://www.biopac.com/product/interface-cables/?attribute_pa_size=unisolated-rj11-to-bnc-male', 'One per channel.', 0, 1),
+('', 'CBL125', 'https://www.biopac.com/product/interface-cables/?attribute_pa_size=cbl-bnc-male-to-bnc-male-2-m', 'One per channel.', 0, 1),
+('', 'SS9LA', 'https://www.biopac.com/product/input-adapters-bnc/?attribute_pa_size=input-adapter-unisolated-bnc-mp36-mp35-mp45', 'One per channel.', 0, 1),
+('', 'CBL102', 'https://www.biopac.com/product/interface-cables/?attribute_pa_size=cbl-3-5mm-to-bnc-m-2-m', 'One per channel.', 0, 1);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `epoch_channels`
 --
 
@@ -107,6 +147,7 @@ INSERT INTO `epoch_channels` (`id`, `description`, `preselect`, `enable`) VALUES
 DROP TABLE IF EXISTS `epoch_dac`;
 CREATE TABLE `epoch_dac` (
   `id` varchar(50) CHARACTER SET latin1 NOT NULL,
+  `cable_biopac_id` varchar(15) NOT NULL,
   `description` varchar(255) CHARACTER SET latin1 NOT NULL,
   `preselect` tinyint(1) NOT NULL DEFAULT '0',
   `enable` tinyint(1) NOT NULL DEFAULT '1'
@@ -116,14 +157,14 @@ CREATE TABLE `epoch_dac` (
 -- Dumping data for table `epoch_dac`
 --
 
-INSERT INTO `epoch_dac` (`id`, `description`, `preselect`, `enable`) VALUES
-('mp100', 'I have a MP100', 0, 1),
-('mp150', 'I have a MP150', 0, 1),
-('mp160', 'I have a MP160', 0, 1),
-('mp36', 'I have a MP36', 0, 1),
-('mp36r', 'I have a MP36R', 0, 1),
-('other', 'I have a Generic DAQ with 3.5mm', 0, 1),
-('other-pin', 'I have a Generic DAQ with RJ11', 0, 1);
+INSERT INTO `epoch_dac` (`id`, `cable_biopac_id`, `description`, `preselect`, `enable`) VALUES
+('mp100', 'CBL102', 'I have a MP100', 0, 1),
+('mp150', 'CBL102', 'I have a MP150', 0, 1),
+('mp160', 'CBL123', 'I have a MP160', 0, 1),
+('mp36', '0', 'I have a MP36', 0, 1),
+('mp36r', '0', 'I have a MP36R', 0, 1),
+('other', '0', 'I have a Generic DAQ with 3.5mm', 0, 1),
+('other-pin', '0', 'I have a Generic DAQ with RJ11', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -5724,7 +5765,7 @@ CREATE TABLE `epoch_transmitter` (
 
 INSERT INTO `epoch_transmitter` (`id`, `part_number`, `receiver_id`, `biopac_id`, `biopac_url`, `animal_id`, `biopotential_id`, `channels_id`, `duration_id`, `enable`) VALUES
 (1, '10165', '10072', 'EPTX10165', '', 'rat-pup', 'eeg', '2', '2-week', 1),
-(2, '10165', '10072', 'EPTX10072', '', 'mouse-pup', 'eeg', '2', '2-week', 1),
+(2, '10165', '10072', 'EPTX10065', '', 'mouse-pup', 'eeg', '2', '2-week', 1),
 (3, '10128', '10072', 'EPTX10128', '', 'rat-pup', 'eeg', '2', '2-month', 1),
 (4, '10208', '10199', 'EPTX10208', '', 'adult-rat', 'eeg', '6', '2-month', 1),
 (5, '10208', '10198', 'EPTX10208', '', 'adult-mouse', 'eeg', '6', '2-month', 1),
@@ -5738,18 +5779,18 @@ INSERT INTO `epoch_transmitter` (`id`, `part_number`, `receiver_id`, `biopac_id`
 (13, '10217', '10199', 'EPTX10217', '', 'adult-rat', 'eeg', '2', 'reusable', 1),
 (14, '10217', '10198', 'EPTX10217', '', 'adult-mouse', 'eeg', '2', 'reusable', 1),
 (15, '10212', '10207', 'EPTX10212', '', 'adult-rat', 'eeg', '2', '2-month', 1),
-(16, '10212', '10206', 'EPTX10206', '', 'adult-mouse', 'eeg', '2', '2-month', 1),
-(17, '10213', '10207', 'EPTX10207', '', 'adult-rat', 'eeg', '2', '6-month', 1),
-(18, '10217', '10207', 'EPTX10207', '', 'adult-rat', 'eeg', '2', 'reusable', 1),
-(19, '10217', '10206', 'EPTX10206', '', 'adult-mouse', 'eeg', '2', 'reusable', 1),
-(20, '10216', '10207', 'EPTX10207', '', 'adult-rat', 'eeg-eeg', '2', '6-month', 1),
-(21, '10215', '10206', 'EPTX10206', '', 'adult-mouse', 'eeg-eeg', '2', '2-month', 1),
-(23, '10264', '10232', 'EPTX10232', '', 'adult-rat', 'eeg-emg', '2', '2-month', 1),
-(24, '10264', '10231', 'EPTX10231', '', 'adult-mouse', 'eeg-emg', '2', '2-month', 1),
-(25, '10265', '10232', 'EPTX10232', '', 'adult-rat', 'eeg-emg', '2', '6-month', 1),
-(26, '10265', '10232', 'EPTX10232', '', 'adult-rat', 'eeg-ecg', '2', '6-month', 1),
+(16, '10212', '10206', 'EPTX10212', '', 'adult-mouse', 'eeg', '2', '2-month', 1),
+(17, '10213', '10207', 'EPTX10213', '', 'adult-rat', 'eeg', '2', '6-month', 1),
+(18, '10217', '10207', 'EPTX10217', '', 'adult-rat', 'eeg', '2', 'reusable', 1),
+(19, '10217', '10206', 'EPTX10217', '', 'adult-mouse', 'eeg', '2', 'reusable', 1),
+(20, '10216', '10207', 'EPTX10216', '', 'adult-rat', 'eeg-eeg', '2', '6-month', 1),
+(21, '10215', '10206', 'EPTX10215', '', 'adult-mouse', 'eeg-eeg', '2', '2-month', 1),
+(23, '10264', '10232', 'EPTX10264', '', 'adult-rat', 'eeg-emg', '2', '2-month', 1),
+(24, '10264', '10231', 'EPTX10264', '', 'adult-mouse', 'eeg-emg', '2', '2-month', 1),
+(25, '10265', '10232', 'EPTX10265', '', 'adult-rat', 'eeg-emg', '2', '6-month', 1),
+(26, '10265', '10232', 'EPTX10265', '', 'adult-rat', 'eeg-ecg', '2', '6-month', 1),
 (29, '10267', '10230', 'EPTX10267', '', 'adult-rat', 'ecg-emg', '2', '6-month', 1),
-(30, '10226', '10229', 'EPTX10229', '', 'adult-mouse', 'ecg-emg', '2', '2-month', 1),
+(30, '10226', '10229', 'EPTX10226', '', 'adult-mouse', 'ecg-emg', '2', '2-month', 1),
 (32, '10267', '10230', 'EPTX10267', '', 'adult-rat', 'emg-emg', '2', '6-month', 1),
 (33, '10226', '10229', 'EPTX10226', '', 'adult-mouse', 'emg-emg', '2', '2-month', 1),
 (41, '10128', '10022', 'EPTX10128', '', 'adult-rat', 'eeg', '2', '2-month', 1),
@@ -5763,10 +5804,10 @@ INSERT INTO `epoch_transmitter` (`id`, `part_number`, `receiver_id`, `biopac_id`
 (155, '10266', '10230', 'EPTX10266', '', 'adult-rat', 'ecg-emg', '2', '2-month', 1),
 (159, '10266', '10230', 'EPTX10266', '', 'adult-rat', 'ecg', '2', '2-month', 1),
 (160, '10266', '10229', 'EPTX10266', '', 'adult-mouse', 'ecg', '2', '2-month', 1),
-(161, '10266', '10230', 'EPTX10230', '', 'adult-rat', 'emg', '2', '2-month', 1),
-(162, '10266', '10229', 'EPTX10229', '', 'adult-mouse', 'emg', '2', '2-month', 1),
-(163, '10267', '10230', 'EPTX10230', '', 'adult-rat', 'ecg', '2', '6-month', 1),
-(164, '10267', '10230', 'EPTX10230', '', 'adult-rat', 'emg', '2', '6-month', 1),
+(161, '10266', '10230', 'EPTX10266', '', 'adult-rat', 'emg', '2', '2-month', 1),
+(162, '10266', '10229', 'EPTX10266', '', 'adult-mouse', 'emg', '2', '2-month', 1),
+(163, '10267', '10230', 'EPTX10267', '', 'adult-rat', 'ecg', '2', '6-month', 1),
+(164, '10267', '10230', 'EPTX10267', '', 'adult-rat', 'emg', '2', '6-month', 1),
 (165, '10264', '10231', 'EPTX10264', '', 'adult-mouse', 'eeg-ecg', '2', '2-month', 1),
 (166, '10215', '10206', 'EPTX10215', '', 'adult-mouse', 'eeg', '2', '2-month', 1),
 (167, '10215', '10207', 'EPTX10215', '', 'adult-rat', 'eeg', '2', '2-month', 1),
@@ -5881,4 +5922,3 @@ ALTER TABLE `epoch_transmitter`
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
