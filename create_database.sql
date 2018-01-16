@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jan 16, 2018 at 08:13 PM
+-- Generation Time: Jan 16, 2018 at 10:07 PM
 -- Server version: 5.5.58-0ubuntu0.14.04.1
 -- PHP Version: 5.6.30
 
@@ -5822,7 +5822,10 @@ INSERT INTO `epoch_transmitter` (`id`, `part_number`, `receiver_id`, `biopac_id`
 (177, '10264', '10229', 'EPTX10264', '', 'Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content.', 'adult-mouse', 'eeg-ecg', '2', '2-month', 1),
 (178, '10264', '10229', 'EPTX10264', '', 'Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content.', 'adult-mouse', 'eeg-emg', '2', '2-month', 1),
 (179, '10265', '10230', 'EPTX10265', '', 'Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content.', 'adult-rat', 'eeg-emg', '2', '6-month', 1),
-(180, '10265', '10230', 'EPTX10265', '', 'Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content.', 'adult-rat', 'eeg-ecg', '2', '6-month', 1);
+(180, '10265', '10230', 'EPTX10265', '', 'Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content.', 'adult-rat', 'eeg-ecg', '2', '6-month', 1),
+(181, '10215', '10232', 'EPTX10215', '', 'Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content.', 'adult-rat', 'eeg-eeg', '2', '2-month', 1),
+(182, '10215', '10231', 'EPTX10215', '', 'Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content.', 'adult-mouse', 'eeg-eeg', '2', '2-month', 1),
+(183, '10216', '10232', 'EPTX10216', '', 'Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content.', 'adult-rat', 'eeg-eeg', '2', '6-month', 1);
 
 -- --------------------------------------------------------
 
@@ -5926,7 +5929,7 @@ ALTER TABLE `epoch_transmitter_gain`
 -- AUTO_INCREMENT for table `epoch_transmitter`
 --
 ALTER TABLE `epoch_transmitter`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=181;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=184;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
