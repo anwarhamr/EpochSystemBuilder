@@ -33,8 +33,9 @@ echo  '<?xml version="1.0" encoding="utf-8"?>';
   <meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=2.0, width=device-width" />
 </head>
 <body>
+  <div class="wrapper">
   <div>
-<form action="<?=$_SERVER['PHP_SELF'];?>" method="post" name="createSystem" id="createSystem">
+    <form action="<?=$_SERVER['PHP_SELF'];?>" method="post" name="createSystem" id="createSystem">
 
 <?php
 // Multidimensional array to create dropdowns.
@@ -57,7 +58,7 @@ echo getHiddenCurrentDropDown($dropdowns); // write hidden tag
 </div>
 
 <?php showQuotes($db, $prefix); ?>
-
+</div>
 <section  class="section-images">
 <img src="https://www.biopac.com/wp-content/uploads/EPOCH-BIOPAC-System-1024x551.jpg">
 <a href="http://www.epitelinc.com/downloads/Epoch_Brochure_7Feb2017.pdf"><img src="http://www.epitelinc.com/images/icon200px.png"></a>

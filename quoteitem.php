@@ -24,7 +24,6 @@ class QuoteItem {
     $html = null;
 
     $html .= '<div class="divTableRow">';
-    $html .= '  <div class="divTableCell">'.$this->qty.'</div>';
     $html .= '  <div class="divTableCell">'.$this->name.'</div>';
     if (!empty($this->biopac_url)) {
       $html .= '  <div class="divTableCell"><a href="'.$this->biopac_url.'">'.$this->biopac_pn.'</a></div>';
@@ -33,6 +32,7 @@ class QuoteItem {
     }
     $html .= '  <div class="divTableCell">'.$this->epitel_pn.'</div>';
     $html .= '  <div class="divTableCell">'.$this->notes.'</div>';
+    $html .= '  <div class="divTableCell">'.$this->qty.'</div>';
     $html .= '</div>';
 
     return $html;

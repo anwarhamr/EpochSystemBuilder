@@ -21,8 +21,17 @@ class Quote {
   function getHTML() {
     $html = null;
 
-    $html .= '<div class="divTable" style="width: 100%;" >';
+    $html .= '<h3>Recommended EPOCH System results</h3>';
+    $html .= '<div class="divTable">';
     $html .= '  <div class="divTableBody">';
+    $html .= '    <div class="divTableRow">';
+    $html .= '      <div class="divTableCell"><strong>EPOCH System Component</strong></div>';
+    $html .= '      <div class="divTableCell"><strong>BIOPAC Part #</strong></div>';
+    $html .= '      <div class="divTableCell"><strong>Epitel Part #</strong></div>';
+    $html .= '      <div class="divTableCell"><strong>Notes</strong></div>';
+    $html .= '      <div class="divTableCell"><strong>Qty</strong></div>';
+    $html .= '    </div>';
+
     if ($this->daq->name!=null) {$html .= '    '.$this->daq->getHTML();}
     if ($this->receiver->name!=null) {$html .= '    '.$this->receiver->getHTML();}
     $html .= '    '.$this->transmitter->getHTML();
