@@ -29,6 +29,7 @@ echo  '<?xml version="1.0" encoding="utf-8"?>';
   <title>Epoch System Builder</title>
   <link href="css/style.css" rel="stylesheet" type="text/css">
   <link href="css/normalize.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <meta charset="UTF-8">
   <meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=2.0, width=device-width" />
 </head>
@@ -60,8 +61,7 @@ echo getHiddenCurrentDropDown($dropdowns); // write hidden tag
 
 <section  class="section-images">
 <img src="https://www.biopac.com/wp-content/uploads/EPOCH-BIOPAC-System-1024x551.jpg">
-<a href="http://www.epitelinc.com/downloads/Epoch_Brochure_7Feb2017.pdf"><img src="http://www.epitelinc.com/images/icon200px.png"></a>
-<a href="https://github.com/jonfen/EpochSystemBuilder"><img src="images/GitHub-Mark-Light-120px-plus.png"></a>
+<a href="https://www.epitelinc.com/s/Epoch-Product-Catalog.pdf"><i class="material-icons">file_download</i></a>
 </section>
 
 </body>
