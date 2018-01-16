@@ -80,7 +80,7 @@ function generateDropDownSQL($db, $table, $prefix) {
  */
 function createDropDown($db, $label, $select, $table, $prefix, $active, $tooltip, $none) {
   // Open Select Tag
-  echo "<br />$label: <select name=\"$select\" id=\"$select\"";
+  echo "<div><label>$label:</label> <select name=\"$select\" id=\"$select\"";
   if (!$active) { echo " disabled"; }
   echo ">", PHP_EOL;
 
@@ -126,6 +126,9 @@ function createDropDown($db, $label, $select, $table, $prefix, $active, $tooltip
 
   // Tooltip
   if (!is_null($tooltip)) { echo "<div class='tooltip'>[?] <span class='tooltiptext'>$tooltip</span></div>"; }
+
+  // close form control group
+  echo '</div>', PHP_EOL;
 
   return $prepared_sql->rowCount();
 }
