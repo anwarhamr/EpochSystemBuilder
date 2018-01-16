@@ -377,7 +377,7 @@ function getDescription($db, $id, $table, $prefix) {
 function getQuotes($db, $prefix, $TxOnly) {
   $quote = [];
 
-  $unsecure_sql = "SELECT tx.part_number as transmitter_pn, tx.biopac_id as biopac_transmitter_pn, tx.biopac_url as biopac_transmitter_url, rec.biopac_id as biopac_receiver_pn, rec.biopac_url as biopac_receiver_url, tx.receiver_id as receiver_pn, tx.biopotential_id as biopotential, tx.channels_id as channels";
+  $unsecure_sql = "SELECT tx.part_number as transmitter_pn, tx.biopac_id as biopac_transmitter_pn, tx.biopac_url as biopac_transmitter_url, rec.biopac_id as biopac_receiver_pn, rec.biopac_url as biopac_receiver_url, tx.notes as transmitter_notes, tx.receiver_id as receiver_pn, tx.biopotential_id as biopotential, tx.channels_id as channels";
   $unsecure_sql .= " FROM ".$prefix."transmitter as tx INNER JOIN ".$prefix."receiver as rec ON tx.receiver_id = rec.id";
   $unsecure_sql .= " WHERE tx.animal_id=:animal";
   $unsecure_sql .= " AND tx.biopotential_id=:biopotential";
@@ -418,13 +418,13 @@ function getQuotes($db, $prefix, $TxOnly) {
 	   $receiver = null;
 	 }
          if ($_POST['duration'] == "reusable" ) {
-           $transmitter = new QuoteItem('Epoch Transmitter Sensor', 1, $row['biopac_transmitter_pn']."-".sprintf("%05d", $key), null, $row['transmitter_pn'].getGainCombinationValue($db, $prefix, $key), "1 complimentary reusable transmitter is included with this receiver.");
+           $transmitter = new QuoteItem('Epoch Transmitter Sensor', 1, $row['biopac_transmitter_pn']."-".sprintf("%05d", $key), null, $row['transmitter_pn'].getGainCombinationValue($db, $prefix, $key), "1 complimentary reusable transmitter is included with this receiver.  ".$row['transmitter_notes']);
          } else {
-           $transmitter = new QuoteItem('Epoch Transmitter Sensor', 2, $row['biopac_transmitter_pn']."-".sprintf("%05d", $key), null, $row['transmitter_pn'].getGainCombinationValue($db, $prefix, $key), "2 complimentary transmitters are included with this receiver.", null);
+           $transmitter = new QuoteItem('Epoch Transmitter Sensor', 3, $row['biopac_transmitter_pn']."-".sprintf("%05d", $key), null, $row['transmitter_pn'].getGainCombinationValue($db, $prefix, $key), "2 complimentary transmitters are included with this receiver.  ".$row['transmitter_notes'], null);
          }
        } else {
 	 $receiver = null;
-         $transmitter = new QuoteItem('Epoch Transmitter Sensor', 1, $row['biopac_transmitter_pn']."-".sprintf("%05d", $key), null, $row['transmitter_pn'].getGainCombinationValue($db, $prefix, $key), null);
+         $transmitter = new QuoteItem('Epoch Transmitter Sensor', 1, $row['biopac_transmitter_pn']."-".sprintf("%05d", $key), null, $row['transmitter_pn'].getGainCombinationValue($db, $prefix, $key), $row['transmitter_notes']);
        }
        $activator = getActivator();
        $quote[] = new Quote($daq, $receiver, $transmitter, $cables, $activator);
