@@ -234,7 +234,7 @@ function createGainDropdowns($db, $prefix, $active) {
   $tooltip = "Gain (peak-to-peak) per channel recommendations:";
   $tooltip .= "<br/>Adult EEG 2mV± <br/>Pup EEG 1mV± <br/>EMG 5mV± <br/>ECG 2mV±";
 
-  // Create a Transmitter Gain Dropdown for each channel
+  // Create a Sensor Gain Dropdown for each channel
   if (isset($_POST['channels'])) {
     for ($i = 1; $i <= $_POST['channels']; $i++) {
       // Set Default Common Gains
@@ -317,9 +317,9 @@ function getActivator() {
   // Activator
   $activator = new QuoteItem(null, null, null, null, null, null);
   if ($_POST['system']!="classic" ) {
-    $activator = new QuoteItem('Epoch Transmitter Activator', 1, 'EPOCH-ACTI', 'https://www.biopac.com/product/epoch-sensor-activation-utility/', '10029', null);
+    $activator = new QuoteItem('Epoch Sensor Activator', 1, 'EPOCH-ACTI', 'https://www.biopac.com/product/epoch-sensor-activation-utility/', '10029', null);
   } elseif ($_POST['system']=="classic" && $_POST['duration']=="reusable" ) {
-    $activator = new QuoteItem('Epoch Transmitter Activator', 1, 'EPOCH-ACTI', 'https://www.biopac.com/product/epoch-sensor-activation-utility/', '10029', 'Old activators do not work with reusable transmitters.');
+    $activator = new QuoteItem('Epoch Sensor Activator', 1, 'EPOCH-ACTI', 'https://www.biopac.com/product/epoch-sensor-activation-utility/', '10029', 'Old activators do not work with reusable senors.');
   }
   return $activator;
 }
@@ -418,13 +418,13 @@ function getQuotes($db, $prefix, $TxOnly) {
 	   $receiver = null;
 	 }
          if ($_POST['duration'] == "reusable" ) {
-           $transmitter = new QuoteItem('Epoch Transmitter Sensor', 1, $row['biopac_transmitter_pn']."-".sprintf("%05d", $key), null, $row['transmitter_pn'].getGainCombinationValue($db, $prefix, $key), "1 complimentary reusable transmitter is included with this receiver.  ".$row['transmitter_notes']);
+           $transmitter = new QuoteItem('Epoch Sensor', 1, $row['biopac_transmitter_pn']."-".sprintf("%05d", $key), null, $row['transmitter_pn'].getGainCombinationValue($db, $prefix, $key), "1 complimentary reusable sensor is included with this receiver.  ".$row['transmitter_notes']);
          } else {
-           $transmitter = new QuoteItem('Epoch Transmitter Sensor', 3, $row['biopac_transmitter_pn']."-".sprintf("%05d", $key), null, $row['transmitter_pn'].getGainCombinationValue($db, $prefix, $key), "2 complimentary transmitters are included with this receiver.  ".$row['transmitter_notes'], null);
+           $transmitter = new QuoteItem('Epoch Sensor', 3, $row['biopac_transmitter_pn']."-".sprintf("%05d", $key), null, $row['transmitter_pn'].getGainCombinationValue($db, $prefix, $key), "2 complimentary sensors are included with this receiver.  ".$row['transmitter_notes'], null);
          }
        } else {
 	 $receiver = null;
-         $transmitter = new QuoteItem('Epoch Transmitter Sensor', 1, $row['biopac_transmitter_pn']."-".sprintf("%05d", $key), null, $row['transmitter_pn'].getGainCombinationValue($db, $prefix, $key), $row['transmitter_notes']);
+         $transmitter = new QuoteItem('Epoch Sensor', 1, $row['biopac_transmitter_pn']."-".sprintf("%05d", $key), null, $row['transmitter_pn'].getGainCombinationValue($db, $prefix, $key), $row['transmitter_notes']);
        }
        $activator = getActivator();
        $quote[] = new Quote($daq, $receiver, $transmitter, $cables, $activator);
