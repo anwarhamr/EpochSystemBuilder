@@ -61,8 +61,6 @@ echo getHiddenCurrentDropDown($dropdowns); // write hidden tag
 <?php showQuotes($db, $prefix); ?>
 </div>
 <section  class="section-images">
-<img src="https://www.biopac.com/wp-content/uploads/EPOCH-BIOPAC-System-1024x551.jpg">
-<a href="https://www.epitelinc.com/s/Epoch-Product-Catalog.pdf"><i class="material-icons">file_download</i></a>
 <a href="https://github.com/jonfen/EpochSystemBuilder"><img src="images/GitHub-Mark-Light-120px-plus.png" style="filter: invert(100%); width: 32px;"></a>
 </section>
 
