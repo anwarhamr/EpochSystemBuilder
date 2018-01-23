@@ -234,8 +234,8 @@ function createGainDropdowns($db, $prefix, $active) {
   }
 
   // Gain Tooltip
-  $tooltip = "Gain (peak-to-peak) per channel recommendations:";
-  $tooltip .= "<br/>Adult EEG 2mV± <br/>Pup EEG 1mV± <br/>EMG 5mV± <br/>ECG 2mV±";
+  $tooltip = "Gain (input range) per channel recommendations:";
+  $tooltip .= "<br/>Adult EEG ±1.0mV <br/>Pup EEG ±0.5mV <br/>EMG ±5.0mV <br/>ECG ±1.0mV";
 
   // Create a Sensor Gain Dropdown for each channel
   if (isset($_POST['channels'])) {
