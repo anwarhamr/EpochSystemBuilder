@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jan 22, 2018 at 09:58 PM
--- Server version: 5.5.58-0ubuntu0.14.04.1
+-- Generation Time: Jan 29, 2018 at 11:43 PM
+-- Server version: 5.5.59-0ubuntu0.14.04.1
 -- PHP Version: 5.6.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `epitel_epoch`
+-- Database: `epoch`
 --
 
 -- --------------------------------------------------------
@@ -5683,6 +5683,7 @@ CREATE TABLE `epoch_receiver` (
   `id` varchar(50) NOT NULL,
   `biopac_id` varchar(15) NOT NULL,
   `biopac_url` varchar(255) NOT NULL,
+  `notes` varchar(255) DEFAULT NULL,
   `system_id` varchar(255) NOT NULL,
   `enable` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -5691,19 +5692,19 @@ CREATE TABLE `epoch_receiver` (
 -- Dumping data for table `epoch_receiver`
 --
 
-INSERT INTO `epoch_receiver` (`id`, `biopac_id`, `biopac_url`, `system_id`, `enable`) VALUES
-('10021', 'EPRCVR-M2-100', '', 'classic-mouse', 0),
-('10022', 'EPRCVR-R2-100', '', 'classic-rat', 0),
-('10072', 'EPRCVR-P2-100', '', 'classic-pup', 0),
-('10073', 'EPRCVR-P4-100', 'https://www.biopac.com/product/epoch-wireless-receiver-tray/?attribute_pa_animal-size=pup-tray', 'pup', 1),
-('10198', 'EP6RCVR-M6-60', 'https://www.biopac.com/product/epoch-wireless-receiver-tray/?attribute_pa_animal-size=mice-tray-6ch', 'epoch6-mouse', 1),
-('10199', 'EP6RCVR-R6-60', 'https://www.biopac.com/product/epoch-wireless-receiver-tray/?attribute_pa_animal-size=rat-tray-6ch', 'epoch6-rat', 1),
-('10206', 'EP2RCVR-M2-1/1', 'https://www.biopac.com/product/epoch-wireless-receiver-tray/?attribute_pa_animal-size=mice-tray-100-100', 'epoch2-100-100-mouse', 1),
-('10207', 'EP2RCVR-R2-1/1', 'https://www.biopac.com/product/epoch-wireless-receiver-tray/?attribute_pa_animal-size=rat-tray-100-100', 'epoch2-100-100-rat', 1),
-('10229', 'EP2RCVR-M2-2/2', 'https://www.biopac.com/product/epoch-wireless-receiver-tray/?attribute_pa_animal-size=mice-tray-200-200', 'epoch2-200-200-mouse', 1),
-('10230', 'EP2RCVR-R2-2/2', 'https://www.biopac.com/product/epoch-wireless-receiver-tray/?attribute_pa_animal-size=rat-tray-200-200', 'epoch2-200-200-rat', 1),
-('10231', 'EP2RCVR-M2-1/2', 'https://www.biopac.com/product/epoch-wireless-receiver-tray/?attribute_pa_animal-size=mice-tray-100-200', 'epoch2-100-200-mouse', 1),
-('10232', 'EP2RCVR-R2-1/2', 'https://www.biopac.com/product/epoch-wireless-receiver-tray/?attribute_pa_animal-size=rat-tray-100-200', 'epoch2-100-200-rat', 1);
+INSERT INTO `epoch_receiver` (`id`, `biopac_id`, `biopac_url`, `notes`, `system_id`, `enable`) VALUES
+('10021', 'EPRCVR-M2-100', '', NULL, 'classic-mouse', 0),
+('10022', 'EPRCVR-R2-100', '', NULL, 'classic-rat', 0),
+('10072', 'EPRCVR-P2-100', '', NULL, 'classic-pup', 0),
+('10073', 'EPRCVR-P4-100', 'https://www.biopac.com/product/epoch-wireless-receiver-tray/?attribute_pa_animal-size=pup-tray', 'Provides up to 4 channels of EEG (100Hz) for pups.', 'pup', 1),
+('10198', 'EP6RCVR-M6-60', 'https://www.biopac.com/product/epoch-wireless-receiver-tray/?attribute_pa_animal-size=mice-tray-6ch', 'Provides up to 6 channels of EEG (60Hz) for mice.', 'epoch6-mouse', 1),
+('10199', 'EP6RCVR-R6-60', 'https://www.biopac.com/product/epoch-wireless-receiver-tray/?attribute_pa_animal-size=rat-tray-6ch', 'Provides up to 6 channels of EEG (60Hz) for rats.', 'epoch6-rat', 1),
+('10206', 'EP2RCVR-M2-1/1', 'https://www.biopac.com/product/epoch-wireless-receiver-tray/?attribute_pa_animal-size=mice-tray-100-100', 'Provides up to 2 channels of EEG (100Hz) for mice.', 'epoch2-100-100-mouse', 1),
+('10207', 'EP2RCVR-R2-1/1', 'https://www.biopac.com/product/epoch-wireless-receiver-tray/?attribute_pa_animal-size=rat-tray-100-100', 'Provides up to 2 channels of EEG (100Hz) for rats.', 'epoch2-100-100-rat', 1),
+('10229', 'EP2RCVR-M2-2/2', 'https://www.biopac.com/product/epoch-wireless-receiver-tray/?attribute_pa_animal-size=mice-tray-200-200', 'Provides up to 2 channels for ECG/EMG (200Hz) for mice.', 'epoch2-200-200-mouse', 1),
+('10230', 'EP2RCVR-R2-2/2', 'https://www.biopac.com/product/epoch-wireless-receiver-tray/?attribute_pa_animal-size=rat-tray-200-200', 'Provides up to 2 channels for ECG/EMG (200Hz) for rats.', 'epoch2-200-200-rat', 1),
+('10231', 'EP2RCVR-M2-1/2', 'https://www.biopac.com/product/epoch-wireless-receiver-tray/?attribute_pa_animal-size=mice-tray-100-200', 'Provides up to 2 channels, first EEG (100Hz) and second ECG/EMG (200Hz) for mice.', 'epoch2-100-200-mouse', 1),
+('10232', 'EP2RCVR-R2-1/2', 'https://www.biopac.com/product/epoch-wireless-receiver-tray/?attribute_pa_animal-size=rat-tray-100-200', 'Provides up to 2 channels, first EEG (100Hz) and second ECG/EMG (200Hz) for rats.', 'epoch2-100-200-rat', 1);
 
 -- --------------------------------------------------------
 
@@ -5782,50 +5783,48 @@ INSERT INTO `epoch_transmitter` (`id`, `part_number`, `receiver_id`, `biopac_id`
 (17, '10213', '10207', 'EPTX10213', 'https://www.biopac.com/product/epoch-wireless-eeg-transmitters/?attribute_pa_size=6-mo-2-ch-eeg', NULL, 'adult-rat', 'eeg', '2', '6-month', 1),
 (18, '10217', '10207', 'EPTX10217', 'https://www.biopac.com/product/epoch-reuse/?attribute_pa_compatibility=epoch2-or-epoch6-receiver', NULL, 'adult-rat', 'eeg', '2', 'reusable', 1),
 (19, '10217', '10206', 'EPTX10217', 'https://www.biopac.com/product/epoch-reuse/?attribute_pa_compatibility=epoch2-or-epoch6-receiver', NULL, 'adult-mouse', 'eeg', '2', 'reusable', 1),
-(20, '10216', '10207', 'EPTX10216', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=epoch-6mo-2ch-diff', NULL, 'adult-rat', 'eeg-eeg', '2', '6-month', 1),
-(21, '10215', '10206', 'EPTX10215', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=epoch-2mo-2ch-diff', NULL, 'adult-mouse', 'eeg-eeg', '2', '2-month', 1),
-(23, '10264', '10232', 'EPTX10264', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=2-mo-2-ch-eegexg', NULL, 'adult-rat', 'eeg-emg', '2', '2-month', 1),
-(24, '10264', '10231', 'EPTX10264', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=2-mo-2-ch-eegexg', NULL, 'adult-mouse', 'eeg-emg', '2', '2-month', 1),
-(25, '10265', '10232', 'EPTX10265', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=6-mo-2-ch-eegexg', NULL, 'adult-rat', 'eeg-emg', '2', '6-month', 1),
-(26, '10265', '10232', 'EPTX10265', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=6-mo-2-ch-eegexg', NULL, 'adult-rat', 'eeg-ecg', '2', '6-month', 1),
-(29, '10267', '10230', 'EPTX10267', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=6-mo-2-ch-exgexg', NULL, 'adult-rat', 'ecg-emg', '2', '6-month', 1),
-(30, '10226', '10229', 'EPTX10226', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=2-mo-2-ch-exgexg', NULL, 'adult-mouse', 'ecg-emg', '2', '2-month', 1),
-(32, '10267', '10230', 'EPTX10267', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=6-mo-2-ch-exgexg', NULL, 'adult-rat', 'emg-emg', '2', '6-month', 1),
-(33, '10226', '10229', 'EPTX10226', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=2-mo-2-ch-exgexg', NULL, 'adult-mouse', 'emg-emg', '2', '2-month', 1),
+(20, '10216', '10207', 'EPTX10216', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=epoch-6mo-2ch-diff', 'Differential sensor.', 'adult-rat', 'eeg-eeg', '2', '6-month', 1),
+(21, '10215', '10206', 'EPTX10215', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=epoch-2mo-2ch-diff', 'Differential sensor.', 'adult-mouse', 'eeg-eeg', '2', '2-month', 1),
+(23, '10264', '10232', 'EPTX10264', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=2-mo-2-ch-eegexg', 'Differential sensor.', 'adult-rat', 'eeg-emg', '2', '2-month', 1),
+(24, '10264', '10231', 'EPTX10264', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=2-mo-2-ch-eegexg', 'Differential sensor.', 'adult-mouse', 'eeg-emg', '2', '2-month', 1),
+(25, '10265', '10232', 'EPTX10265', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=6-mo-2-ch-eegexg', 'Differential sensor.', 'adult-rat', 'eeg-emg', '2', '6-month', 1),
+(26, '10265', '10232', 'EPTX10265', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=6-mo-2-ch-eegexg', 'Differential sensor.', 'adult-rat', 'eeg-ecg', '2', '6-month', 1),
+(29, '10267', '10230', 'EPTX10267', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=6-mo-2-ch-exgexg', 'Differential sensor.', 'adult-rat', 'ecg-emg', '2', '6-month', 1),
+(30, '10226', '10229', 'EPTX10226', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=2-mo-2-ch-exgexg', 'Differential sensor.', 'adult-mouse', 'ecg-emg', '2', '2-month', 1),
+(32, '10267', '10230', 'EPTX10267', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=6-mo-2-ch-exgexg', 'Differential sensor.', 'adult-rat', 'emg-emg', '2', '6-month', 1),
+(33, '10226', '10229', 'EPTX10226', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=2-mo-2-ch-exgexg', 'Differential sensor.', 'adult-mouse', 'emg-emg', '2', '2-month', 1),
 (41, '10128', '10022', 'EPTX10128', 'https://www.biopac.com/product/epoch-wireless-eeg-transmitters/?attribute_pa_size=wireless-eeg-transmitter-2-channel-2-mos', NULL, 'adult-rat', 'eeg', '2', '2-month', 1),
 (42, '10128', '10021', 'EPTX10128', 'https://www.biopac.com/product/epoch-wireless-eeg-transmitters/?attribute_pa_size=wireless-eeg-transmitter-2-channel-2-mos', NULL, 'adult-mouse', 'eeg', '2', '2-month', 1),
 (43, '10129', '10022', 'EPTX10129', 'https://www.biopac.com/product/epoch-wireless-eeg-transmitters/?attribute_pa_size=wireless-eeg-transmitter-2-channel-6-mos', NULL, 'adult-rat', 'eeg', '2', '6-month', 1),
 (44, '10214', '10022', 'EPTX10214', 'https://www.biopac.com/product/epoch-reuse/?attribute_pa_compatibility=epoch-classic-receiver', NULL, 'adult-rat', 'eeg', '2', 'reusable', 1),
 (45, '10214', '10021', 'EPTX10214', 'https://www.biopac.com/product/epoch-reuse/?attribute_pa_compatibility=epoch-classic-receiver', NULL, 'adult-mouse', 'eeg', '2', 'reusable', 1),
-(144, '10215', '10207', 'EPTX10215', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=epoch-2mo-2ch-diff', NULL, 'adult-rat', 'eeg-eeg', '2', '2-month', 1),
-(145, '10264', '10232', 'EPTX10264', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=2-mo-2-ch-eegexg', NULL, 'adult-rat', 'eeg-ecg', '2', '2-month', 1),
-(147, '10226', '10230', 'EPTX10226', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=2-mo-2-ch-exgexg', NULL, 'adult-rat', 'emg-emg', '2', '2-month', 1),
+(144, '10215', '10207', 'EPTX10215', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=epoch-2mo-2ch-diff', 'Differential sensor.', 'adult-rat', 'eeg-eeg', '2', '2-month', 1),
+(145, '10264', '10232', 'EPTX10264', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=2-mo-2-ch-eegexg', 'Differential sensor.', 'adult-rat', 'eeg-ecg', '2', '2-month', 1),
+(147, '10226', '10230', 'EPTX10226', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=2-mo-2-ch-exgexg', 'Differential sensor.', 'adult-rat', 'emg-emg', '2', '2-month', 1),
 (155, '10266', '10230', 'EPTX10266', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=2-mo-2-ch-exgexg', NULL, 'adult-rat', 'ecg-emg', '2', '2-month', 1),
 (159, '10266', '10230', 'EPTX10266', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=2-mo-2-ch-exgexg', NULL, 'adult-rat', 'ecg', '2', '2-month', 1),
 (160, '10266', '10229', 'EPTX10266', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=2-mo-2-ch-exgexg', NULL, 'adult-mouse', 'ecg', '2', '2-month', 1),
 (161, '10266', '10230', 'EPTX10266', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=2-mo-2-ch-exgexg', NULL, 'adult-rat', 'emg', '2', '2-month', 1),
 (162, '10266', '10229', 'EPTX10266', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=2-mo-2-ch-exgexg', NULL, 'adult-mouse', 'emg', '2', '2-month', 1),
-(163, '10267', '10230', 'EPTX10267', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=6-mo-2-ch-exgexg', NULL, 'adult-rat', 'ecg', '2', '6-month', 1),
-(164, '10267', '10230', 'EPTX10267', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=6-mo-2-ch-exgexg', NULL, 'adult-rat', 'emg', '2', '6-month', 1),
-(165, '10264', '10231', 'EPTX10264', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=2-mo-2-ch-eegexg', NULL, 'adult-mouse', 'eeg-ecg', '2', '2-month', 1),
-(166, '10215', '10206', 'EPTX10215', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=epoch-2mo-2ch-diff', NULL, 'adult-mouse', 'eeg', '2', '2-month', 1),
-(167, '10215', '10207', 'EPTX10215', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=epoch-2mo-2ch-diff', NULL, 'adult-rat', 'eeg', '2', '2-month', 1),
+(163, '10267', '10230', 'EPTX10267', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=6-mo-2-ch-exgexg', 'Differential sensor.', 'adult-rat', 'ecg', '2', '6-month', 1),
+(164, '10267', '10230', 'EPTX10267', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=6-mo-2-ch-exgexg', 'Differential sensor.', 'adult-rat', 'emg', '2', '6-month', 1),
+(165, '10264', '10231', 'EPTX10264', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=2-mo-2-ch-eegexg', 'Differential sensor.', 'adult-mouse', 'eeg-ecg', '2', '2-month', 1),
 (168, '10212', '10073', 'EPTX10212', 'https://www.biopac.com/product/epoch-wireless-eeg-transmitters/?attribute_pa_size=2-mo-2-ch-eeg', NULL, 'rat-pup', 'eeg', '2', '2-month', 1),
 (169, '10210', '10073', 'EPTX10210', 'https://www.biopac.com/product/epoch-wireless-eeg-4-ch-transmitters/?attribute_pa_epoch-trans=2-mo-4-ch-eeg', NULL, 'rat-pup', 'eeg', '4', '2-month', 1),
 (170, '10238', '10073', 'EPTX10238', 'https://www.biopac.com/product/epoch-wireless-eeg-4-ch-transmitters/?attribute_pa_epoch-trans=2-wk-4-ch-eeg', NULL, 'rat-pup', 'eeg', '4', '2-week', 1),
 (171, '10238', '10073', 'EPTX10238', 'https://www.biopac.com/product/epoch-wireless-eeg-4-ch-transmitters/?attribute_pa_epoch-trans=2-wk-4-ch-eeg', NULL, 'mouse-pup', 'eeg', '4', '2-week', 1),
-(172, '10215', '10230', 'EPTX10215', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=epoch-2mo-2ch-diff', 'Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content.', 'adult-rat', 'eeg-eeg', '2', '2-month', 1),
-(173, '10215', '10229', 'EPTX10215', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=epoch-2mo-2ch-diff', 'Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content.', 'adult-mouse', 'eeg-eeg', '2', '2-month', 1),
-(174, '10216', '10230', 'EPTX10216', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=epoch-6mo-2ch-diff', 'Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content.', 'adult-rat', 'eeg-eeg', '2', '6-month', 1),
-(175, '10264', '10230', 'EPTX10264', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=2-mo-2-ch-eegexg', 'Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content.', 'adult-rat', 'eeg-emg', '2', '2-month', 1),
-(176, '10264', '10230', 'EPTX10264', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=2-mo-2-ch-eegexg', 'Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content.', 'adult-rat', 'eeg-ecg', '2', '2-month', 1),
-(177, '10264', '10229', 'EPTX10264', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=2-mo-2-ch-eegexg', 'Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content.', 'adult-mouse', 'eeg-ecg', '2', '2-month', 1),
-(178, '10264', '10229', 'EPTX10264', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=2-mo-2-ch-eegexg', 'Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content.', 'adult-mouse', 'eeg-emg', '2', '2-month', 1),
-(179, '10265', '10230', 'EPTX10265', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=6-mo-2-ch-eegexg', 'Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content.', 'adult-rat', 'eeg-emg', '2', '6-month', 1),
-(180, '10265', '10230', 'EPTX10265', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=6-mo-2-ch-eegexg', 'Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content.', 'adult-rat', 'eeg-ecg', '2', '6-month', 1),
-(181, '10215', '10232', 'EPTX10215', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=epoch-2mo-2ch-diff', 'Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content.', 'adult-rat', 'eeg-eeg', '2', '2-month', 1),
-(182, '10215', '10231', 'EPTX10215', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=epoch-2mo-2ch-diff', 'Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content.', 'adult-mouse', 'eeg-eeg', '2', '2-month', 1),
-(183, '10216', '10232', 'EPTX10216', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=epoch-6mo-2ch-diff', 'Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content.', 'adult-rat', 'eeg-eeg', '2', '6-month', 1);
+(172, '10215', '10230', 'EPTX10215', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=epoch-2mo-2ch-diff', 'Differential sensor.  Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content.', 'adult-rat', 'eeg-eeg', '2', '2-month', 1),
+(173, '10215', '10229', 'EPTX10215', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=epoch-2mo-2ch-diff', 'Differential sensor.  Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content.', 'adult-mouse', 'eeg-eeg', '2', '2-month', 1),
+(174, '10216', '10230', 'EPTX10216', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=epoch-6mo-2ch-diff', 'Differential sensor.  Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content.', 'adult-rat', 'eeg-eeg', '2', '6-month', 1),
+(175, '10264', '10230', 'EPTX10264', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=2-mo-2-ch-eegexg', 'Differential sensor.  Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content.', 'adult-rat', 'eeg-emg', '2', '2-month', 1),
+(176, '10264', '10230', 'EPTX10264', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=2-mo-2-ch-eegexg', 'Differential sensor.  Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content.', 'adult-rat', 'eeg-ecg', '2', '2-month', 1),
+(177, '10264', '10229', 'EPTX10264', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=2-mo-2-ch-eegexg', 'Differential sensor.  Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content.', 'adult-mouse', 'eeg-ecg', '2', '2-month', 1),
+(178, '10264', '10229', 'EPTX10264', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=2-mo-2-ch-eegexg', 'Differential sensor.  Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content.', 'adult-mouse', 'eeg-emg', '2', '2-month', 1),
+(179, '10265', '10230', 'EPTX10265', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=6-mo-2-ch-eegexg', 'Differential sensor.  Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content.', 'adult-rat', 'eeg-emg', '2', '6-month', 1),
+(180, '10265', '10230', 'EPTX10265', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=6-mo-2-ch-eegexg', 'Differential sensor.  Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content.', 'adult-rat', 'eeg-ecg', '2', '6-month', 1),
+(181, '10215', '10232', 'EPTX10215', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=epoch-2mo-2ch-diff', 'Differential sensor.  Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content.', 'adult-rat', 'eeg-eeg', '2', '2-month', 1),
+(182, '10215', '10231', 'EPTX10215', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=epoch-2mo-2ch-diff', 'Differential sensor.  Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content.', 'adult-mouse', 'eeg-eeg', '2', '2-month', 1),
+(183, '10216', '10232', 'EPTX10216', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=epoch-6mo-2ch-diff', 'Differential sensor.  Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content.', 'adult-rat', 'eeg-eeg', '2', '6-month', 1);
 
 -- --------------------------------------------------------
 
@@ -5932,4 +5931,4 @@ ALTER TABLE `epoch_transmitter`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=184;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;ll
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

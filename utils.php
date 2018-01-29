@@ -383,7 +383,7 @@ function getDescription($db, $id, $table, $prefix) {
 function getQuotes($db, $prefix, $TxOnly) {
   $quote = [];
 
-  $unsecure_sql = "SELECT tx.part_number as transmitter_pn, tx.biopac_id as biopac_transmitter_pn, tx.biopac_url as biopac_transmitter_url, rec.biopac_id as biopac_receiver_pn, rec.biopac_url as biopac_receiver_url, tx.notes as transmitter_notes, tx.receiver_id as receiver_pn, tx.biopotential_id as biopotential, tx.channels_id as channels";
+  $unsecure_sql = "SELECT tx.part_number as transmitter_pn, tx.biopac_id as biopac_transmitter_pn, tx.biopac_url as biopac_transmitter_url, rec.biopac_id as biopac_receiver_pn, rec.biopac_url as biopac_receiver_url, rec.notes as receiver_notes, tx.notes as transmitter_notes, tx.receiver_id as receiver_pn, tx.biopotential_id as biopotential, tx.channels_id as channels";
   $unsecure_sql .= " FROM ".$prefix."transmitter as tx INNER JOIN ".$prefix."receiver as rec ON tx.receiver_id = rec.id";
   $unsecure_sql .= " WHERE tx.animal_id=:animal";
   $unsecure_sql .= " AND tx.biopotential_id=:biopotential";
@@ -418,7 +418,7 @@ function getQuotes($db, $prefix, $TxOnly) {
        }
        if ($_POST['system']=="none") {
 	 if (!$TxOnly ) {
-	   $receiver = new QuoteItem('Epoch Receiver Tray', 1, $row['biopac_receiver_pn'], $row['biopac_receiver_url'], $row['receiver_pn'], null);
+	   $receiver = new QuoteItem('Epoch Receiver Tray', 1, $row['biopac_receiver_pn'], $row['biopac_receiver_url'], $row['receiver_pn'], $row['receiver_notes']);
 	   $cables = getCables();
 	 } else {
 	   $receiver = null;
