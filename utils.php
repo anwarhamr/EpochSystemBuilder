@@ -424,9 +424,9 @@ function getQuotes($db, $prefix, $TxOnly) {
 	   $receiver = null;
 	 }
          if ($_POST['duration'] == "reusable" ) {
-           $transmitter = new QuoteItem('Epoch Sensor', 1, $row['biopac_transmitter_pn']."-".sprintf("%05d", $key), $row['biopac_transmitter_url'], $row['transmitter_pn'].getGainCombinationValue($db, $prefix, $key), "1 complimentary reusable sensor is included with this receiver.  ".$row['transmitter_notes']);
+           $transmitter = new QuoteItem('Epoch Sensor', 1, $row['biopac_transmitter_pn']."-".sprintf("%05d", $key), $row['biopac_transmitter_url'], $row['transmitter_pn'].getGainCombinationValue($db, $prefix, $key), "1 complimentary reusable sensor is included with a new receiver.  ".$row['transmitter_notes']);
          } else {
-           $transmitter = new QuoteItem('Epoch Sensor', 3, $row['biopac_transmitter_pn']."-".sprintf("%05d", $key), $row['biopac_transmitter_url'], $row['transmitter_pn'].getGainCombinationValue($db, $prefix, $key), "2 complimentary sensors are included with this receiver.  ".$row['transmitter_notes'], null);
+           $transmitter = new QuoteItem('Epoch Sensor', 3, $row['biopac_transmitter_pn']."-".sprintf("%05d", $key), $row['biopac_transmitter_url'], $row['transmitter_pn'].getGainCombinationValue($db, $prefix, $key), "2 complimentary sensors are included with a new receiver.  ".$row['transmitter_notes'], null);
          }
        } else {
 	 $receiver = null;
