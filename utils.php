@@ -183,9 +183,12 @@ function showReOrderDropDowns($db, $prefix, $dropdowns) {
 function showQuotes($db, $prefix, $TxOnly=false) {
   if (isset($_POST['currentDropDown']) && $_POST['currentDropDown'] == 'duration' && isset($_POST['duration'])) {
     $quotes = getQuotes($db, $prefix, $TxOnly);
+    $count = 1;
     foreach ($quotes as $quote) {
       echo '<br /><br />';
+      echo "<h3>Recommended EPOCH System results: Option #$count</h3>";
       echo $quote->getHTML();
+      $count++;
     }
   }
 }

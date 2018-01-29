@@ -21,7 +21,6 @@ class Quote {
   function getHTML() {
     $html = null;
 
-    $html .= '<h3>Recommended EPOCH System results</h3>';
     $html .= '<div class="divTable">';
     $html .= '  <div class="divTableBody">';
     $html .= '    <div class="divTableRow">';
