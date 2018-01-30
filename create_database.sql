@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jan 29, 2018 at 11:43 PM
+-- Generation Time: Jan 30, 2018 at 12:52 AM
 -- Server version: 5.5.59-0ubuntu0.14.04.1
 -- PHP Version: 5.6.30
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `epoch`
+-- Database: `epitel_epoch`
 --
 
 -- --------------------------------------------------------
@@ -5683,7 +5683,7 @@ CREATE TABLE `epoch_receiver` (
   `id` varchar(50) NOT NULL,
   `biopac_id` varchar(15) NOT NULL,
   `biopac_url` varchar(255) NOT NULL,
-  `notes` varchar(255) DEFAULT NULL,
+  `notes` text,
   `system_id` varchar(255) NOT NULL,
   `enable` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -5699,12 +5699,12 @@ INSERT INTO `epoch_receiver` (`id`, `biopac_id`, `biopac_url`, `notes`, `system_
 ('10073', 'EPRCVR-P4-100', 'https://www.biopac.com/product/epoch-wireless-receiver-tray/?attribute_pa_animal-size=pup-tray', 'Provides up to 4 channels of EEG (100Hz) for pups.', 'pup', 1),
 ('10198', 'EP6RCVR-M6-60', 'https://www.biopac.com/product/epoch-wireless-receiver-tray/?attribute_pa_animal-size=mice-tray-6ch', 'Provides up to 6 channels of EEG (60Hz) for mice.', 'epoch6-mouse', 1),
 ('10199', 'EP6RCVR-R6-60', 'https://www.biopac.com/product/epoch-wireless-receiver-tray/?attribute_pa_animal-size=rat-tray-6ch', 'Provides up to 6 channels of EEG (60Hz) for rats.', 'epoch6-rat', 1),
-('10206', 'EP2RCVR-M2-1/1', 'https://www.biopac.com/product/epoch-wireless-receiver-tray/?attribute_pa_animal-size=mice-tray-100-100', 'Provides up to 2 channels of EEG (100Hz) for mice.', 'epoch2-100-100-mouse', 1),
-('10207', 'EP2RCVR-R2-1/1', 'https://www.biopac.com/product/epoch-wireless-receiver-tray/?attribute_pa_animal-size=rat-tray-100-100', 'Provides up to 2 channels of EEG (100Hz) for rats.', 'epoch2-100-100-rat', 1),
-('10229', 'EP2RCVR-M2-2/2', 'https://www.biopac.com/product/epoch-wireless-receiver-tray/?attribute_pa_animal-size=mice-tray-200-200', 'Provides up to 2 channels for ECG/EMG (200Hz) for mice.', 'epoch2-200-200-mouse', 1),
-('10230', 'EP2RCVR-R2-2/2', 'https://www.biopac.com/product/epoch-wireless-receiver-tray/?attribute_pa_animal-size=rat-tray-200-200', 'Provides up to 2 channels for ECG/EMG (200Hz) for rats.', 'epoch2-200-200-rat', 1),
-('10231', 'EP2RCVR-M2-1/2', 'https://www.biopac.com/product/epoch-wireless-receiver-tray/?attribute_pa_animal-size=mice-tray-100-200', 'Provides up to 2 channels, first EEG (100Hz) and second ECG/EMG (200Hz) for mice.', 'epoch2-100-200-mouse', 1),
-('10232', 'EP2RCVR-R2-1/2', 'https://www.biopac.com/product/epoch-wireless-receiver-tray/?attribute_pa_animal-size=rat-tray-100-200', 'Provides up to 2 channels, first EEG (100Hz) and second ECG/EMG (200Hz) for rats.', 'epoch2-100-200-rat', 1);
+('10206', 'EP2RCVR-M2-1/1', 'https://www.biopac.com/product/epoch-wireless-receiver-tray/?attribute_pa_animal-size=mice-tray-100-100', 'Provides up to 2 channels of EEG (100Hz/100Hz) for mice.', 'epoch2-100-100-mouse', 1),
+('10207', 'EP2RCVR-R2-1/1', 'https://www.biopac.com/product/epoch-wireless-receiver-tray/?attribute_pa_animal-size=rat-tray-100-100', 'Provides up to 2 channels of EEG (100Hz/100Hz) for rats.', 'epoch2-100-100-rat', 1),
+('10229', 'EP2RCVR-M2-2/2', 'https://www.biopac.com/product/epoch-wireless-receiver-tray/?attribute_pa_animal-size=mice-tray-200-200', 'Provides up to 2 channels for ECG/EMG (200Hz/200Hz) for mice. <a href=\"https://www.biopac.com/wp-content/uploads/Record-EEG-200Hz.pdf\" target=\"_black\">Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content for recording EEG at 200Hz.</a>', 'epoch2-200-200-mouse', 1),
+('10230', 'EP2RCVR-R2-2/2', 'https://www.biopac.com/product/epoch-wireless-receiver-tray/?attribute_pa_animal-size=rat-tray-200-200', 'Provides up to 2 channels for ECG/EMG (200Hz/200Hz) for rats.   <a href=\"https://www.biopac.com/wp-content/uploads/Record-EEG-200Hz.pdf\" target=\"_black\">Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content for recording EEG at 200Hz.</a>', 'epoch2-200-200-rat', 1),
+('10231', 'EP2RCVR-M2-1/2', 'https://www.biopac.com/product/epoch-wireless-receiver-tray/?attribute_pa_animal-size=mice-tray-100-200', 'Provides up to 2 channels, first EEG (100Hz) and second ECG/EMG (200Hz) for mice.   <a href=\"https://www.biopac.com/wp-content/uploads/Record-EEG-200Hz.pdf\" target=\"_black\">Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content for recording EEG at 200Hz.</a>', 'epoch2-100-200-mouse', 1),
+('10232', 'EP2RCVR-R2-1/2', 'https://www.biopac.com/product/epoch-wireless-receiver-tray/?attribute_pa_animal-size=rat-tray-100-200', 'Provides up to 2 channels, first EEG (100Hz) and second ECG/EMG (200Hz) for rats.   <a href=\"https://www.biopac.com/wp-content/uploads/Record-EEG-200Hz.pdf\" target=\"_black\">Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content for recording EEG at 200Hz.</a>', 'epoch2-100-200-rat', 1);
 
 -- --------------------------------------------------------
 
@@ -5813,18 +5813,18 @@ INSERT INTO `epoch_transmitter` (`id`, `part_number`, `receiver_id`, `biopac_id`
 (169, '10210', '10073', 'EPTX10210', 'https://www.biopac.com/product/epoch-wireless-eeg-4-ch-transmitters/?attribute_pa_epoch-trans=2-mo-4-ch-eeg', NULL, 'rat-pup', 'eeg', '4', '2-month', 1),
 (170, '10238', '10073', 'EPTX10238', 'https://www.biopac.com/product/epoch-wireless-eeg-4-ch-transmitters/?attribute_pa_epoch-trans=2-wk-4-ch-eeg', NULL, 'rat-pup', 'eeg', '4', '2-week', 1),
 (171, '10238', '10073', 'EPTX10238', 'https://www.biopac.com/product/epoch-wireless-eeg-4-ch-transmitters/?attribute_pa_epoch-trans=2-wk-4-ch-eeg', NULL, 'mouse-pup', 'eeg', '4', '2-week', 1),
-(172, '10215', '10230', 'EPTX10215', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=epoch-2mo-2ch-diff', 'Differential sensor.  Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content.', 'adult-rat', 'eeg-eeg', '2', '2-month', 1),
-(173, '10215', '10229', 'EPTX10215', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=epoch-2mo-2ch-diff', 'Differential sensor.  Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content.', 'adult-mouse', 'eeg-eeg', '2', '2-month', 1),
-(174, '10216', '10230', 'EPTX10216', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=epoch-6mo-2ch-diff', 'Differential sensor.  Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content.', 'adult-rat', 'eeg-eeg', '2', '6-month', 1),
-(175, '10264', '10230', 'EPTX10264', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=2-mo-2-ch-eegexg', 'Differential sensor.  Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content.', 'adult-rat', 'eeg-emg', '2', '2-month', 1),
-(176, '10264', '10230', 'EPTX10264', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=2-mo-2-ch-eegexg', 'Differential sensor.  Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content.', 'adult-rat', 'eeg-ecg', '2', '2-month', 1),
-(177, '10264', '10229', 'EPTX10264', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=2-mo-2-ch-eegexg', 'Differential sensor.  Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content.', 'adult-mouse', 'eeg-ecg', '2', '2-month', 1),
-(178, '10264', '10229', 'EPTX10264', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=2-mo-2-ch-eegexg', 'Differential sensor.  Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content.', 'adult-mouse', 'eeg-emg', '2', '2-month', 1),
-(179, '10265', '10230', 'EPTX10265', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=6-mo-2-ch-eegexg', 'Differential sensor.  Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content.', 'adult-rat', 'eeg-emg', '2', '6-month', 1),
-(180, '10265', '10230', 'EPTX10265', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=6-mo-2-ch-eegexg', 'Differential sensor.  Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content.', 'adult-rat', 'eeg-ecg', '2', '6-month', 1),
-(181, '10215', '10232', 'EPTX10215', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=epoch-2mo-2ch-diff', 'Differential sensor.  Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content.', 'adult-rat', 'eeg-eeg', '2', '2-month', 1),
-(182, '10215', '10231', 'EPTX10215', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=epoch-2mo-2ch-diff', 'Differential sensor.  Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content.', 'adult-mouse', 'eeg-eeg', '2', '2-month', 1),
-(183, '10216', '10232', 'EPTX10216', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=epoch-6mo-2ch-diff', 'Differential sensor.  Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content.', 'adult-rat', 'eeg-eeg', '2', '6-month', 1);
+(172, '10215', '10230', 'EPTX10215', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=epoch-2mo-2ch-diff', 'Differential sensor.  <a href=\"https://www.biopac.com/wp-content/uploads/Record-EEG-200Hz.pdf\" target=\"_black\">Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content for recording EEG at 200Hz.</a>', 'adult-rat', 'eeg-eeg', '2', '2-month', 1),
+(173, '10215', '10229', 'EPTX10215', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=epoch-2mo-2ch-diff', 'Differential sensor.  <a href=\"https://www.biopac.com/wp-content/uploads/Record-EEG-200Hz.pdf\" target=\"_black\">Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content for recording EEG at 200Hz.</a>', 'adult-mouse', 'eeg-eeg', '2', '2-month', 1),
+(174, '10216', '10230', 'EPTX10216', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=epoch-6mo-2ch-diff', 'Differential sensor.  <a href=\"https://www.biopac.com/wp-content/uploads/Record-EEG-200Hz.pdf\" target=\"_black\">Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content for recording EEG at 200Hz.</a>', 'adult-rat', 'eeg-eeg', '2', '6-month', 1),
+(175, '10264', '10230', 'EPTX10264', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=2-mo-2-ch-eegexg', 'Differential sensor.  <a href=\"https://www.biopac.com/wp-content/uploads/Record-EEG-200Hz.pdf\" target=\"_black\">Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content for recording EEG at 200Hz.</a>', 'adult-rat', 'eeg-emg', '2', '2-month', 1),
+(176, '10264', '10230', 'EPTX10264', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=2-mo-2-ch-eegexg', 'Differential sensor.  <a href=\"https://www.biopac.com/wp-content/uploads/Record-EEG-200Hz.pdf\" target=\"_black\">Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content for recording EEG at 200Hz.</a>', 'adult-rat', 'eeg-ecg', '2', '2-month', 1),
+(177, '10264', '10229', 'EPTX10264', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=2-mo-2-ch-eegexg', 'Differential sensor.  <a href=\"https://www.biopac.com/wp-content/uploads/Record-EEG-200Hz.pdf\" target=\"_black\">Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content for recording EEG at 200Hz.</a>', 'adult-mouse', 'eeg-ecg', '2', '2-month', 1),
+(178, '10264', '10229', 'EPTX10264', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=2-mo-2-ch-eegexg', 'Differential sensor.  <a href=\"https://www.biopac.com/wp-content/uploads/Record-EEG-200Hz.pdf\" target=\"_black\">Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content for recording EEG at 200Hz.</a>', 'adult-mouse', 'eeg-emg', '2', '2-month', 1),
+(179, '10265', '10230', 'EPTX10265', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=6-mo-2-ch-eegexg', 'Differential sensor.  <a href=\"https://www.biopac.com/wp-content/uploads/Record-EEG-200Hz.pdf\" target=\"_black\">Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content for recording EEG at 200Hz.</a>', 'adult-rat', 'eeg-emg', '2', '6-month', 1),
+(180, '10265', '10230', 'EPTX10265', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=6-mo-2-ch-eegexg', 'Differential sensor.  <a href=\"https://www.biopac.com/wp-content/uploads/Record-EEG-200Hz.pdf\" target=\"_black\">Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content for recording EEG at 200Hz.</a>', 'adult-rat', 'eeg-ecg', '2', '6-month', 1),
+(181, '10215', '10232', 'EPTX10215', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=epoch-2mo-2ch-diff', 'Differential sensor.  <a href=\"https://www.biopac.com/wp-content/uploads/Record-EEG-200Hz.pdf\" target=\"_black\">Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content for recording EEG at 200Hz.</a>', 'adult-rat', 'eeg-eeg', '2', '2-month', 1),
+(182, '10215', '10231', 'EPTX10215', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=epoch-2mo-2ch-diff', 'Differential sensor.  <a href=\"https://www.biopac.com/wp-content/uploads/Record-EEG-200Hz.pdf\" target=\"_black\">Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content for recording EEG at 200Hz.</a>', 'adult-mouse', 'eeg-eeg', '2', '2-month', 1),
+(183, '10216', '10232', 'EPTX10216', 'https://www.biopac.com/product/epoch-differential-transmitters/?attribute_pa_epoch-trans=epoch-6mo-2ch-diff', 'Differential sensor.  <a href=\"https://www.biopac.com/wp-content/uploads/Record-EEG-200Hz.pdf\" target=\"_black\">Applying a simple real-time or post-process 100 Hz low-pass filter will remove the high-frequency content for recording EEG at 200Hz.</a>', 'adult-rat', 'eeg-eeg', '2', '6-month', 1);
 
 -- --------------------------------------------------------
 
