@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jan 30, 2018 at 12:52 AM
+-- Generation Time: Mar 06, 2018 at 11:24 PM
 -- Server version: 5.5.59-0ubuntu0.14.04.1
 -- PHP Version: 5.6.30
 
@@ -77,14 +77,14 @@ CREATE TABLE `epoch_biopotential` (
 --
 
 INSERT INTO `epoch_biopotential` (`id`, `description`, `preselect`, `enable`) VALUES
-('ecg', 'ECG', 0, 1),
-('ecg-emg', 'ECG/EMG (Differential)', 0, 1),
-('eeg', 'EEG', 1, 1),
-('eeg-ecg', 'EEG/ECG (Differential)', 0, 1),
-('eeg-eeg', 'EEG/EEG (Differential)', 0, 1),
-('eeg-emg', 'EEG/EMG (Differential)', 0, 1),
-('emg', 'EMG', 0, 1),
-('emg-emg', 'EMG/EMG (Differential)', 0, 1);
+('ecg', 'ECG (Common Reference)', 0, 1),
+('ecg-emg', 'ECG/EMG (Differential Reference)', 0, 1),
+('eeg', 'EEG (Common Reference)', 1, 1),
+('eeg-ecg', 'EEG/ECG (Differential Reference)', 0, 1),
+('eeg-eeg', 'EEG/EEG (Differential Reference)', 0, 1),
+('eeg-emg', 'EEG/EMG (Differential Reference)', 0, 1),
+('emg', 'EMG (Common Reference)', 0, 1),
+('emg-emg', 'EMG/EMG (Differential Reference)', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -5932,3 +5932,4 @@ ALTER TABLE `epoch_transmitter`
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+

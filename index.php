@@ -45,7 +45,7 @@ $dropdowns = array
     array('1', 'Select Data Acquisition System', 'dac', $prefix.'dac', null),
     array('2', 'Select Epoch Receiver Tray', 'system', $prefix.'system', 'Serial numbers (S/N) are either located on the side next to the power jack or on the bottom of the receiver. <br>Rat receivers are 16.5"x8.5" <br>Mouse receivers are 13"x8" <br>Pup receivers are 7"x7"'),
     array('3', 'Select Animal', 'animal', $prefix.'animal', null),
-    array('4', 'Select Biopotential', 'biopotential', $prefix.'biopotential', "'Differential' reference electrode layout uses different grounds. <br>'Common' reference electrode layout uses a common ground."),
+    array('4', 'Select Biopotential', 'biopotential', $prefix.'biopotential', "'Differential Reference' electrode layout uses different grounds. <br>'Common Reference' electrode layout uses a common ground."),
     array('5', 'Select Channels', 'channels', $prefix.'channels', null),
     array('6', 'Select Duration', 'duration', $prefix.'duration', "Reusable 2-month sensors can be moved from animal to animal and use the <a href='http://www.invivo1.com/Catalog.php?FILTER_F0=Electrophysiology&FILTER_F1=Electrode&FILTER_F2=4-Channel&FILTER_F3=Untwisted&FILTER_F4=&FILTER_F5=&FILTER_F6=&FILTER_F7=&FILTER_F8=&FILTER_F9=&FILTER_FNAME=' target='_new'>PlasticsOne MS333-3-A-SPC</a> base cut 19mm below pedestal.")
   );
