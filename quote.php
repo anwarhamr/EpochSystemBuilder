@@ -36,8 +36,10 @@ class Quote {
     if ($this->daq->name!=null) {$html .= '    '.$this->daq->getHTML();}
     if ($this->receiver->name!=null) {$html .= '    '.$this->receiver->getHTML();}
     $html .= '    '.$this->transmitter->getHTML();
-    foreach ($this->cables as $cable) {
-      if ($cable->name!=null) {$html .= '    '.$cable->getHTML();}
+    if ($this->daq->name!=null) {
+      foreach ($this->cables as $cable) {
+        if ($cable->name!=null) {$html .= '    '.$cable->getHTML();}
+      }
     }
     if ($this->activator->name!=null) {$html .= '    '.$this->activator->getHTML();}
     $html .= '  </div>';
