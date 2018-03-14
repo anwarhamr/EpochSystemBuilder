@@ -1,11 +1,16 @@
 <?php
 require_once('utils.php');
+
 // For security place, config.ini outsite of browseable files and change the path
 $config_file = '../../config.ini';
-$open_config_file = @file($config_file) or
-        die ("Failed opening config file: $php_errormsg");
+$locale_file = './locale/en_US.ini';
+
+$open_config_file = @file($config_file) or die ("Failed opening config file: $php_errormsg");
 $config = parse_ini_file($config_file);
 $prefix = $config['prefix'];
+
+$open_locale_file = @file($locale_file) or die ("Failed opening locale file: $php_errormsg");
+$locale = parse_ini_file($locale_file);
 
 // Database Connection
 try {
@@ -26,7 +31,7 @@ echo  '<?xml version="1.0" encoding="utf-8"?>';
 <!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <title>Epoch System Builder</title>
+  <title><?=$locale['TITLE'];?></title>
   <link href="css/style.css" rel="stylesheet" type="text/css">
   <link href="css/normalize.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -42,19 +47,19 @@ echo  '<?xml version="1.0" encoding="utf-8"?>';
 // Multidimensional array to create dropdowns.
 $dropdowns = array
   (
-    array('1', 'Select Data Acquisition System', 'dac', $prefix.'dac', null),
-    array('2', 'Select Epoch Receiver Tray', 'system', $prefix.'system', 'Serial numbers (S/N) are either located on the side next to the power jack or on the bottom of the receiver. <br>Rat receivers are 16.5"x8.5" <br>Mouse receivers are 13"x8" <br>Pup receivers are 7"x7"'),
-    array('3', 'Select Animal', 'animal', $prefix.'animal', null),
-    array('4', 'Select Biopotential', 'biopotential', $prefix.'biopotential', "'Differential Reference' electrode layout uses different grounds. <br>'Common Reference' electrode layout uses a common ground."),
-    array('5', 'Select Channels', 'channels', $prefix.'channels', null),
-    array('6', 'Select Duration', 'duration', $prefix.'duration', "Reusable 2-month sensors can be moved from animal to animal and use the <a href='http://www.invivo1.com/Catalog.php?FILTER_F0=Electrophysiology&FILTER_F1=Electrode&FILTER_F2=4-Channel&FILTER_F3=Untwisted&FILTER_F4=&FILTER_F5=&FILTER_F6=&FILTER_F7=&FILTER_F8=&FILTER_F9=&FILTER_FNAME=' target='_new'>PlasticsOne MS333-3-A-SPC</a> base cut 19mm below pedestal.")
+    array("1", $locale["SELECT_DAQ"], "dac", $prefix."dac", $locale["SELECT_DAQ_TOOLTIP"]),
+    array("2", $locale["SELECT_EPOCH_TRAY"], "system", $prefix."system", $locale["SELECT_EPOCH_TRAY_TOOLTIP"]),
+    array("3", $locale["SELECT_ANIMAL"], "animal", $prefix."animal", $locale["SELECT_ANIMAL_TOOLTIP"]),
+    array("4", $locale["SELECT_BIOPOTENTIAL"], "biopotential", $prefix."biopotential", $locale["SELECT_BIOPOTENTIAL_TOOLTIP"]),
+    array("5", $locale["SELECT_CHANNELS"], "channels", $prefix."channels", $locale["SELECT_CHANNELS_TOOLTIP"]),
+    array("6", $locale["SELECT_DURATION"], "duration", $prefix."duration", $locale["SELECT_DURATION_TOOLTIP"])
   );
 
 showDropDowns($db, $prefix, $dropdowns);
 echo getHiddenCurrentDropDown($dropdowns); // write hidden tag
 
 ?>
-<br /><input type="reset" name="reset" value="Reset" onclick="document.getElementById('currentDropDown').value='';document.getElementById('createSystem').submit();">
+<br /><input type="reset" name="reset" value="<?=$locale["RESET_BUTTON"];?>" onclick="document.getElementById('currentDropDown').value='';document.getElementById('createSystem').submit();">
 </form>
 </div>
 

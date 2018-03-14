@@ -9,13 +9,15 @@ class Quote {
   public $transmitter;
   public $cables;
   public $activator;
+  public $locale;
 
-  function __construct($daq, $receiver, $transmitter, $cables, $activator) {
+  function __construct($daq, $receiver, $transmitter, $cables, $activator, $locale) {
     $this->daq = $daq;
     $this->receiver = $receiver;
     $this->transmitter = $transmitter;
     $this->cables = $cables;
     $this->activator = $activator;
+    $this->locale = $locale;
   }
 
   function getHTML() {
@@ -24,11 +26,11 @@ class Quote {
     $html .= '<div class="divTable">';
     $html .= '  <div class="divTableBody">';
     $html .= '    <div class="divTableRow">';
-    $html .= '      <div class="divTableCell"><strong>EPOCH System Component</strong></div>';
-    $html .= '      <div class="divTableCell"><strong>BIOPAC Part #</strong></div>';
-    $html .= '      <div class="divTableCell"><strong>Epitel Part #</strong></div>';
-    $html .= '      <div class="divTableCell"><strong>Notes</strong></div>';
-    $html .= '      <div class="divTableCell"><strong>Qty</strong></div>';
+    $html .= '      <div class="divTableCell"><strong>'.$this->locale["EPOCH_COL_HEADER"].'</strong></div>';
+    $html .= '      <div class="divTableCell"><strong>'.$this->locale["BIOPAC_PART_COL_HEADER"].'</strong></div>';
+    $html .= '      <div class="divTableCell"><strong>'.$this->locale["EPITEL_PART_COL_HEADER"].'</strong></div>';
+    $html .= '      <div class="divTableCell"><strong>'.$this->locale["NOTES_COL_HEADER"].'</strong></div>';
+    $html .= '      <div class="divTableCell"><strong>'.$this->locale["QTY_COL_HEADER"].'</strong></div>';
     $html .= '    </div>';
 
     if ($this->daq->name!=null) {$html .= '    '.$this->daq->getHTML();}

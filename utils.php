@@ -181,12 +181,14 @@ function showReOrderDropDowns($db, $prefix, $dropdowns) {
  * showQuotes($db, $prefix, $TxOnly)
  */
 function showQuotes($db, $prefix, $TxOnly=false) {
+  global $locale;
+
   if (isset($_POST['currentDropDown']) && $_POST['currentDropDown'] == 'duration' && isset($_POST['duration'])) {
     $quotes = getQuotes($db, $prefix, $TxOnly);
     $count = 1;
     foreach ($quotes as $quote) {
       echo '<br /><br />';
-      echo "<h3>Recommended EPOCH System results: Option #$count</h3>";
+      echo "<h3>".$locale['RESULT_HEADER'].$count."</h3>";
       echo $quote->getHTML();
       $count++;
     }
@@ -228,6 +230,8 @@ function getDefaultGain($biopotential, $animal) {
  * createGainDropdowns($db, $prefix, $active)
  */
 function createGainDropdowns($db, $prefix, $active) {
+  global $locale;
+
   // Set Default Differential Gains
   $biopotentials = explode("-", $_POST['biopotential']);
   for ($i = 1; $i <= sizeof($biopotentials); $i++) {
@@ -235,10 +239,6 @@ function createGainDropdowns($db, $prefix, $active) {
       $_POST["transmitter_gain_$i"] = getDefaultGain($biopotentials[$i-1], $_POST['animal']);
     }
   }
-
-  // Gain Tooltip
-  $tooltip = "Gain (input range) per channel recommendations:";
-  $tooltip .= "<br/>Adult EEG ±1.0mV <br/>Pup EEG ±0.5mV <br/>EMG ±5.0mV <br/>ECG ±1.0mV";
 
   // Create a Sensor Gain Dropdown for each channel
   if (isset($_POST['channels'])) {
@@ -250,7 +250,7 @@ function createGainDropdowns($db, $prefix, $active) {
         }
       }
 
-      createDropDown($db, "Channel $i Gain", "transmitter_gain_$i", $prefix.'transmitter_gain', $prefix, $active, $tooltip, false);
+      createDropDown($db, "Channel $i Gain", "transmitter_gain_$i", $prefix.'transmitter_gain', $prefix, $active, $locale['GAIN_TOOLTIP'], false);
     }
   }
 
@@ -286,6 +286,8 @@ function getGainCombinationKey($db, $prefix) {
  * getGainCombinationValue($db, $prefix, $id)
  */
 function getGainCombinationValue($db, $prefix, $id) {
+  global $locale;
+
   $unsecure_sql = "SELECT description from ".$prefix."gains WHERE id=:id";
 
   $prepared_sql = $db->prepare($unsecure_sql);
@@ -304,12 +306,14 @@ function getGainCombinationValue($db, $prefix, $id) {
  * getDAQ($db)
  */
 function getDAQ($db) {
+  global $locale;
+
   // BIOPAC DAQ
   $daq = new QuoteItem(null, null, null, null, null, null);
 
   switch ($_POST['dac']) {
     case 'none':
-      $daq = new QuoteItem('DAQ', 1, 'MP160', 'https://www.biopac.com/product/mp150-data-acquisition-systems/', null, null);
+      $daq = new QuoteItem($locale['DAQ'], 1, 'MP160', 'https://www.biopac.com/product/mp150-data-acquisition-systems/', null, null);
       break;
   }
 
@@ -320,12 +324,14 @@ function getDAQ($db) {
  * getActivator()
  */
 function getActivator() {
+  global $locale;
+
   // Activator
   $activator = new QuoteItem(null, null, null, null, null, null);
   if ($_POST['system']!="classic" ) {
-    $activator = new QuoteItem('Epoch Sensor Activator', 1, 'EPOCH-ACTI', 'https://www.biopac.com/product/epoch-sensor-activation-utility/', '10029', null);
+    $activator = new QuoteItem($locale['EPOCH_SENSOR_ACTIVATOR'], 1, 'EPOCH-ACTI', $locale['EPOCH_SENSOR_ACTIVATOR_URL'], '10029', null);
   } elseif ($_POST['system']=="classic" && $_POST['duration']=="reusable" ) {
-    $activator = new QuoteItem('Epoch Sensor Activator', 1, 'EPOCH-ACTI', 'https://www.biopac.com/product/epoch-sensor-activation-utility/', '10029', 'Old activators do not work with reusable senors.');
+    $activator = new QuoteItem($locale['EPOCH_SENSOR_ACTIVATOR'], 1, 'EPOCH-ACTI', $locale['EPOCH_SENSOR_ACTIVATOR_URL'], '10029', $locale['EPOCH_SENSOR_ACTIVATOR_WARNING']);
   }
   return $activator;
 }
@@ -334,24 +340,24 @@ function getActivator() {
  * getCables()
  */
 function getCables() {
+  global $locale;
+
   // BIOPAC cables
   $cables = array();
-  //$cables = new QuoteItem(null, null, null, null, null, null);
-  //$cable2 = new QuoteItem(null, null, null, null, null, null);
 
   switch ($_POST['dac']) {
     case 'none':
     case 'mp160':
-      $cables[] = new QuoteItem('BIOPAC Cable', $_POST['channels'], 'CBL123', 'https://www.biopac.com/product/interface-cables/?attribute_pa_size=unisolated-rj11-to-bnc-male', null, 'One per channel.');
+      $cables[] = new QuoteItem($locale['BIOPAC_CABLE'], $_POST['channels'], 'CBL123', 'https://www.biopac.com/product/interface-cables/?attribute_pa_size=unisolated-rj11-to-bnc-male', null, $locale['ONE_PER_CHANNEL']);
       break;
     case 'mp36':
     case 'mp36r':
-      $cables[] = new QuoteItem('BIOPAC Cable', $_POST['channels'], 'CBL125', 'https://www.biopac.com/product/interface-cables/?attribute_pa_size=cbl-bnc-male-to-bnc-male-2-m', null, 'One per channel.');
-      $cables[] = new QuoteItem('BIOPAC Cable', $_POST['channels'], 'SS9LA', 'https://www.biopac.com/product/input-adapters-bnc/?attribute_pa_size=input-adapter-unisolated-bnc-mp36-mp35-mp45', null, 'One per channel.');
+      $cables[] = new QuoteItem($locale['BIOPAC_CABLE'], $_POST['channels'], 'CBL125', 'https://www.biopac.com/product/interface-cables/?attribute_pa_size=cbl-bnc-male-to-bnc-male-2-m', null, $locale['ONE_PER_CHANNEL']);
+      $cables[] = new QuoteItem($locale['BIOPAC_CABLE'], $_POST['channels'], 'SS9LA', 'https://www.biopac.com/product/input-adapters-bnc/?attribute_pa_size=input-adapter-unisolated-bnc-mp36-mp35-mp45', null, $locale['ONE_PER_CHANNEL']);
       break;
     case 'mp100':
     case 'mp150':
-      $cables[] = new QuoteItem('BIOPAC Cable', $_POST['channels'], 'CBL102', 'https://www.biopac.com/product/interface-cables/?attribute_pa_size=cbl-3-5mm-to-bnc-m-2-m', null, 'One per channel.');
+      $cables[] = new QuoteItem($locale['BIOPAC_CABLE'], $_POST['channels'], 'CBL102', 'https://www.biopac.com/product/interface-cables/?attribute_pa_size=cbl-3-5mm-to-bnc-m-2-m', null, $locale['ONE_PER_CHANNEL']);
       break;
   }
 
@@ -381,6 +387,10 @@ function getDescription($db, $id, $table, $prefix) {
  * getQuotes($db, $prefix, $TxOnly)
  */
 function getQuotes($db, $prefix, $TxOnly) {
+  global $locale;
+
+  print_r($locale);
+
   $quote = [];
 
   $unsecure_sql = "SELECT tx.part_number as transmitter_pn, tx.biopac_id as biopac_transmitter_pn, tx.biopac_url as biopac_transmitter_url, rec.biopac_id as biopac_receiver_pn, rec.biopac_url as biopac_receiver_url, rec.notes as receiver_notes, tx.notes as transmitter_notes, tx.receiver_id as receiver_pn, tx.biopotential_id as biopotential, tx.channels_id as channels";
@@ -418,22 +428,22 @@ function getQuotes($db, $prefix, $TxOnly) {
        }
        if ($_POST['system']=="none") {
 	 if (!$TxOnly ) {
-	   $receiver = new QuoteItem('Epoch Receiver Tray', 1, $row['biopac_receiver_pn'], $row['biopac_receiver_url'], $row['receiver_pn'], $row['receiver_notes']);
+	   $receiver = new QuoteItem($locale["EPOCH_RECEIVER_TRAY"], 1, $row['biopac_receiver_pn'], $row['biopac_receiver_url'], $row['receiver_pn'], $row['receiver_notes']);
 	   $cables = getCables();
 	 } else {
 	   $receiver = null;
 	 }
          if ($_POST['duration'] == "reusable" ) {
-           $transmitter = new QuoteItem('Epoch Sensor', 1, $row['biopac_transmitter_pn']."-".sprintf("%05d", $key), $row['biopac_transmitter_url'], $row['transmitter_pn'].getGainCombinationValue($db, $prefix, $key), "1 complimentary reusable sensor is included with a new receiver, add more as necessary.  ".$row['transmitter_notes']);
+           $transmitter = new QuoteItem($locale["EPOCH_SENSOR"], 1, $row['biopac_transmitter_pn']."-".sprintf("%05d", $key), $row['biopac_transmitter_url'], $row['transmitter_pn'].getGainCombinationValue($db, $prefix, $key), $locale["ONE_COMPLIMENTARY_SENSOR"].$row['transmitter_notes']);
          } else {
-           $transmitter = new QuoteItem('Epoch Sensor', 2, $row['biopac_transmitter_pn']."-".sprintf("%05d", $key), $row['biopac_transmitter_url'], $row['transmitter_pn'].getGainCombinationValue($db, $prefix, $key), "2 complimentary sensors are included with a new receiver, add more as necessary.  ".$row['transmitter_notes'], null);
+           $transmitter = new QuoteItem($locale["EPOCH_SENSOR"], 2, $row['biopac_transmitter_pn']."-".sprintf("%05d", $key), $row['biopac_transmitter_url'], $row['transmitter_pn'].getGainCombinationValue($db, $prefix, $key), $locale["TWO_COMPLIMENTARY_SENSORS"].$row['transmitter_notes'], null);
          }
        } else {
 	 $receiver = null;
-         $transmitter = new QuoteItem('Epoch Sensor', 1, $row['biopac_transmitter_pn']."-".sprintf("%05d", $key), $row['biopac_transmitter_url'], $row['transmitter_pn'].getGainCombinationValue($db, $prefix, $key), $row['transmitter_notes']);
+         $transmitter = new QuoteItem($locale["EPOCH_SENSOR"], 1, $row['biopac_transmitter_pn']."-".sprintf("%05d", $key), $row['biopac_transmitter_url'], $row['transmitter_pn'].getGainCombinationValue($db, $prefix, $key), $row['transmitter_notes']);
        }
        $activator = getActivator();
-       $quote[] = new Quote($daq, $receiver, $transmitter, $cables, $activator);
+       $quote[] = new Quote($daq, $receiver, $transmitter, $cables, $activator, $locale);
        $option++;
      }
    }
