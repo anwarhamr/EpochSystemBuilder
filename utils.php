@@ -389,8 +389,6 @@ function getDescription($db, $id, $table, $prefix) {
 function getQuotes($db, $prefix, $TxOnly) {
   global $locale;
 
-  print_r($locale);
-
   $quote = [];
 
   $unsecure_sql = "SELECT tx.part_number as transmitter_pn, tx.biopac_id as biopac_transmitter_pn, tx.biopac_url as biopac_transmitter_url, rec.biopac_id as biopac_receiver_pn, rec.biopac_url as biopac_receiver_url, rec.notes as receiver_notes, tx.notes as transmitter_notes, tx.receiver_id as receiver_pn, tx.biopotential_id as biopotential, tx.channels_id as channels";
