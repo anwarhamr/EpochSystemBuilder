@@ -329,9 +329,9 @@ function getActivator() {
   // Activator
   $activator = new QuoteItem(null, null, null, null, null, null);
   if ($_POST['system']!="classic" ) {
-    $activator = new QuoteItem($locale['EPOCH_SENSOR_ACTIVATOR'], 1, 'EPOCH-ACTI', $locale['EPOCH_SENSOR_ACTIVATOR_URL'], '10029', null);
+    $activator = new QuoteItem($locale['EPOCH_SENSOR_ACTIVATOR'], 1, 'EPOCH-ACTI', $locale['EPOCH_SENSOR_ACTIVATOR_URL'], '10029', $locale['ONE_PER_LAB']);
   } elseif ($_POST['system']=="classic" && $_POST['duration']=="reusable" ) {
-    $activator = new QuoteItem($locale['EPOCH_SENSOR_ACTIVATOR'], 1, 'EPOCH-ACTI', $locale['EPOCH_SENSOR_ACTIVATOR_URL'], '10029', $locale['EPOCH_SENSOR_ACTIVATOR_WARNING']);
+    $activator = new QuoteItem($locale['EPOCH_SENSOR_ACTIVATOR'], 1, 'EPOCH-ACTI', $locale['EPOCH_SENSOR_ACTIVATOR_URL'], '10029', $locale['ONE_PER_LAB'].'  '.$locale['EPOCH_SENSOR_ACTIVATOR_WARNING']);
   }
   return $activator;
 }
