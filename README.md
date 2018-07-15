@@ -2,7 +2,7 @@
 
 ## Demo ##
 
-[epoch.epitelinc.com](http://epoch.epitelinc.com/)
+[https://www.biopac.com/epoch-wizard](https://www.biopac.com/epoch-wizard)
 
 ## Setup ##
 
